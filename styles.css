@@ -1268,3 +1268,167 @@ body.dark-mode .form-input:focus {
   color: var(--primary-color);
   font-weight: 700;
 }
+/* Simulado Options Styles */
+.simulado-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.simulado-card {
+  position: relative;
+  border: 1px solid rgba(0, 51, 102, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background: var(--white);
+}
+
+.simulado-card.selected {
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 5px 15px rgba(0, 51, 102, 0.1);
+}
+
+.simulado-card.premium {
+  position: relative;
+  overflow: hidden;
+  border: 1px dashed var(--secondary-color);
+}
+
+.simulado-radio {
+  position: absolute;
+  opacity: 0;
+}
+
+.simulado-label {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.simulado-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0, 51, 102, 0.1) 0%, rgba(255, 204, 0, 0.1) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.simulado-card.selected .simulado-icon {
+  background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+  color: var(--white);
+}
+
+.simulado-card.premium .simulado-icon {
+  color: var(--secondary-color);
+}
+
+.simulado-info {
+  flex: 1;
+}
+
+.simulado-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: var(--primary-color);
+}
+
+.simulado-card.selected .simulado-info h3 {
+  color: var(--primary-color);
+}
+
+.simulado-card.premium .simulado-info h3 {
+  color: var(--secondary-color);
+}
+
+.simulado-info p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+
+.simulado-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.simulado-meta i {
+  margin-right: 5px;
+}
+
+.premium-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--secondary-color);
+  color: var(--dark-color);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.btn-premium {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: transparent;
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-premium:hover {
+  background: var(--secondary-color);
+  color: var(--dark-color);
+}
+
+/* Dark Mode Adjustments */
+body.dark-mode .simulado-card {
+  background-color: #1a1a1a;
+  border-color: #333;
+}
+
+body.dark-mode .simulado-card.selected {
+  border-color: var(--primary-color);
+}
+
+body.dark-mode .simulado-card.premium {
+  border-color: var(--secondary-color);
+}
+
+body.dark-mode .simulado-info h3,
+body.dark-mode .simulado-info p {
+  color: #eee;
+}
+
+body.dark-mode .simulado-meta {
+  color: #bbb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .simulado-label {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .simulado-icon {
+    margin-bottom: 15px;
+  }
+}

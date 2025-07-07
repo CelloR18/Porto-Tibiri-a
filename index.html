@@ -181,25 +181,62 @@
   <div class="container">
     <div class="form-container">
       <div class="form-header">
-        <h2>Acesse Seu Simulado Gratuito</h2>
-        <p>Preencha os campos abaixo para começar agora mesmo</p>
+        <h2>Escolha Seu Simulado</h2>
+        <p>Selecione o simulado que deseja realizar e comece agora mesmo</p>
       </div>
+      
+     <section id="simulado" class="simulado-form fade-in">
+  <div class="container">
+    <div class="form-container">
+      <div class="form-header">
+        <h2>Escolha Seu Simulado</h2>
+        <p>Selecione o simulado que deseja realizar e comece agora mesmo</p>
+      </div>
+      
       <form id="simuladoRedirectForm" class="simulado-form">
-        <div class="form-group">
-          <label for="userName">Nome Completo</label>
-          <input type="text" id="userName" name="userName" placeholder="Digite seu nome completo" required class="form-control">
+        <div class="simulado-options">
+          <div class="simulado-card selected">
+            <input type="radio" id="simulado1" name="simuladoType" value="simulado1" checked class="simulado-radio">
+            <label for="simulado1" class="simulado-label">
+              <div class="simulado-icon">
+                <i class="fas fa-ship"></i>
+              </div>
+              <div class="simulado-info">
+                <h3>Simulado Completo #1</h3>
+                <p>40 questões completas para exercitar</p>
+                <div class="simulado-meta">
+                  <span><i class="fas fa-question-circle"></i> 40 questões</span>
+                  <span><i class="fas fa-clock"></i> 60 minutos</span>
+                </div>
+              </div>
+            </label>
+          </div>
+          
+          <div class="simulado-card">
+            <input type="radio" id="simulado2" name="simuladoType" value="simulado2" class="simulado-radio">
+            <label for="simulado2" class="simulado-label">
+              <div class="simulado-icon">
+                <i class="fas fa-anchor"></i>
+              </div>
+              <div class="simulado-info">
+                <h3>Simulado Completo #2</h3>
+                <p>55 questões sobre RIPEAM e NORMAM</p>
+                <div class="simulado-meta">
+                  <span><i class="fas fa-question-circle"></i> 55 questões</span>
+                  <span><i class="fas fa-clock"></i> 75 minutos</span>
+                </div>
+              </div>
+            </label>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="userEmail">E-mail</label>
-          <input type="email" id="userEmail" name="userEmail" placeholder="seu@email.com" required class="form-control">
-          <small class="form-text">Enviaremos o resultado para este e-mail</small>
-        </div>
+        
         <button type="submit" class="btn btn-primary btn-block">
-          <i class="fas fa-play-circle"></i> Iniciar Simulado
+          <i class="fas fa-play-circle"></i> Iniciar Simulado Gratuito
         </button>
+        
         <div class="privacy-notice mt-3">
           <i class="fas fa-lock"></i>
-          <small>Seus dados estão seguros conosco. Não compartilhamos suas informações.</small>
+          <small>Não requer cadastro. Comece imediatamente.</small>
         </div>
       </form>
     </div>
@@ -207,32 +244,17 @@
 </section>
 
 <script>
- document.getElementById('simuladoRedirectForm').addEventListener('submit', function(e) {
+document.getElementById('simuladoRedirectForm').addEventListener('submit', function(e) {
   e.preventDefault();
+  const selectedSimulado = document.querySelector('input[name="simuladoType"]:checked').value;
   
-  const userName = document.getElementById('userName').value;
-  const userEmail = document.getElementById('userEmail').value;
-  
-  if(!userName || !userEmail) {
-    alert('Por favor, preencha todos os campos obrigatórios.');
-    return;
+  if(selectedSimulado === 'simulado1') {
+    window.location.href = 'simulado.html';
+  } else if(selectedSimulado === 'simulado2') {
+    window.location.href = 'simulado2.html';
   }
-  
-  // Validação de e-mail simples
-  if(!userEmail.includes('@') || !userEmail.includes('.')) {
-    alert('Por favor, insira um endereço de e-mail válido.');
-    return;
-  }
-  
-  // Armazena os dados e redireciona
-  localStorage.setItem('userData', JSON.stringify({
-    name: userName,
-    email: userEmail,
-    startedAt: new Date().toISOString()
-  }));
-  
-  window.location.href = 'simulado.html';
 });
+</script>
 </script>
   </main>
 
