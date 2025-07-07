@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulado Náutico | Porto Tibiriçá</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Estilos Premium para o Simulado */
+    .simulado-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    
+    .simulado-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    
+    .simulado-title {
+      font-size: 2.2rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+    
+    .simulado-subtitle {
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+    
+    .progress-container {
+      background-color: rgba(0, 51, 102, 0.1);
+      border-radius: 50px;
+      height: 10px;
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transition: width 0.5s ease;
+    }
+    
+    .question-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+      border: 1px solid rgba(0, 51, 102, 0.1);
+      transform: translateY(0);
+      transition: all 0.3s ease;
+    }
+    
+    .question-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 51, 102, 0.15);
+    }
+    
+    .question-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .question-number {
+      background: var(--primary-color);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+    
+    .question-text {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    
+    .options-list {
+      list-style: none;
+      margin: 1.5rem 0;
+    }
+    
+    .option-item {
+      margin-bottom: 1rem;
+    }
+    
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 1.2rem 1.5rem;
+      background: rgba(0, 51, 102, 0.03);
+      border: 1px solid rgba(0, 51, 102, 0.1);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .option-label:hover {
+      background: rgba(0, 51, 102, 0.05);
+      border-color: var(--primary-color);
+    }
+    
+    .option-input {
+      margin-right: 1rem;
+      transform: scale(1.2);
+    }
+    
+    .option-input:checked + .option-label {
+      background: rgba(0, 51, 102, 0.1);
+      border-color: var(--primary-color);
+    }
+    
+    .feedback {
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-top: 1.5rem;
+      display: none;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .correct {
+      background: rgba(40, 167, 69, 0.1);
+      border-left: 4px solid var(--success-color);
+    }
+    
+    .incorrect {
+      background: rgba(220, 53, 69, 0.1);
+      border-left: 4px solid #dc3545;
+    }
+    
+    .feedback-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .feedback-title i {
+      margin-right: 0.5rem;
+    }
+    
+    .feedback-text {
+      line-height: 1.6;
+    }
+    
+    .next-btn {
+      background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 51, 102, 0.2);
+    }
+    
+    .next-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 51, 102, 0.3);
+    }
+    
+    .next-btn i {
+      margin-left: 0.5rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .next-btn:hover i {
+      transform: translateX(3px);
+    }
+    
+    .results-container {
+      background: white;
+      border-radius: 16px;
+      padding: 3rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+      display: none;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .results-title {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    
+    .score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin: 1.5rem 0;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .result-message {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    
+    .restart-btn {
+      background: var(--secondary-color);
+      color: var(--dark-color);
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
+    }
+    
+    .restart-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 204, 0, 0.4);
+    }
+    
+    .restart-btn i {
+      margin-right: 0.5rem;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Dark Mode */
+    body.dark-mode .question-card,
+    body.dark-mode .results-container {
+      background: #1a1a1a;
+      border-color: #333;
+    }
+    
+    body.dark-mode .question-text {
+      color: #eee;
+    }
+    
+    body.dark-mode .option-label {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: #444;
+      color: #eee;
+    }
+    
+    body.dark-mode .option-input:checked + .option-label {
+      background: rgba(0, 51, 102, 0.3);
+    }
+    
+    body.dark-mode .progress-container {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .simulado-container {
+        padding: 1rem;
+      }
+      
+      .question-card {
+        padding: 1.5rem;
+      }
+      
+      .simulado-title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero" style="min-height: auto; padding: 5rem 0 4rem;">
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-content">
+        <h1 style="font-size: 2.5rem;">Simulado Náutico</h1>
+        <p class="hero-subtitle">Teste seus conhecimentos sobre sobrevivência no mar</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container simulado-container">
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      
+      <!-- Questão 1 -->
+      <div class="question-card active" id="question1">
+  <div class="question-header">
+    <div class="question-number">1</div>
+    <div class="question-text">Qual é a primeira ação que um náufrago deve tomar ao se encontrar na água?</div>
+  </div>
+  <ul class="options-list">
+    <li class="option-item">
+      <input type="radio" name="q1" id="q1a" class="option-input">
+      <label for="q1a" class="option-label">
+        <span class="option-letter">A)</span> Começar a nadar imediatamente em direção à terra mais próxima
+      </label>
+    </li>
+    <li class="option-item">
+      <input type="radio" name="q1" id="q1b" class="option-input">
+      <label for="q1b" class="option-label">
+        <span class="option-letter">B)</span> Tentar acender um sinalizador de emergência
+      </label>
+    </li>
+    <li class="option-item">
+      <input type="radio" name="q1" id="q1c" class="option-input">
+      <label for="q1c" class="option-label">
+        <span class="option-letter">C)</span> Manter a calma e vestir o colete salva-vidas, se disponível
+      </label>
+    </li>
+    <li class="option-item">
+      <input type="radio" name="q1" id="q1d" class="option-input">
+      <label for="q1d" class="option-label">
+        <span class="option-letter">D)</span> Gritar por ajuda o mais alto possível
+      </label>
+    </li>
+    <li class="option-item">
+      <input type="radio" name="q1" id="q1e" class="option-input">
+      <label for="q1e" class="option-label">
+        <span class="option-letter">E)</span> Remover roupas pesadas para facilitar a natação
+      </label>
+    </li>
+  </ul>
+  <div class="feedback" id="feedback1">
+    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+    <p class="feedback-text">A alternativa <strong>C</strong> está correta: Manter a calma e vestir o colete salva-vidas é crucial para preservar energia e aumentar as chances de sobrevivência.</p>
+  </div>
+  <button class="next-btn" onclick="checkAnswer(1, 'q1c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+</div>
+      
+      <!-- Adicione as outras questões seguindo o mesmo padrão -->
+      
+      <!-- Resultados -->
+      <div class="results-container" id="resultsContainer">
+        <h2 class="results-title">Simulado Concluído!</h2>
+        <p>Confira seu desempenho no teste de sobrevivência náutica</p>
+        <div class="score" id="finalScore">0/10</div>
+        <p class="result-message" id="resultMessage"></p>
+        <button class="restart-btn" onclick="restartSimulado()"><i class="fas fa-redo"></i> Refazer Simulado</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2025 Porto Tibiriçá Escola Náutica. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <button class="toggle-dark" onclick="document.body.classList.toggle('dark-mode')">
+    🌙 Dark Mode
+  </button>
+
+  <script>
+    // Mantenha o mesmo JavaScript das versões anteriores
+    let currentQuestion = 1;
+    let score = 0;
+    const totalQuestions = 1; // Altere para o número total de questões
+    
+    function checkAnswer(questionNumber, correctAnswer) {
+      const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
+      const feedback = document.getElementById(`feedback${questionNumber}`);
+      
+      if (!selectedOption) {
+        alert("Por favor, selecione uma resposta antes de continuar.");
+        return;
+      }
+      
+      if (selectedOption.id === correctAnswer) {
+        feedback.className = "feedback correct";
+        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
+        score++;
+      } else {
+        feedback.className = "feedback incorrect";
+        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
+      }
+      
+      feedback.style.display = "block";
+      
+    }
+    
+    function nextQuestion() {
+      document.getElementById(`question${currentQuestion}`).classList.remove('active');
+      currentQuestion++;
+      
+      if (currentQuestion <= totalQuestions) {
+        document.getElementById(`question${currentQuestion}`).classList.add('active');
+        updateProgress();
+      } else {
+        showResults();
+      }
+    }
+    
+    function updateProgress() {
+      const progress = (currentQuestion / totalQuestions) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+    }
+    
+    function showResults() {
+      document.querySelector('.simulado-container').querySelectorAll('.question-card').forEach(card => {
+        card.style.display = 'none';
+      });
+      
+      document.getElementById('resultsContainer').style.display = 'block';
+      document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
+      
+      const resultMessage = document.getElementById('resultMessage');
+      const percentage = (score / totalQuestions) * 100;
+      
+      if (percentage >= 80) {
+        resultMessage.textContent = "Excelente! Você demonstrou conhecimento excepcional sobre sobrevivência náutica.";
+      } else if (percentage >= 50) {
+        resultMessage.textContent = "Bom trabalho! Você tem um conhecimento básico, mas pode melhorar com mais estudo.";
+      } else {
+        resultMessage.textContent = "Recomendamos estudar mais os procedimentos de emergência no mar antes de navegar.";
+      }
+    }
+    
+    function restartSimulado() {
+      currentQuestion = 1;
+      score = 0;
+      
+      document.querySelectorAll('.question-card').forEach(card => {
+        card.style.display = 'none';
+        card.querySelectorAll('input').forEach(input => {
+          input.checked = false;
+        });
+        card.querySelector('.feedback').style.display = 'none';
+        card.querySelector('.next-btn').textContent = 'Confirmar Resposta';
+        card.querySelector('.next-btn').onclick = function() { checkAnswer(currentQuestion, 'q1c'); };
+      });
+      
+      document.getElementById('question1').classList.add('active');
+      document.getElementById('question1').style.display = 'block';
+      document.getElementById('resultsContainer').style.display = 'none';
+      document.getElementById('progressBar').style.width = '0%';
+    }
+    
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', function() {
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
