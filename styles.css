@@ -460,7 +460,7 @@ p {
   margin: 20px 0 15px;
   color: var(--primary-color);
   position: relative;
-  display: inline-block;
+  
 }
 
 .benefit-card h3::after {
@@ -895,16 +895,7 @@ body.dark-mode .cta-secondary {
   position: relative;
 }
 
-.form-header h2::after {
-  content: '';
-  position: absolute;
-  width: 60px;
-  height: 3px;
-  background: var(--secondary-color);
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-}
+
 
 .form-header p {
   color: var(--text-light);
