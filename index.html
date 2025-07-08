@@ -182,21 +182,13 @@
     <div class="form-container">
       <div class="form-header">
         <h2>Escolha Seu Simulado</h2>
-        <p>Selecione o simulado que deseja realizar e comece agora mesmo</p>
-      </div>
-      
-     <section id="simulado" class="simulado-form fade-in">
-  <div class="container">
-    <div class="form-container">
-      <div class="form-header">
-        <h2>Escolha Seu Simulado</h2>
-        <p>Selecione o simulado que deseja realizar e comece agora mesmo</p>
+        <p class="selected-feedback">Nenhum simulado selecionado</p>
       </div>
       
       <form id="simuladoRedirectForm" class="simulado-form">
         <div class="simulado-options">
-          <div class="simulado-card selected">
-            <input type="radio" id="simulado1" name="simuladoType" value="simulado1" checked class="simulado-radio">
+  <div class="simulado-card selected" data-simulado="simulado1">
+    <input type="radio" id="simulado1" name="simuladoType" value="simulado1" checked class="simulado-radio">
             <label for="simulado1" class="simulado-label">
               <div class="simulado-icon">
                 <i class="fas fa-ship"></i>
@@ -209,30 +201,36 @@
                   <span><i class="fas fa-clock"></i> 60 minutos</span>
                 </div>
               </div>
+              <div class="selection-indicator">
+                <i class="fas fa-check-circle"></i>
+              </div>
             </label>
           </div>
           
-          <div class="simulado-card">
-            <input type="radio" id="simulado2" name="simuladoType" value="simulado2" class="simulado-radio">
+          <div class="simulado-card" data-simulado="simulado2">
+    <input type="radio" id="simulado2" name="simuladoType" value="simulado2" class="simulado-radio">
             <label for="simulado2" class="simulado-label">
               <div class="simulado-icon">
                 <i class="fas fa-anchor"></i>
               </div>
               <div class="simulado-info">
                 <h3>Simulado Completo #2</h3>
-                <p>55 questões sobre RIPEAM e NORMAM</p>
+                <p>40 questões extras</p>
                 <div class="simulado-meta">
-                  <span><i class="fas fa-question-circle"></i> 55 questões</span>
-                  <span><i class="fas fa-clock"></i> 75 minutos</span>
+                  <span><i class="fas fa-question-circle"></i> 40 questões</span>
+                  <span><i class="fas fa-clock"></i> 60 minutos</span>
                 </div>
+              </div>
+              <div class="selection-indicator">
+                <i class="fas fa-check-circle"></i>
               </div>
             </label>
           </div>
         </div>
         
         <button type="submit" class="btn btn-primary btn-block">
-          <i class="fas fa-play-circle"></i> Iniciar Simulado Gratuito
-        </button>
+  <i class="fas fa-play-circle"></i> <span class="btn-text">Iniciar Simulado Completo #1</span>
+</button>
         
         <div class="privacy-notice mt-3">
           <i class="fas fa-lock"></i>
@@ -243,18 +241,6 @@
   </div>
 </section>
 
-<script>
-document.getElementById('simuladoRedirectForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const selectedSimulado = document.querySelector('input[name="simuladoType"]:checked').value;
-  
-  if(selectedSimulado === 'simulado1') {
-    window.location.href = 'simulado.html';
-  } else if(selectedSimulado === 'simulado2') {
-    window.location.href = 'simulado2.html';
-  }
-});
-</script>
 </script>
   </main>
 
@@ -317,33 +303,72 @@ document.getElementById('simuladoRedirectForm').addEventListener('submit', funct
     🌙 Dark Mode
   </button>
   <script>
-  document.getElementById('simuladoForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Captura dos dados do formulário
-    const nome = document.getElementById('nome').value;
-    const email = document.getElementById('email').value;
-    
-    // Validação simples
-    if(!nome || !email) {
-      alert('Por favor, preencha todos os campos.');
-      return;
+  document.addEventListener('DOMContentLoaded', function() {
+  const simuladoCards = document.querySelectorAll('.simulado-card');
+  const submitButton = document.querySelector('.btn-primary');
+  const selectedFeedback = document.querySelector('.selected-feedback');
+  const btnText = document.querySelector('.btn-text');
+  
+  // Função para atualizar o estado do botão
+  function updateButtonState() {
+    const selectedCard = document.querySelector('.simulado-card.selected');
+    if (selectedCard) {
+      submitButton.disabled = false;
+      submitButton.classList.remove('btn-disabled');
+      const simuladoName = selectedCard.querySelector('h3').textContent;
+      selectedFeedback.textContent = `Simulado selecionado: ${simuladoName}`;
+      btnText.textContent = `Iniciar ${simuladoName}`;
+    } else {
+      submitButton.disabled = true;
+      submitButton.classList.add('btn-disabled');
+      selectedFeedback.textContent = 'Nenhum simulado selecionado';
+      btnText.textContent = 'Selecione um simulado para começar';
     }
-    
-    // Simulação de envio (substitua por sua lógica real)
-    console.log('Dados do simulado:', { nome, email });
-    
-    // Feedback ao usuário
-    alert(`Obrigado, ${nome}! Seu simulado será iniciado agora.`);
-    
-    // Redirecionamento (substitua pela sua página de simulado)
-    window.location.href = "simulado.html";
-    
-    // Aqui você pode adicionar:
-    // - Envio AJAX para seu backend
-    // - Redirecionamento para a página do simulado
-    // - Armazenamento local dos dados
+  }
+
+  // Ativa a seleção ao clicar em qualquer parte do card
+  simuladoCards.forEach(card => {
+    card.addEventListener('click', function() {
+      // Remove a seleção de todos os cards
+      simuladoCards.forEach(c => c.classList.remove('selected'));
+      
+      // Adiciona seleção ao card clicado
+      this.classList.add('selected');
+      
+      // Marca o radio button correspondente
+      const radio = this.querySelector('input[type="radio"]');
+      radio.checked = true;
+      
+      // Atualiza o estado do botão
+      updateButtonState();
+    });
   });
+
+  // Verifica se já há um selecionado por padrão
+  const defaultSelected = document.querySelector('.simulado-card.selected');
+  if (defaultSelected) {
+    defaultSelected.querySelector('input[type="radio"]').checked = true;
+    updateButtonState();
+  }
+
+  // Mantém o tratamento do formulário existente
+  document.getElementById('simuladoRedirectForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const selectedSimulado = document.querySelector('input[name="simuladoType"]:checked').value;
+    
+    // Adiciona feedback visual durante o carregamento
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando simulado...';
+    
+    // Simula um tempo de carregamento (remova isso na implementação real)
+    setTimeout(() => {
+      if(selectedSimulado === 'simulado1') {
+        window.location.href = 'simulado.html';
+      } else if(selectedSimulado === 'simulado2') {
+        window.location.href = 'simulado2.html';
+      }
+    }, 1000);
+  });
+});
 </script>
 </body>
 </html>
