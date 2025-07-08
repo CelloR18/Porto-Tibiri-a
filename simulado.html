@@ -357,7 +357,7 @@
           <li class="option-item">
             <input type="radio" name="q1" id="q1a" class="option-input">
             <label for="q1a" class="option-label">
-              <span class="option-letter">A)</span> A que vem a favor da corrente deverá se posicionar no meio do rio e a outra na sua margem direita, sendo que a que vem a favor da corrente tem preferência.
+              <span class="option-letter">A)</span> A que vem a favor da corrente deverá se posicionar no meio do rio e a outra na sua margem esquerda, sendo que a que vem a favor da corrente tem preferência.
             </label>
           </li>
           <li class="option-item">
@@ -2259,36 +2259,42 @@
     }
 
     // Função para verificar a resposta
-    function checkAnswer(questionNumber, correctAnswerId) {
-      const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
-      const feedback = document.getElementById(`feedback${questionNumber}`);
-      
-      if (!selectedOption) {
-        alert("Por favor, selecione uma resposta antes de continuar.");
-        return;
-      }
-      
-      questionsAnswered++;
-      
-      const selectedLetter = selectedOption.id.replace(`q${questionNumber}`, '').toUpperCase();
-      const correctLetter = correctAnswerId.replace(`q${questionNumber}`, '').toUpperCase();
-      
-      if (selectedOption.id === correctAnswerId) {
-        feedback.className = "feedback correct";
-        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
-        feedback.querySelector('.feedback-text').innerHTML = `A alternativa <strong>${selectedLetter}</strong> está correta: ${explanations[questionNumber]}`;
-        score++;
-      } else {
-        feedback.className = "feedback incorrect";
-        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
-        feedback.querySelector('.feedback-text').innerHTML = `Você selecionou a alternativa <strong>${selectedLetter}</strong>. A resposta correta é <strong>${correctLetter}</strong>: ${explanations[questionNumber]}`;
-      }
-      
-      feedback.style.display = "block";
-      document.querySelector(`#question${questionNumber} .next-btn`).textContent = "Próxima Questão";
-      document.querySelector(`#question${questionNumber} .next-btn`).onclick = function() { nextQuestion(); };
-    }
-    
+function checkAnswer(questionNumber, correctAnswerId) {
+  const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
+  const feedback = document.getElementById(`feedback${questionNumber}`);
+  
+  if (!selectedOption) {
+    alert("Por favor, selecione uma resposta antes de continuar.");
+    return;
+  }
+  
+  questionsAnswered++;
+  
+  const selectedLetter = selectedOption.id.replace(`q${questionNumber}`, '').toUpperCase();
+  const correctLetter = correctAnswerId.replace(`q${questionNumber}`, '').toUpperCase();
+  
+  if (selectedOption.id === correctAnswerId) {
+    feedback.className = "feedback correct";
+    feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
+    feedback.querySelector('.feedback-text').innerHTML = `Alternativa <strong>${selectedLetter}</strong> está correta.`;
+    score++; // Esta linha incrementa o score quando acerta
+  } else {
+    feedback.className = "feedback incorrect";
+    feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
+    feedback.querySelector('.feedback-text').innerHTML = `Alternativa correta: <strong>${correctLetter}</strong>`;
+  }
+  
+  feedback.style.display = "block";
+  updateProgress(); // Atualiza a barra de progresso imediatamente
+  
+  // Verifica se é a última questão para mostrar resultados finais
+  if (questionNumber === totalQuestions) {
+    showResults(true);
+  } else {
+    document.querySelector(`#question${questionNumber} .next-btn`).textContent = "Próxima Questão";
+    document.querySelector(`#question${questionNumber} .next-btn`).onclick = function() { nextQuestion(); };
+  }
+}
     // Função para avançar para a próxima questão
     function nextQuestion() {
       document.getElementById(`question${currentQuestion}`).style.display = 'none';
@@ -2311,46 +2317,34 @@
     }
     
     // Função para mostrar os resultados
-    function showResults(final = false) {
-      document.querySelector('.simulado-container').querySelectorAll('.question-card').forEach(card => {
-        card.style.display = 'none';
-      });
-      
-      document.getElementById('resultsContainer').style.display = 'block';
-      
-      const resultMessage = document.getElementById('resultMessage');
-      let percentage = 0;
-      
-      if (final) {
-        document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
-        percentage = (score / totalQuestions) * 100;
-        resultMessage.innerHTML = `Você respondeu todas as ${totalQuestions} questões e acertou ${score}.<br>`;
-      } else {
-        document.getElementById('finalScore').textContent = `${score}/${questionsAnswered}`;
-        percentage = questionsAnswered > 0 ? (score / questionsAnswered) * 100 : 0;
-        resultMessage.innerHTML = `Você respondeu ${questionsAnswered} de ${totalQuestions} questões e acertou ${score}.<br>`;
-      }
-      
-      if (questionsAnswered === 0) {
-        resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
-      } else if (percentage >= 80) {
-        resultMessage.innerHTML += final ? 
-          "Excelente! Você demonstrou conhecimento excepcional para a prova de Arrais Amador." :
-          "Excelente desempenho nas questões respondidas!";
-      } else if (percentage >= 70) {
-        resultMessage.innerHTML += final ?
-          "Bom trabalho! Você está quase pronto para a prova, mas pode melhorar em alguns tópicos." :
-          "Bom desempenho nas questões respondidas!";
-      } else if (percentage >= 50) {
-        resultMessage.innerHTML += final ?
-          "Você tem conhecimento básico, mas precisa estudar mais para garantir sua aprovação." :
-          "Desempenho regular nas questões respondidas.";
-      } else {
-        resultMessage.innerHTML += final ?
-          "Recomendamos estudar mais os conteúdos antes de realizar a prova oficial." :
-          "Recomendamos estudar mais os conteúdos.";
-      }
-    }
+function showResults(final = false) {
+  document.querySelectorAll('.question-card').forEach(card => {
+    card.style.display = 'none';
+  });
+  
+  document.getElementById('resultsContainer').style.display = 'block';
+  
+  if (final) {
+    document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
+    document.getElementById('resultMessage').textContent = `Você completou todas as ${totalQuestions} questões e acertou ${score}.`;
+  } else {
+    document.getElementById('finalScore').textContent = `${score}/${questionsAnswered}`;
+    document.getElementById('resultMessage').textContent = `Você respondeu ${questionsAnswered} questões e acertou ${score}.`;
+  }
+}
+  
+  if (questionsAnswered === 0) {
+    resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
+  } else if (percentage >= 80) {
+    resultMessage.innerHTML += "Ótimo desempenho!";
+  } else if (percentage >= 70) {
+    resultMessage.innerHTML += "Bom desempenho!";
+  } else if (percentage >= 50) {
+    resultMessage.innerHTML += "Desempenho regular.";
+  } else {
+    resultMessage.innerHTML += "Recomendamos estudar mais.";
+  }
+
 
     // Função para forçar mostrar os resultados
     function forceShowResults() {

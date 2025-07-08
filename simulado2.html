@@ -2359,125 +2359,119 @@ function checkAnswer(questionNumber, correctAnswerId) {
   if (selectedOption.id === correctAnswerId) {
     feedback.className = "feedback correct";
     feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
-    feedback.querySelector('.feedback-text').innerHTML = `A alternativa <strong>${selectedLetter}</strong> está correta: ${explanations[questionNumber]}`;
-    score++;
+    feedback.querySelector('.feedback-text').innerHTML = `Alternativa <strong>${selectedLetter}</strong> está correta.`;
+    score++; // Esta linha incrementa o score quando acerta
   } else {
     feedback.className = "feedback incorrect";
     feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
-    feedback.querySelector('.feedback-text').innerHTML = `Você selecionou a alternativa <strong>${selectedLetter}</strong>. A resposta correta é <strong>${correctLetter}</strong>: ${explanations[questionNumber]}`;
+    feedback.querySelector('.feedback-text').innerHTML = `Alternativa correta: <strong>${correctLetter}</strong>`;
   }
   
   feedback.style.display = "block";
-  document.querySelector(`#question${questionNumber} .next-btn`).textContent = "Próxima Questão";
-  document.querySelector(`#question${questionNumber} .next-btn`).onclick = function() { nextQuestion(); };
-}
-
-// Função para avançar para a próxima questão
-function nextQuestion() {
-  document.getElementById(`question${currentQuestion}`).style.display = 'none';
-  document.getElementById(`question${currentQuestion}`).classList.remove('active');
-  currentQuestion++;
+  updateProgress(); // Atualiza a barra de progresso imediatamente
   
-  if (currentQuestion <= totalQuestions) {
-    document.getElementById(`question${currentQuestion}`).style.display = 'block';
-    document.getElementById(`question${currentQuestion}`).classList.add('active');
-    updateProgress();
-  } else {
+  // Verifica se é a última questão para mostrar resultados finais
+  if (questionNumber === totalQuestions) {
     showResults(true);
+  } else {
+    document.querySelector(`#question${questionNumber} .next-btn`).textContent = "Próxima Questão";
+    document.querySelector(`#question${questionNumber} .next-btn`).onclick = function() { nextQuestion(); };
   }
 }
-
-// Função para atualizar a barra de progresso
-function updateProgress() {
-  const progress = (questionsAnswered / totalQuestions) * 100;
-  document.getElementById('progressBar').style.width = `${progress}%`;
-}
-
-// Função para mostrar os resultados
+    // Função para avançar para a próxima questão
+    function nextQuestion() {
+      document.getElementById(`question${currentQuestion}`).style.display = 'none';
+      document.getElementById(`question${currentQuestion}`).classList.remove('active');
+      currentQuestion++;
+      
+      if (currentQuestion <= totalQuestions) {
+        document.getElementById(`question${currentQuestion}`).style.display = 'block';
+        document.getElementById(`question${currentQuestion}`).classList.add('active');
+        updateProgress();
+      } else {
+        showResults(true);
+      }
+    }
+    
+    // Função para atualizar a barra de progresso
+    function updateProgress() {
+      const progress = (questionsAnswered / totalQuestions) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+    }
+    
+    // Função para mostrar os resultados
 function showResults(final = false) {
-  document.querySelector('.simulado-container').querySelectorAll('.question-card').forEach(card => {
+  document.querySelectorAll('.question-card').forEach(card => {
     card.style.display = 'none';
   });
   
   document.getElementById('resultsContainer').style.display = 'block';
   
-  const resultMessage = document.getElementById('resultMessage');
-  let percentage = 0;
-  
   if (final) {
     document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
-    percentage = (score / totalQuestions) * 100;
-    resultMessage.innerHTML = `Você respondeu todas as ${totalQuestions} questões e acertou ${score}.<br>`;
+    document.getElementById('resultMessage').textContent = `Você completou todas as ${totalQuestions} questões e acertou ${score}.`;
   } else {
     document.getElementById('finalScore').textContent = `${score}/${questionsAnswered}`;
-    percentage = questionsAnswered > 0 ? (score / questionsAnswered) * 100 : 0;
-    resultMessage.innerHTML = `Você respondeu ${questionsAnswered} de ${totalQuestions} questões e acertou ${score}.<br>`;
+    document.getElementById('resultMessage').textContent = `Você respondeu ${questionsAnswered} questões e acertou ${score}.`;
   }
+}
   
   if (questionsAnswered === 0) {
     resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
   } else if (percentage >= 80) {
-    resultMessage.innerHTML += final ? 
-      "Excelente! Você demonstrou conhecimento excepcional para a prova de Arrais Amador." :
-      "Excelente desempenho nas questões respondidas!";
+    resultMessage.innerHTML += "Ótimo desempenho!";
   } else if (percentage >= 70) {
-    resultMessage.innerHTML += final ?
-      "Bom trabalho! Você está quase pronto para a prova, mas pode melhorar em alguns tópicos." :
-      "Bom desempenho nas questões respondidas!";
+    resultMessage.innerHTML += "Bom desempenho!";
   } else if (percentage >= 50) {
-    resultMessage.innerHTML += final ?
-      "Você tem conhecimento básico, mas precisa estudar mais para garantir sua aprovação." :
-      "Desempenho regular nas questões respondidas.";
+    resultMessage.innerHTML += "Desempenho regular.";
   } else {
-    resultMessage.innerHTML += final ?
-      "Recomendamos estudar mais os conteúdos antes de realizar a prova oficial." :
-      "Recomendamos estudar mais os conteúdos.";
+    resultMessage.innerHTML += "Recomendamos estudar mais.";
   }
-}
 
-// Função para forçar mostrar os resultados
-function forceShowResults() {
-  showResults(false);
-}
 
-// Função para reiniciar o simulado
-function restartSimulado() {
-  currentQuestion = 1;
-  score = 0;
-  questionsAnswered = 0;
-  
-  document.getElementById('resultsContainer').style.display = 'none';
-  
-  document.querySelectorAll('.question-card').forEach((card, index) => {
-    card.style.display = index === 0 ? 'block' : 'none';
-    card.classList.remove('active');
-    card.querySelectorAll('input').forEach(input => {
-      input.checked = false;
-    });
-    const feedback = card.querySelector('.feedback');
-    if (feedback) feedback.style.display = 'none';
-    const nextBtn = card.querySelector('.next-btn');
-    if (nextBtn) {
-      nextBtn.textContent = 'Confirmar Resposta';
-      nextBtn.onclick = function() { checkAnswer(currentQuestion, correctAnswers[currentQuestion]); };
+    // Função para forçar mostrar os resultados
+    function forceShowResults() {
+      showResults(false);
     }
-  });
 
-  document.getElementById('question1').classList.add('active');
-  document.getElementById('progressBar').style.width = '0%';
-  document.getElementById('question1').style.display = 'block';
-}
+    // Função para reiniciar o simulado
+    function restartSimulado() {
+      currentQuestion = 1;
+      score = 0;
+      questionsAnswered = 0;
+      
+      document.getElementById('resultsContainer').style.display = 'none';
+      
+      document.querySelectorAll('.question-card').forEach((card, index) => {
+        card.style.display = index === 0 ? 'block' : 'none';
+        card.classList.remove('active');
+        card.querySelectorAll('input').forEach(input => {
+          input.checked = false;
+        });
+        const feedback = card.querySelector('.feedback');
+        if (feedback) feedback.style.display = 'none';
+        const nextBtn = card.querySelector('.next-btn');
+        if (nextBtn) {
+          nextBtn.textContent = 'Confirmar Resposta';
+          nextBtn.onclick = function() { checkAnswer(currentQuestion, correctAnswers[currentQuestion]); };
+        }
+      });
 
-// Inicialização
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.question-card:not(#question1)').forEach(card => {
-    card.style.display = 'none';
-  });
-  document.getElementById('question1').classList.add('active');
-  addEndButtons();
-  updateProgress();
-});
-     </script>
+      document.getElementById('question1').classList.add('active');
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('question1').style.display = 'block';
+    }
+    
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.question-card:not(#question1)').forEach(card => {
+        card.style.display = 'none';
+      });
+      document.getElementById('question1').classList.add('active');
+      addEndButtons();
+      updateProgress();
+    });
+</script>
 </body>
 
 </html>
