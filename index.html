@@ -349,8 +349,8 @@
       
       <form id="simuladoRedirectForm" class="simulado-form">
         <div class="simulado-options">
-  <div class="simulado-card selected" data-simulado="simulado1">
-    <input type="radio" id="simulado1" name="simuladoType" value="simulado1" checked class="simulado-radio">
+          <div class="simulado-card selected" data-simulado="simulado1">
+            <input type="radio" id="simulado1" name="simuladoType" value="simulado1" checked class="simulado-radio">
             <label for="simulado1" class="simulado-label">
               <div class="simulado-icon">
                 <i class="fas fa-ship"></i>
@@ -370,7 +370,7 @@
           </div>
           
           <div class="simulado-card" data-simulado="simulado2">
-    <input type="radio" id="simulado2" name="simuladoType" value="simulado2" class="simulado-radio">
+            <input type="radio" id="simulado2" name="simuladoType" value="simulado2" class="simulado-radio">
             <label for="simulado2" class="simulado-label">
               <div class="simulado-icon">
                 <i class="fas fa-anchor"></i>
@@ -388,11 +388,32 @@
               </div>
             </label>
           </div>
+
+          <!-- Novo simulado adicionado aqui -->
+          <div class="simulado-card" data-simulado="simulado3">
+            <input type="radio" id="simulado3" name="simuladoType" value="simulado3" class="simulado-radio">
+            <label for="simulado3" class="simulado-label">
+              <div class="simulado-icon">
+                <i class="fas fa-compass"></i>
+              </div>
+              <div class="simulado-info">
+                <h3>Simulado Completo #3</h3>
+                <p>40 questões para exercitar</p>
+                <div class="simulado-meta">
+                  <span><i class="fas fa-question-circle"></i> 40 questões</span>
+                  <span><i class="fas fa-clock"></i> 60 minutos</span>
+                </div>
+              </div>
+              <div class="selection-indicator">
+                <i class="fas fa-check-circle"></i>
+              </div>
+            </label>
+          </div>
         </div>
         
         <button type="submit" class="btn btn-primary btn-block">
-  <i class="fas fa-play-circle"></i> <span class="btn-text">Iniciar Simulado Completo #1</span>
-</button>
+          <i class="fas fa-play-circle"></i> <span class="btn-text">Iniciar Simulado Completo #1</span>
+        </button>
         
         <div class="privacy-notice mt-3">
           <i class="fas fa-lock"></i>
@@ -509,23 +530,25 @@
     updateButtonState();
   }
 
-  // Mantém o tratamento do formulário existente
-  document.getElementById('simuladoRedirectForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const selectedSimulado = document.querySelector('input[name="simuladoType"]:checked').value;
-    
-    // Adiciona feedback visual durante o carregamento
-    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando simulado...';
-    
-    // Simula um tempo de carregamento (remova isso na implementação real)
-    setTimeout(() => {
-      if(selectedSimulado === 'simulado1') {
-        window.location.href = 'simulado.html';
-      } else if(selectedSimulado === 'simulado2') {
-        window.location.href = 'simulado2.html';
-      }
-    }, 1000);
-  });
+  // Dentro do event listener do formulário, atualize para:
+document.getElementById('simuladoRedirectForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const selectedSimulado = document.querySelector('input[name="simuladoType"]:checked').value;
+  
+  // Adiciona feedback visual durante o carregamento
+  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando simulado...';
+  
+  // Simula um tempo de carregamento (remova isso na implementação real)
+  setTimeout(() => {
+    if(selectedSimulado === 'simulado1') {
+      window.location.href = 'simulado.html';
+    } else if(selectedSimulado === 'simulado2') {
+      window.location.href = 'simulado2.html';
+    } else if(selectedSimulado === 'simulado3') {
+      window.location.href = 'simulado3.html'; // Adicione a página para o novo simulado
+    }
+  }, 1000);
+});
 });
 </script>
   <script>
