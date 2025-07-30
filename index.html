@@ -409,6 +409,28 @@
               <i class="fas fa-anchor"></i>
             </div>
           </div>
+ <div class="class-card">
+            <div class="class-date">
+              <div class="date-day">24</div>
+              <div class="date-month">Agosto</div>
+              <div class="date-year">2025</div>
+            </div>
+            <div class="class-info">
+              <h3>Aula Prática - Arrais Amador</h3>
+              <div class="class-meta">
+                <span><i class="fas fa-map-marker-alt"></i> Rancharia/SP</span>
+                <span><i class="fas fa-ship"></i> Embarcação própria</span>
+              </div>
+              <p class="class-description">Aula completa com todo conteúdo exigido pela Marinha para prova de Arrais Amador, incluindo RIPEAM, NORMAM, Balizamento Primeiro-socorros, todas as matérias necessárias para a sua aprovação.Aula prática completa com manobras, segurança e navegação. Todo equipamento necessário fornecido pela escola. </p>
+              <a href="https://wa.me/5518997201211" target="_blank" class="btn btn-secondary">
+                <i class="fab fa-whatsapp"></i> Garantir minha vaga
+              </a>
+            </div>
+            <div class="class-badge">
+              <i class="fas fa-anchor"></i>
+            </div>
+          </div>
+
         </div>
         
         <div class="classes-cta">
@@ -489,7 +511,47 @@
               </div>
             </label>
           </div>
+
+          <div class="simulado-card" data-simulado="simulado4">
+            <input type="radio" id="simulado4" name="simuladoType" value="simulado4" class="simulado-radio">
+            <label for="simulado4" class="simulado-label">
+              <div class="simulado-icon">
+                <i class="fas fa-compass"></i>
+              </div>
+              <div class="simulado-info">
+                <h3>Simulado Completo #4</h3>
+                <p>40 questões para exercitar</p>
+                <div class="simulado-meta">
+                  <span><i class="fas fa-question-circle"></i> 40 questões</span>
+                  <span><i class="fas fa-clock"></i> 60 minutos</span>
+                </div>
+              </div>
+              <div class="selection-indicator">
+                <i class="fas fa-check-circle"></i>
+              </div>
+            </label>
+          </div>
         </div>
+
+        <div class="simulado-card" data-simulado="simulado5">
+            <input type="radio" id="simulado5" name="simuladoType" value="simulado5" class="simulado-radio">
+            <label for="simulado5" class="simulado-label">
+              <div class="simulado-icon">
+                <i class="fas fa-compass"></i>
+              </div>
+              <div class="simulado-info">
+                <h3>Simulado Completo #5</h3>
+                <p>40 questões para exercitar</p>
+                <div class="simulado-meta">
+                  <span><i class="fas fa-question-circle"></i> 40 questões</span>
+                  <span><i class="fas fa-clock"></i> 60 minutos</span>
+                </div>
+              </div>
+              <div class="selection-indicator">
+                <i class="fas fa-check-circle"></i>
+              </div>
+            </label>
+          </div>
         
         <button type="submit" class="btn btn-primary btn-block">
           <i class="fas fa-play-circle"></i> <span class="btn-text">Iniciar Simulado Completo #1</span>
@@ -625,8 +687,15 @@ document.getElementById('simuladoRedirectForm').addEventListener('submit', funct
     } else if(selectedSimulado === 'simulado2') {
       window.location.href = 'simulado2.html';
     } else if(selectedSimulado === 'simulado3') {
-      window.location.href = 'simulado3.html'; // Adicione a página para o novo simulado
+      window.location.href = 'simulado3.html';
+     } else if(selectedSimulado === 'simulado4') {
+      window.location.href = 'simulado4.html';
+      
+       // Adicione a página para o novo simulado
     }
+    else if(selectedSimulado === 'simulado5') {
+        window.location.href = 'simulado5.html';
+      }
   }, 1000);
 });
 });

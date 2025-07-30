@@ -1,0 +1,2568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado Arrais Amador | Porto Tibiriçá</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos Premium para o Simulado */
+        .simulado-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .simulado-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .simulado-title {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .simulado-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .progress-container {
+            background-color: rgba(0, 51, 102, 0.1);
+            border-radius: 50px;
+            height: 10px;
+            margin-bottom: 2.5rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.5s ease;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+            border: 1px solid rgba(0, 51, 102, 0.1);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 51, 102, 0.15);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .options-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .option-item {
+            margin-bottom: 0.8rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 51, 102, 0.03);
+            border: 1px solid rgba(0, 51, 102, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 1rem;
+        }
+
+        .option-label:hover {
+            background: rgba(0, 51, 102, 0.05);
+            border-color: var(--primary-color);
+        }
+
+        .option-input {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .option-letter {
+            font-weight: 700;
+            color: var(--primary-color);
+            width: 20px;
+            flex-shrink: 0;
+        }
+
+        .feedback {
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .correct {
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .incorrect {
+            background: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid #dc3545;
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .feedback-title i {
+            margin-right: 0.5rem;
+        }
+
+        .feedback-text {
+            line-height: 1.6;
+        }
+
+        .feedback-text strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.2);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 51, 102, 0.3);
+        }
+
+        .next-btn i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .next-btn:hover i {
+            transform: translateX(3px);
+        }
+
+        .end-btn {
+            background: linear-gradient(135deg, #dc3545, #a71d2a);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.2);
+            margin-left: 1rem;
+        }
+
+        .end-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+        }
+
+        .end-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .score {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 1.5rem 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .result-message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .restart-btn {
+            background: var(--secondary-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.4);
+        }
+
+        .restart-btn i {
+            margin-right: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dark Mode */
+        body.dark-mode .question-card,
+        body.dark-mode .results-container {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+
+        body.dark-mode .question-text {
+            color: #eee;
+        }
+
+        body.dark-mode .option-label {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #444;
+            color: #eee;
+        }
+
+        body.dark-mode .option-input:checked+.option-label {
+            background: rgba(0, 51, 102, 0.3);
+        }
+
+        body.dark-mode .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .end-btn {
+            background: linear-gradient(135deg, #a71d2a, #6d131c);
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .simulado-container {
+                padding: 1rem;
+            }
+
+            .question-card {
+                padding: 1.5rem;
+            }
+
+            .simulado-title {
+                font-size: 1.8rem;
+            }
+
+            .next-btn,
+            .end-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        ;
+    </style>
+
+</head>
+
+<body>
+    <header class="hero" style="min-height: auto; padding: 5rem 0 4rem;">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 style="font-size: 2.5rem;">Simulado Arrais Amador</h1>
+                <p class="hero-subtitle">40 questões sobre navegação e segurança</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container simulado-container">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <!-- Questão 1 -->
+            <div class="question-card active" id="question1">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <div class="question-text">Havendo corrente de maré no local de atracação de uma embarcação, nós
+                        devemos aproveitar seu efeito e:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1a" class="option-input">
+                        <label for="q1a" class="option-label">
+                            <span class="option-letter">A)</span> Atracar a favor da corrente, para aproveitar seu
+                            efeito de encostar a embarcação ao cais.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1b" class="option-input">
+                        <label for="q1b" class="option-label">
+                            <span class="option-letter">B)</span> Atracar com um cabo dizendo para vante e outro dizendo
+                            para ré.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1c" class="option-input">
+                        <label for="q1c" class="option-label">
+                            <span class="option-letter">C)</span> Nunca devemos atracar contra corrente.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1d" class="option-input">
+                        <label for="q1d" class="option-label">
+                            <span class="option-letter">D)</span> Atracar contra a corrente, passando-se um cabo dizendo
+                            (na direção) para vante e outro dizente para ré.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1e" class="option-input">
+                        <label for="q1e" class="option-label">
+                            <span class="option-letter">E)</span> Esperar a corrente cessar para evitar seu efeito, que
+                            é prejudicial à manobra de atracação.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback1">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: Deve-se atracar contra a
+                        corrente, passando um cabo para vante e outro para ré, para melhor controle da embarcação.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(1, 'q1d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 2 -->
+            <div class="question-card" id="question2">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <div class="question-text">A bola de arinque, que é utilizada por embarcações de grande porte,
+                        serve:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2a" class="option-input">
+                        <label for="q2a" class="option-label">
+                            <span class="option-letter">A)</span> Para indicar o local onde a âncora está no fundo.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2b" class="option-input">
+                        <label for="q2b" class="option-label">
+                            <span class="option-letter">B)</span> Para determinar o local onde podemos fundear com
+                            segurança.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2c" class="option-input">
+                        <label for="q2c" class="option-label">
+                            <span class="option-letter">C)</span> Para evitar que a embarcação garre.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2d" class="option-input">
+                        <label for="q2d" class="option-label">
+                            <span class="option-letter">D)</span> Para amarrar a embarcação num local próximo à marina.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2e" class="option-input">
+                        <label for="q2e" class="option-label">
+                            <span class="option-letter">E)</span> Para medir a profundidade do local.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback2">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: A bola de arinque serve para
+                        indicar o local onde a âncora está no fundo.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(2, 'q2a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 3 -->
+            <div class="question-card" id="question3">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <div class="question-text">A água é um agente extintor que pode ser utilizado no incêndios em:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3a" class="option-input">
+                        <label for="q3a" class="option-label">
+                            <span class="option-letter">A)</span> Líquidos inflamáveis.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3b" class="option-input">
+                        <label for="q3b" class="option-label">
+                            <span class="option-letter">B)</span> Material sólido inflamável.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3c" class="option-input">
+                        <label for="q3c" class="option-label">
+                            <span class="option-letter">C)</span> Metais inflamáveis.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3d" class="option-input">
+                        <label for="q3d" class="option-label">
+                            <span class="option-letter">D)</span> Equipamentos de navegação.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3e" class="option-input">
+                        <label for="q3e" class="option-label">
+                            <span class="option-letter">E)</span> Motores elétricos.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback3">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: A água pode ser usada em
+                        incêndios de material sólido inflamável (classe A).</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(3, 'q3b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 4 -->
+            <div class="question-card" id="question4">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <div class="question-text">Devo ter a bordo sempre extintores portáteis:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4a" class="option-input">
+                        <label for="q4a" class="option-label">
+                            <span class="option-letter">A)</span> Para combater incêndios classe A.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4b" class="option-input">
+                        <label for="q4b" class="option-label">
+                            <span class="option-letter">B)</span> Em bom estado de conservação visual.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4c" class="option-input">
+                        <label for="q4c" class="option-label">
+                            <span class="option-letter">C)</span> Próximos ao convés principal.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4d" class="option-input">
+                        <label for="q4d" class="option-label">
+                            <span class="option-letter">D)</span> Com as revisões anuais dentro da validade.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4e" class="option-input">
+                        <label for="q4e" class="option-label">
+                            <span class="option-letter">E)</span> Em número determinado, de acordo com a lotação da
+                            embarcação.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback4">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Os extintores devem estar em
+                        número determinado, conforme a lotação da embarcação.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(4, 'q4e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 5 -->
+            <div class="question-card" id="question5">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <div class="question-text">Os sistemas fixos de combate a incêndio são:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5a" class="option-input">
+                        <label for="q5a" class="option-label">
+                            <span class="option-letter">A)</span> Sistemas somente acionados no local de uso.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5b" class="option-input">
+                        <label for="q5b" class="option-label">
+                            <span class="option-letter">B)</span> Sistemas existentes apenas em navios de grande porte.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5c" class="option-input">
+                        <label for="q5c" class="option-label">
+                            <span class="option-letter">C)</span> Sistemas com difusores fixos.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5d" class="option-input">
+                        <label for="q5d" class="option-label">
+                            <span class="option-letter">D)</span> Sistemas com mangueira e esguichos.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5e" class="option-input">
+                        <label for="q5e" class="option-label">
+                            <span class="option-letter">E)</span> Sistemas acoplados à rede de aguada.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback5">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: Sistemas fixos de combate a
+                        incêndio geralmente existem apenas em navios de grande porte.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(5, 'q5b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 6 -->
+            <div class="question-card" id="question6">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <div class="question-text">Os primeiros socorros são:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6a" class="option-input">
+                        <label for="q6a" class="option-label">
+                            <span class="option-letter">A)</span> Tratamentos médicos nas emergências de bordo.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6b" class="option-input">
+                        <label for="q6b" class="option-label">
+                            <span class="option-letter">B)</span> Medidas profiláticas de acidentes.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6c" class="option-input">
+                        <label for="q6c" class="option-label">
+                            <span class="option-letter">C)</span> Operações de emergência a vítimas, em acidentes de
+                            trânsito.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6d" class="option-input">
+                        <label for="q6d" class="option-label">
+                            <span class="option-letter">D)</span> Medidas preventivas de acidentes.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6e" class="option-input">
+                        <label for="q6e" class="option-label">
+                            <span class="option-letter">E)</span> Medidas emergenciais de prestação de socorro, antes do
+                            encaminhamento médico.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback6">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Primeiros socorros são
+                        medidas emergenciais de prestação de socorro antes do atendimento médico profissional.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(6, 'q6e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 7 -->
+            <div class="question-card" id="question7">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <div class="question-text">Quando alguém de sua embarcação cair no mar você deve:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7a" class="option-input">
+                        <label for="q7a" class="option-label">
+                            <span class="option-letter">A)</span> Içar a bandeira alfa.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7b" class="option-input">
+                        <label for="q7b" class="option-label">
+                            <span class="option-letter">B)</span> Dar 3 apitos curtos.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7c" class="option-input">
+                        <label for="q7c" class="option-label">
+                            <span class="option-letter">C)</span> Dar 2 apitos longos.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7d" class="option-input">
+                        <label for="q7d" class="option-label">
+                            <span class="option-letter">D)</span> Jogar umas bóia salva-vidas, mantendo a pessoa no
+                            visual e mandar avisar a quem estiver na manobra.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7e" class="option-input">
+                        <label for="q7e" class="option-label">
+                            <span class="option-letter">E)</span> Telefonar para os bombeiros.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback7">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: Deve-se jogar uma bóia
+                        salva-vidas, manter a pessoa à vista e avisar quem está na manobra.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(7, 'q7d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 8 -->
+            <div class="question-card" id="question8">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <div class="question-text">Havendo revezamento na balsa salva-vidas e para um melhor conforto de
+                        quem está na balsa:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8a" class="option-input">
+                        <label for="q8a" class="option-label">
+                            <span class="option-letter">A)</span> Os que estão na água deverão pescar.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8b" class="option-input">
+                        <label for="q8b" class="option-label">
+                            <span class="option-letter">B)</span> As luzes deverão ser apagadas durante à noite.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8c" class="option-input">
+                        <label for="q8c" class="option-label">
+                            <span class="option-letter">C)</span> A água da chuva deverá ser consumida primeiro.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8d" class="option-input">
+                        <label for="q8d" class="option-label">
+                            <span class="option-letter">D)</span> As roupas deverão ser trocadas para que os da balsa
+                            permaneçam com roupas sempre secas.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8e" class="option-input">
+                        <label for="q8e" class="option-label">
+                            <span class="option-letter">E)</span> Os que estão na água deverão empurrar a balsa.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback8">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: As roupas devem ser trocadas
+                        para que os ocupantes da balsa permaneçam com roupas secas.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(8, 'q8d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 9 -->
+            <div class="question-card" id="question9">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <div class="question-text">A bóia circular deve ser acondicionada a bordo bem visível e:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9a" class="option-input">
+                        <label for="q9a" class="option-label">
+                            <span class="option-letter">A)</span> No convés principal.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9b" class="option-input">
+                        <label for="q9b" class="option-label">
+                            <span class="option-letter">B)</span> Num armário da cabine de comando.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9c" class="option-input">
+                        <label for="q9c" class="option-label">
+                            <span class="option-letter">C)</span> Em local de fácil retirada.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9d" class="option-input">
+                        <label for="q9d" class="option-label">
+                            <span class="option-letter">D)</span> Na proa e na popa da embarcação.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9e" class="option-input">
+                        <label for="q9e" class="option-label">
+                            <span class="option-letter">E)</span> Fresco e seco.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback9">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: A bóia circular deve ser
+                        acondicionada no convés principal, bem visível.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(9, 'q9a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 10 -->
+            <div class="question-card" id="question10">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <div class="question-text">As balsas salva-vidas devem ser revisadas a cada:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10a" class="option-input">
+                        <label for="q10a" class="option-label">
+                            <span class="option-letter">A)</span> 36 meses.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10b" class="option-input">
+                        <label for="q10b" class="option-label">
+                            <span class="option-letter">B)</span> 18 meses.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10c" class="option-input">
+                        <label for="q10c" class="option-label">
+                            <span class="option-letter">C)</span> 24 meses.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10d" class="option-input">
+                        <label for="q10d" class="option-label">
+                            <span class="option-letter">D)</span> 48 meses.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10e" class="option-input">
+                        <label for="q10e" class="option-label">
+                            <span class="option-letter">E)</span> 12 meses.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback10">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: As balsas salva-vidas devem
+                        ser revisadas a cada 12 meses.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(10, 'q10e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 11 -->
+            <div class="question-card" id="question11">
+                <div class="question-header">
+                    <div class="question-number">11</div>
+                    <div class="question-text">A linha de arrebentação das ondas, ou no caso de lagos e lagoas onde se
+                        inicia o espelho d'água, é chamada de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11a" class="option-input">
+                        <label for="q11a" class="option-label">
+                            <span class="option-letter">A)</span> Linha de arrebentação.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11b" class="option-input">
+                        <label for="q11b" class="option-label">
+                            <span class="option-letter">B)</span> Linha base.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11c" class="option-input">
+                        <label for="q11c" class="option-label">
+                            <span class="option-letter">C)</span> Linha de maré.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11d" class="option-input">
+                        <label for="q11d" class="option-label">
+                            <span class="option-letter">D)</span> Linha do espelho.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11e" class="option-input">
+                        <label for="q11e" class="option-label">
+                            <span class="option-letter">E)</span> Linha d'água.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback11">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: A linha onde começa o
+                        espelho d'água é chamada de linha base.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(11, 'q11b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 12 -->
+            <div class="question-card" id="question12">
+                <div class="question-header">
+                    <div class="question-number">12</div>
+                    <div class="question-text">O registro da embarcação com 24metros ou mais de comprimento ou Arqueação
+                        Bruta maior que 100, é feito no (a):</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12a" class="option-input">
+                        <label for="q12a" class="option-label">
+                            <span class="option-letter">A)</span> Tribunal Marítimo, com a expedição da Provisão de
+                            Registro de Propriedade Marítima.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12b" class="option-input">
+                        <label for="q12b" class="option-label">
+                            <span class="option-letter">B)</span> No órgão de inscrição onde será emitido, além do
+                            Certificado de Inscrição, o Certificado de Registro de Propriedade marítima (CRPM).
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12c" class="option-input">
+                        <label for="q12c" class="option-label">
+                            <span class="option-letter">C)</span> Prefeitura da cidade.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12d" class="option-input">
+                        <label for="q12d" class="option-label">
+                            <span class="option-letter">D)</span> Capitania dos Portos ou órgãos subordinados, com a
+                            emissão do Registro de Propriedade (RP).
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12e" class="option-input">
+                        <label for="q12e" class="option-label">
+                            <span class="option-letter">E)</span> DPC, com a emissão do Certificado de Registro de
+                            Embarcação (CRE).
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback12">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Embarcações com essas
+                        características são registradas no Tribunal Marítimo.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(12, 'q12a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 13 -->
+            <div class="question-card" id="question13">
+                <div class="question-header">
+                    <div class="question-number">13</div>
+                    <div class="question-text">As embarcações com propulsão somente a vela com classes padronizadas por
+                        "tipo" para tráfego exclusivamente no período diurno, estão dispensadas de dotar o material de
+                        salvatagem prescrito, exceto:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13a" class="option-input">
+                        <label for="q13a" class="option-label">
+                            <span class="option-letter">A)</span> Lantemas.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13b" class="option-input">
+                        <label for="q13b" class="option-label">
+                            <span class="option-letter">B)</span> Os coletes salva-vidas e os artefatos pirotécnicos.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13c" class="option-input">
+                        <label for="q13c" class="option-label">
+                            <span class="option-letter">C)</span> As bóias e coletes salva-vidas.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13d" class="option-input">
+                        <label for="q13d" class="option-label">
+                            <span class="option-letter">D)</span> Os coletes salva-vidas.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13e" class="option-input">
+                        <label for="q13e" class="option-label">
+                            <span class="option-letter">E)</span> Extintor de incêndio e colete salva-vidas.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback13">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>C</strong> está correta: Essas embarcações devem ter
+                        obrigatoriamente bóias e coletes salva-vidas.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(13, 'q13c')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 14 -->
+            <div class="question-card" id="question14">
+                <div class="question-header">
+                    <div class="question-number">14</div>
+                    <div class="question-text">Após lavrado o ouro de infração, o infrator disporá de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14a" class="option-input">
+                        <label for="q14a" class="option-label">
+                            <span class="option-letter">A)</span> 30 (trinta) dias úteis de prazo para apresentar sua
+                            defesa.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14b" class="option-input">
+                        <label for="q14b" class="option-label">
+                            <span class="option-letter">B)</span> 7 (sete) dias úteis para apresentar sua defesa.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14c" class="option-input">
+                        <label for="q14c" class="option-label">
+                            <span class="option-letter">C)</span> 30 (trinta) dias corridos de prazo para apresentar sua
+                            defesa.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14d" class="option-input">
+                        <label for="q14d" class="option-label">
+                            <span class="option-letter">D)</span> 60 (sessenta) dias úteis de prazo para apresentar sua
+                            defesa.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14e" class="option-input">
+                        <label for="q14e" class="option-label">
+                            <span class="option-letter">E)</span> 15 (quinze) dias úteis de prazo para apresentar sua
+                            defesa.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback14">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: O infrator tem 15 dias úteis
+                        para apresentar sua defesa após o auto de infração.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(14, 'q14e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 15 -->
+            <div class="question-card" id="question15">
+                <div class="question-header">
+                    <div class="question-number">15</div>
+                    <div class="question-text">Quem estabelece os requisitos para homologação de Estações de Manutenção
+                        de Equipamentos de Salvatagem é:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15a" class="option-input">
+                        <label for="q15a" class="option-label">
+                            <span class="option-letter">A)</span> A autoridade marítima.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15b" class="option-input">
+                        <label for="q15b" class="option-label">
+                            <span class="option-letter">B)</span> A Diretoria de Hidrografia e Navegação.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15c" class="option-input">
+                        <label for="q15c" class="option-label">
+                            <span class="option-letter">C)</span> O INMETRO.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15d" class="option-input">
+                        <label for="q15d" class="option-label">
+                            <span class="option-letter">D)</span> O fabricante.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15e" class="option-input">
+                        <label for="q15e" class="option-label">
+                            <span class="option-letter">E)</span> A IMO.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback15">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: A autoridade marítima
+                        estabelece os requisitos para homologação dessas estações.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(15, 'q15a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 16 -->
+            <div class="question-card" id="question16">
+                <div class="question-header">
+                    <div class="question-number">16</div>
+                    <div class="question-text">Após um naufrágio, se estivermos por muitos dias em balsa salva-vidas, em
+                        relação ao consumo de líquidos, o que deve ser evitado a todo custo?</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16a" class="option-input">
+                        <label for="q16a" class="option-label">
+                            <span class="option-letter">A)</span> A alimentação com rações constituídas de glicose.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16b" class="option-input">
+                        <label for="q16b" class="option-label">
+                            <span class="option-letter">B)</span> A ingestão de água em abundância, se disponível.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16c" class="option-input">
+                        <label for="q16c" class="option-label">
+                            <span class="option-letter">C)</span> A ingestão de água salgada.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16d" class="option-input">
+                        <label for="q16d" class="option-label">
+                            <span class="option-letter">D)</span> A ingestão de água da chuva.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16e" class="option-input">
+                        <label for="q16e" class="option-label">
+                            <span class="option-letter">E)</span> A alimentação com rações para náufragos.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback16">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>C</strong> está correta: Deve-se evitar a todo custo
+                        a ingestão de água salgada, que pode acelerar a desidratação.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(16, 'q16c')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 17 -->
+            <div class="question-card" id="question17">
+                <div class="question-header">
+                    <div class="question-number">17</div>
+                    <div class="question-text">Extintores utilizados em incêndios classe "B" são identificados por meio
+                        de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17a" class="option-input">
+                        <label for="q17a" class="option-label">
+                            <span class="option-letter">A)</span> Um triângulo azul.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17b" class="option-input">
+                        <label for="q17b" class="option-label">
+                            <span class="option-letter">B)</span> Um quadrado vermelho.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17c" class="option-input">
+                        <label for="q17c" class="option-label">
+                            <span class="option-letter">C)</span> Um círculo azul.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17d" class="option-input">
+                        <label for="q17d" class="option-label">
+                            <span class="option-letter">D)</span> Um triângulo verde.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17e" class="option-input">
+                        <label for="q17e" class="option-label">
+                            <span class="option-letter">E)</span> Uma estrela amarela.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback17">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: Extintores para incêndios
+                        classe B são identificados por um quadrado vermelho.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(17, 'q17b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 18 -->
+            <div class="question-card" id="question18">
+                <div class="question-header">
+                    <div class="question-number">18</div>
+                    <div class="question-text">A maior largura de um barco, medida de borda é chamada de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18a" class="option-input">
+                        <label for="q18a" class="option-label">
+                            <span class="option-letter">A)</span> Boca.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18b" class="option-input">
+                        <label for="q18b" class="option-label">
+                            <span class="option-letter">B)</span> Través.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18c" class="option-input">
+                        <label for="q18c" class="option-label">
+                            <span class="option-letter">C)</span> Calado.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18d" class="option-input">
+                        <label for="q18d" class="option-label">
+                            <span class="option-letter">D)</span> Pontal.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18e" class="option-input">
+                        <label for="q18e" class="option-label">
+                            <span class="option-letter">E)</span> Contorno.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback18">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: A maior largura de um barco
+                        é chamada de boca.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(18, 'q18a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 19 -->
+            <div class="question-card" id="question19">
+                <div class="question-header">
+                    <div class="question-number">19</div>
+                    <div class="question-text">As poças fixadas aos cais e trapiches que servem para fixarmos as espias
+                        das embarcações atracadas chamam-se:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19a" class="option-input">
+                        <label for="q19a" class="option-label">
+                            <span class="option-letter">A)</span> Postes.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19b" class="option-input">
+                        <label for="q19b" class="option-label">
+                            <span class="option-letter">B)</span> Bigotas.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19c" class="option-input">
+                        <label for="q19c" class="option-label">
+                            <span class="option-letter">C)</span> Fixadores.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19d" class="option-input">
+                        <label for="q19d" class="option-label">
+                            <span class="option-letter">D)</span> Estralheiras.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19e" class="option-input">
+                        <label for="q19e" class="option-label">
+                            <span class="option-letter">E)</span> Cabeços.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback19">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: As peças fixadas aos cais
+                        para amarrar as embarcações são chamadas de cabeços.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(19, 'q19e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 20 -->
+            <div class="question-card" id="question20">
+                <div class="question-header">
+                    <div class="question-number">20</div>
+                    <div class="question-text">De acordo com o Regulamento Internacional Para Evitar Abaíroamentos no
+                        Mar (RIPEAM), as marcas em forma de balão (esfera), cones, etc. deverão ser exibidas:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20a" class="option-input">
+                        <label for="q20a" class="option-label">
+                            <span class="option-letter">A)</span> Durante o dia ou noite.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20b" class="option-input">
+                        <label for="q20b" class="option-label">
+                            <span class="option-letter">B)</span> Apenas em baixa visibilidade.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20c" class="option-input">
+                        <label for="q20c" class="option-label">
+                            <span class="option-letter">C)</span> Em situação de manobra.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20d" class="option-input">
+                        <label for="q20d" class="option-label">
+                            <span class="option-letter">D)</span> Apenas durante a noite.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20e" class="option-input">
+                        <label for="q20e" class="option-label">
+                            <span class="option-letter">E)</span> Apenas durante o dia.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback20">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Essas marcas devem ser
+                        exibidas apenas durante o dia, conforme o RIPEAM.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(20, 'q20e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 21 -->
+            <div class="question-card" id="question21">
+                <div class="question-header">
+                    <div class="question-number">21</div>
+                    <div class="question-text">Em águas brasileiras, em que horário a Bandeira Nacional deverá ser içada
+                        na popa das embarcações (exceto miúdas)?</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21a" class="option-input">
+                        <label for="q21a" class="option-label">
+                            <span class="option-letter">A)</span> Durante o dia e durante a noite.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21b" class="option-input">
+                        <label for="q21b" class="option-label">
+                            <span class="option-letter">B)</span> Entre o nascer e o pôr do sol.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21c" class="option-input">
+                        <label for="q21c" class="option-label">
+                            <span class="option-letter">C)</span> Entre o pôr e o nascer do sol.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21d" class="option-input">
+                        <label for="q21d" class="option-label">
+                            <span class="option-letter">D)</span> Entre às 08:00 e 18:00hs.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21e" class="option-input">
+                        <label for="q21e" class="option-label">
+                            <span class="option-letter">E)</span> Entre 08:00 e o pôr do sol.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback21">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: A bandeira deve ser içada
+                        entre 08:00 e o pôr do sol.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(21, 'q21e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 22 -->
+            <div class="question-card" id="question22">
+                <div class="question-header">
+                    <div class="question-number">22</div>
+                    <div class="question-text">Em que posição devemos deixar a vítima quando ela está sem batimentos
+                        cardíacos e sem respiração?</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22a" class="option-input">
+                        <label for="q22a" class="option-label">
+                            <span class="option-letter">A)</span> O mais natural possível, para não atrapalhar a
+                            respiração.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22b" class="option-input">
+                        <label for="q22b" class="option-label">
+                            <span class="option-letter">B)</span> Deitada, com barriga para baixo (decúbito ventral).
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22c" class="option-input">
+                        <label for="q22c" class="option-label">
+                            <span class="option-letter">C)</span> Deitada de lado, com o lado do coração voltado para
+                            baixo.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22d" class="option-input">
+                        <label for="q22d" class="option-label">
+                            <span class="option-letter">D)</span> Deitada, com a barriga para cima (decúbito dorsal).
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22e" class="option-input">
+                        <label for="q22e" class="option-label">
+                            <span class="option-letter">E)</span> Sentada, em decidido dorsal.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback22">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: A vítima deve ser colocada
+                        em decúbito dorsal (barriga para cima) para reanimação.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(22, 'q22d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 23 -->
+            <div class="question-card" id="question23">
+                <div class="question-header">
+                    <div class="question-number">23</div>
+                    <div class="question-text">No tocante ao uso de coletes salva-vidas é correto afirmar que:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23a" class="option-input">
+                        <label for="q23a" class="option-label">
+                            <span class="option-letter">A)</span> Só serão vestidos em caso de necessidade.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23b" class="option-input">
+                        <label for="q23b" class="option-label">
+                            <span class="option-letter">B)</span> É necessário estar vestido nos tripulantes e
+                            passageiros das embarcações miúdas.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23c" class="option-input">
+                        <label for="q23c" class="option-label">
+                            <span class="option-letter">C)</span> É obrigatório estar vestido nos tripulantes e
+                            passageiros de todas as embarcações de lazer.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23d" class="option-input">
+                        <label for="q23d" class="option-label">
+                            <span class="option-letter">D)</span> Só é obrigatório estar vestido nas crianças.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23e" class="option-input">
+                        <label for="q23e" class="option-label">
+                            <span class="option-letter">E)</span> Só é obrigatório estar vestido nos passageiros e
+                            tripulantes do moto aquática.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback23">
+                    <div class="feedback-title"><i class="fa-check-circle"></i> <span>Resposta Correta</span>
+                    </div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: O uso de coletes salva-vidas
+                        é obrigatório para passageiros e tripulantes de motos aquáticas.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(23, 'q23e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+            <!-- Questão 24 -->
+            <div class="question-card" id="question24">
+                <div class="question-header">
+                    <div class="question-number">24</div>
+                    <div class="question-text">Qual a quantidade e classe da boia circular a bordo de uma embarcação
+                        miúda?</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24a" class="option-input">
+                        <label for="q24a" class="option-label">
+                            <span class="option-letter">A)</span> Uma boia circular da classe III.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24b" class="option-input">
+                        <label for="q24b" class="option-label">
+                            <span class="option-letter">B)</span> Uma boia circular da classe V.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24c" class="option-input">
+                        <label for="q24c" class="option-label">
+                            <span class="option-letter">C)</span> Uma boia circular de qualquer classe.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24d" class="option-input">
+                        <label for="q24d" class="option-label">
+                            <span class="option-letter">D)</span> Qualquer classe, pois é opcional nas embarcações
+                            miúdas.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24e" class="option-input">
+                        <label for="q24e" class="option-label">
+                            <span class="option-letter">E)</span> Duas boias circulares de classe V.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback24">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: Nas embarcações miúdas, a
+                        boia circular pode ser de qualquer classe e é opcional.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(24, 'q24d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 25 -->
+            <div class="question-card" id="question25">
+                <div class="question-header">
+                    <div class="question-number">25</div>
+                    <div class="question-text">Quando eu navego, devo ter a bordo, além do Título de Inscrição, também
+                        os (as):</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25a" class="option-input">
+                        <label for="q25a" class="option-label">
+                            <span class="option-letter">A)</span> Provisão de Registro de Propriedade Marítima (PRPM),
+                            Bilhete de Seguro (DPEM) e Carteira de Identidade (RG).
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25b" class="option-input">
+                        <label for="q25b" class="option-label">
+                            <span class="option-letter">B)</span> Carteira de Habilitação Amador (CHA), Carteira de
+                            Identidade (RG) ou CNH e Bilhete de Seguro (DPEM).
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25c" class="option-input">
+                        <label for="q25c" class="option-label">
+                            <span class="option-letter">C)</span> Carteira de Identidade (RG).
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25d" class="option-input">
+                        <label for="q25d" class="option-label">
+                            <span class="option-letter">D)</span> Notas de Arqueação, Nota Fiscal do Casco e Nota Fiscal
+                            do Motor.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25e" class="option-input">
+                        <label for="q25e" class="option-label">
+                            <span class="option-letter">E)</span> Bilhete de Seguro (DPEM) e Carteira de Identidade
+                            (RG).
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback25">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: Além do Título de Inscrição,
+                        é necessário portar a Carteira de Habilitação Amador (CHA), documento de identidade (RG ou CNH)
+                        e Bilhete de Seguro (DPEM).</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(25, 'q25b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 26 -->
+            <div class="question-card" id="question26">
+                <div class="question-header">
+                    <div class="question-number">26</div>
+                    <div class="question-text">Quando o navegante gira o timão de uma embarcação em movimento para
+                        bombordo a sua proa se voltará para bombordo e o leme:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26a" class="option-input">
+                        <label for="q26a" class="option-label">
+                            <span class="option-letter">A)</span> Impulsionará a popa para boreste.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26b" class="option-input">
+                        <label for="q26b" class="option-label">
+                            <span class="option-letter">B)</span> Se voltará para a direita.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26c" class="option-input">
+                        <label for="q26c" class="option-label">
+                            <span class="option-letter">C)</span> Permanecerá a meio.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26d" class="option-input">
+                        <label for="q26d" class="option-label">
+                            <span class="option-letter">D)</span> Se voltara para boreste.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26e" class="option-input">
+                        <label for="q26e" class="option-label">
+                            <span class="option-letter">E)</span> Impulsionara a popa para bombordo.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback26">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Ao girar o timão para
+                        bombordo, o leme impulsionará a popa para boreste.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(26, 'q26a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 27 -->
+            <div class="question-card" id="question27">
+                <div class="question-header">
+                    <div class="question-number">27</div>
+                    <div class="question-text">Sabemos que a vítima de choque elétrico normalmente sofre vários traumas
+                        decorrentes deste acidente. Logo após afastar a vítima da fonte de energia elétrica deveremos:
+                    </div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27a" class="option-input">
+                        <label for="q27a" class="option-label">
+                            <span class="option-letter">A)</span> Tratar primeiro o trauma que pode levar à morte mais
+                            rápida.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27b" class="option-input">
+                        <label for="q27b" class="option-label">
+                            <span class="option-letter">B)</span> Tratar primeiro os possíveis ferimentos.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27c" class="option-input">
+                        <label for="q27c" class="option-label">
+                            <span class="option-letter">C)</span> Estancar rapidamente as possíveis hemorragias.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27d" class="option-input">
+                        <label for="q27d" class="option-label">
+                            <span class="option-letter">D)</span> Tratar de imediato às queimaduras.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27e" class="option-input">
+                        <label for="q27e" class="option-label">
+                            <span class="option-letter">E)</span> Aplicar analgésicos nos locais afetados.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback27">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Deve-se priorizar o
+                        tratamento do trauma que pode levar à morte mais rápida, como parada cardíaca ou respiratória.
+                    </p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(27, 'q27a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 28 -->
+            <div class="question-card" id="question28">
+                <div class="question-header">
+                    <div class="question-number">28</div>
+                    <div class="question-text">Segundo a Lei Federal 9.537/97 (LESTA), o tripulante responsável pela
+                        operação e manutenção da embarcação, em condições de segurança, extensivas à carga, aos
+                        tripulantes e às demais pessoas a bordo é chamado de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28a" class="option-input">
+                        <label for="q28a" class="option-label">
+                            <span class="option-letter">A)</span> Chefe de segurança.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28b" class="option-input">
+                        <label for="q28b" class="option-label">
+                            <span class="option-letter">B)</span> Comandante.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28c" class="option-input">
+                        <label for="q28c" class="option-label">
+                            <span class="option-letter">C)</span> Capitão.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28d" class="option-input">
+                        <label for="q28d" class="option-label">
+                            <span class="option-letter">D)</span> Imediato.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28e" class="option-input">
+                        <label for="q28e" class="option-label">
+                            <span class="option-letter">E)</span> Armador.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback28">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: O comandante é o responsável
+                        pela operação e segurança da embarcação, conforme a Lei Federal 9.537/97.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(28, 'q28b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 29 -->
+            <div class="question-card" id="question29">
+                <div class="question-header">
+                    <div class="question-number">29</div>
+                    <div class="question-text">Todos os sinais náuticos chamados de Sinais Cardinais têm as cores:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29a" class="option-input">
+                        <label for="q29a" class="option-label">
+                            <span class="option-letter">A)</span> Preto e Amarelo.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29b" class="option-input">
+                        <label for="q29b" class="option-label">
+                            <span class="option-letter">B)</span> Encarnado e Preto.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29c" class="option-input">
+                        <label for="q29c" class="option-label">
+                            <span class="option-letter">C)</span> Encarnado e Verde.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29d" class="option-input">
+                        <label for="q29d" class="option-label">
+                            <span class="option-letter">D)</span> Preto e Branco.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29e" class="option-input">
+                        <label for="q29e" class="option-label">
+                            <span class="option-letter">E)</span> Verde e Amarelo.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback29">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Os sinais cardinais são
+                        identificados pelas cores preto e amarelo.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(29, 'q29a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 30 -->
+            <div class="question-card" id="question30">
+                <div class="question-header">
+                    <div class="question-number">30</div>
+                    <div class="question-text">As marcas de tope do sinal cardinal oeste são:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30a" class="option-input">
+                        <label for="q30a" class="option-label">
+                            <span class="option-letter">A)</span> Dois cones pretos, um sobre o outro base a base.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30b" class="option-input">
+                        <label for="q30b" class="option-label">
+                            <span class="option-letter">B)</span> Dois cones pretos, um sobre o outro, com os vértices
+                            para baixo.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30c" class="option-input">
+                        <label for="q30c" class="option-label">
+                            <span class="option-letter">C)</span> Dois cones pretos, um sobre o outro, com os vértices
+                            para cima.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30d" class="option-input">
+                        <label for="q30d" class="option-label">
+                            <span class="option-letter">D)</span> Dois cones pretos, lado a lado, com os vértices para
+                            cima.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30e" class="option-input">
+                        <label for="q30e" class="option-label">
+                            <span class="option-letter">E)</span> Dois cones pretos, um sobre o outro ponta a ponta.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback30">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: O sinal cardinal oeste é
+                        representado por dois cones pretos, um sobre o outro, ponta a ponta.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(30, 'q30e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 31 -->
+            <div class="question-card" id="question31">
+                <div class="question-header">
+                    <div class="question-number">31</div>
+                    <div class="question-text">No Brasil a "direção convencional do balizamento", ou seja, a numeração
+                        do balizamento cresce sempre:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31a" class="option-input">
+                        <label for="q31a" class="option-label">
+                            <span class="option-letter">A)</span> Indo para o mar e, no caso da navegação fluvial,
+                            subindo o rio.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31b" class="option-input">
+                        <label for="q31b" class="option-label">
+                            <span class="option-letter">B)</span> Vindo do mar e, no caso da navegação fluvial, não já
+                            distinção.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31c" class="option-input">
+                        <label for="q31c" class="option-label">
+                            <span class="option-letter">C)</span> Indo para o mar e, no caso da navegação fluvial,
+                            descendo o rio.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31d" class="option-input">
+                        <label for="q31d" class="option-label">
+                            <span class="option-letter">D)</span> Vindo do mar e, no caso da navegação fluvial, descendo
+                            o rio.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31e" class="option-input">
+                        <label for="q31e" class="option-label">
+                            <span class="option-letter">E)</span> Vindo do mar e, no caso da navegação fluvial, subindo
+                            o rio.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback31">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: A numeração do balizamento
+                        cresce indo para o mar e, em rios, subindo o curso.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(31, 'q31a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 32 -->
+            <div class="question-card" id="question32">
+                <div class="question-header">
+                    <div class="question-number">32</div>
+                    <div class="question-text">O que são espias e para que servem?</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32a" class="option-input">
+                        <label for="q32a" class="option-label">
+                            <span class="option-letter">A)</span> São cabos de retinida animal, vegetal ou sintética,
+                            que servem para prender a embarcação no fundo.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32b" class="option-input">
+                        <label for="q32b" class="option-label">
+                            <span class="option-letter">B)</span> São retinidas, que servem para conduzir os cabos de
+                            amarração.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32c" class="option-input">
+                        <label for="q32c" class="option-label">
+                            <span class="option-letter">C)</span> São cabos de amarração usados na faina (ação) de
+                            atracar uma embarcação.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32d" class="option-input">
+                        <label for="q32d" class="option-label">
+                            <span class="option-letter">D)</span> São correntes de metal usadas para ligar o navio à
+                            âncora.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32e" class="option-input">
+                        <label for="q32e" class="option-label">
+                            <span class="option-letter">E)</span> São cabos de aço ou ferro, que servem para prender as
+                            amarras às âncoras, em embarcações de esporte e recreio.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback32">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>C</strong> está correta: As espias são cabos de
+                        amarração utilizados durante a atracação da embarcação.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(32, 'q32c')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 33 -->
+            <div class="question-card" id="question33">
+                <div class="question-header">
+                    <div class="question-number">33</div>
+                    <div class="question-text">O procedimento para se pegar uma bóia, a fim de amarramos uma embarcação
+                        a ela, deve ser:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33a" class="option-input">
+                        <label for="q33a" class="option-label">
+                            <span class="option-letter">A)</span> Aproar a ela, com pouco seguimento.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33b" class="option-input">
+                        <label for="q33b" class="option-label">
+                            <span class="option-letter">B)</span> Dar máquinas atrás, ao passarmos pela bóia.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33c" class="option-input">
+                        <label for="q33c" class="option-label">
+                            <span class="option-letter">C)</span> Aproar a ela, com muito seguimento.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33d" class="option-input">
+                        <label for="q33d" class="option-label">
+                            <span class="option-letter">D)</span> Paralelo a ela e a favor da corrente, com muito
+                            seguimento.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33e" class="option-input">
+                        <label for="q33e" class="option-label">
+                            <span class="option-letter">E)</span> Paralelo a ela, com muito seguimento.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback33">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Deve-se aproar à bóia com
+                        pouco seguimento para facilitar a amarração.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(33, 'q33a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 34 -->
+            <div class="question-card" id="question34">
+                <div class="question-header">
+                    <div class="question-number">34</div>
+                    <div class="question-text">Quando alguém cai na água, ou seja, "situação de homem ao mar", e para
+                        retornar exatamente no rumo aposto sobre a esteira deixada pelo hélice, deve-se usar a:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34a" class="option-input">
+                        <label for="q34a" class="option-label">
+                            <span class="option-letter">A)</span> Manobra de Putin.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34b" class="option-input">
+                        <label for="q34b" class="option-label">
+                            <span class="option-letter">B)</span> Manobra de Zemane.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34c" class="option-input">
+                        <label for="q34c" class="option-label">
+                            <span class="option-letter">C)</span> Curva de Williams.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34d" class="option-input">
+                        <label for="q34d" class="option-label">
+                            <span class="option-letter">D)</span> Curva "Race Track".
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34e" class="option-input">
+                        <label for="q34e" class="option-label">
+                            <span class="option-letter">E)</span> Curva de Betake.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback34">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>C</strong> está correta: A Curva de Williams é
+                        utilizada para retornar ao ponto exato onde ocorreu a queda.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(34, 'q34c')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 35 -->
+            <div class="question-card" id="question35">
+                <div class="question-header">
+                    <div class="question-number">35</div>
+                    <div class="question-text">Os extintores de CO2 são utilizados prioritariamente em:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35a" class="option-input">
+                        <label for="q35a" class="option-label">
+                            <span class="option-letter">A)</span> Incêndios de equipamentos elétricos quando
+                            energizados.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35b" class="option-input">
+                        <label for="q35b" class="option-label">
+                            <span class="option-letter">B)</span> Incêndios da classe "A".
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35c" class="option-input">
+                        <label for="q35c" class="option-label">
+                            <span class="option-letter">C)</span> Incêndios de líquidos inflamáveis.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35d" class="option-input">
+                        <label for="q35d" class="option-label">
+                            <span class="option-letter">D)</span> Incêndios da classe "D".
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35e" class="option-input">
+                        <label for="q35e" class="option-label">
+                            <span class="option-letter">E)</span> Incêndios de materiais sólidos inflamáveis.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback35">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Extintores de CO2 são ideais
+                        para incêndios em equipamentos elétricos energizados.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(35, 'q35a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 36 -->
+            <div class="question-card" id="question36">
+                <div class="question-header">
+                    <div class="question-number">36</div>
+                    <div class="question-text">O primeiro método de extinção de incêndios, que consiste em reduzir a
+                        quantidade de oxigênio para menos de 16% chama-se:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36a" class="option-input">
+                        <label for="q36a" class="option-label">
+                            <span class="option-letter">A)</span> Arfagem.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36b" class="option-input">
+                        <label for="q36b" class="option-label">
+                            <span class="option-letter">B)</span> Carbonização.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36c" class="option-input">
+                        <label for="q36c" class="option-label">
+                            <span class="option-letter">C)</span> Resfriamento.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36d" class="option-input">
+                        <label for="q36d" class="option-label">
+                            <span class="option-letter">D)</span> Abafamento.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36e" class="option-input">
+                        <label for="q36e" class="option-label">
+                            <span class="option-letter">E)</span> Oxigenação.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback36">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: O método de extinção por
+                        abafamento reduz o oxigênio para menos de 16%.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(36, 'q36d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 37 -->
+            <div class="question-card" id="question37">
+                <div class="question-header">
+                    <div class="question-number">37</div>
+                    <div class="question-text">Um dos sintomas citados que NÃO acompanha a parada cardíaca:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37a" class="option-input">
+                        <label for="q37a" class="option-label">
+                            <span class="option-letter">A)</span> Palidez.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37b" class="option-input">
+                        <label for="q37b" class="option-label">
+                            <span class="option-letter">B)</span> Menina dos olhos dilatada.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37c" class="option-input">
+                        <label for="q37c" class="option-label">
+                            <span class="option-letter">C)</span> Abaixamento da temperatura do corpo.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37d" class="option-input">
+                        <label for="q37d" class="option-label">
+                            <span class="option-letter">D)</span> Ruborização da face.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37e" class="option-input">
+                        <label for="q37e" class="option-label">
+                            <span class="option-letter">E)</span> Perda de sentidos.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback37">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: A ruborização da face não é
+                        um sintoma associado à parada cardíaca.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(37, 'q37d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 38 -->
+            <div class="question-card" id="question38">
+                <div class="question-header">
+                    <div class="question-number">38</div>
+                    <div class="question-text">Na respiração boca a boca, eu sempre devo:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38a" class="option-input">
+                        <label for="q38a" class="option-label">
+                            <span class="option-letter">A)</span> Deixar a cabeça da vítima voltada para frente.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38b" class="option-input">
+                        <label for="q38b" class="option-label">
+                            <span class="option-letter">B)</span> Deixar a cabeça da vítima livre.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38c" class="option-input">
+                        <label for="q38c" class="option-label">
+                            <span class="option-letter">C)</span> Deixar a cabeça da vítima na posição lateral.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38d" class="option-input">
+                        <label for="q38d" class="option-label">
+                            <span class="option-letter">D)</span> Deixar a cabeça da vítima voltada para trás.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38e" class="option-input">
+                        <label for="q38e" class="option-label">
+                            <span class="option-letter">E)</span> Deixar a cabeça da vítima na posição normal.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback38">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: A cabeça da vítima deve ser
+                        inclinada para trás para abrir as vias aéreas.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(38, 'q38d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 39 -->
+            <div class="question-card" id="question39">
+                <div class="question-header">
+                    <div class="question-number">39</div>
+                    <div class="question-text">Num abandono de embarcação não devemos:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39a" class="option-input">
+                        <label for="q39a" class="option-label">
+                            <span class="option-letter">A)</span> Saltar em cima da balsa salva-vidas.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39b" class="option-input">
+                        <label for="q39b" class="option-label">
+                            <span class="option-letter">B)</span> Saltar na água.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39c" class="option-input">
+                        <label for="q39c" class="option-label">
+                            <span class="option-letter">C)</span> Utilizar coletes salva-vidas.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39d" class="option-input">
+                        <label for="q39d" class="option-label">
+                            <span class="option-letter">D)</span> Descer pela borda e escadas de quebra-pelto.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39e" class="option-input">
+                        <label for="q39e" class="option-label">
+                            <span class="option-letter">E)</span> Tentar avisar as embarcações próximas.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback39">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Saltar em cima da balsa
+                        salva-vidas pode danificá-la e comprometer a segurança.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(39, 'q39a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 40 -->
+            <div class="question-card" id="question40">
+                <div class="question-header">
+                    <div class="question-number">40</div>
+                    <div class="question-text">Em um naufrágio, a fadiga e o esgotamento resultantes de grandes
+                        privações muitas vezes conduzem a distúrbios mentais que podem tomar forma de extenso
+                        nervosismo, atividade excessiva e violenta ou de estafa. O melhor meio de evitá-los é:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40a" class="option-input">
+                        <label for="q40a" class="option-label">
+                            <span class="option-letter">A)</span> Manter-se ocupado com as tarefas da balsa.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40b" class="option-input">
+                        <label for="q40b" class="option-label">
+                            <span class="option-letter">B)</span> Pescar.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40c" class="option-input">
+                        <label for="q40c" class="option-label">
+                            <span class="option-letter">C)</span> Permanecer.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40d" class="option-input">
+                        <label for="q40d" class="option-label">
+                            <span class="option-letter">D)</span> Nadar uma vez por dia.
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40e" class="option-input">
+                        <label for="q40e" class="option-label">
+                            <span class="option-letter">E)</span> Procurar dormir e descansar o máximo possível.
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback40">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Descansar e dormir o máximo
+                        possível ajuda a evitar distúrbios mentais em situações de naufrágio.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(40, 'q40e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Resultados -->
+            <div class="results-container" id="results">
+                <h2 class="results-title">Simulado Concluído!</h2>
+                <div class="score" id="finalScore">0/40</div>
+                <p class="result-message" id="resultMessage">Parabéns por completar o simulado! Revise as questões para
+                    melhorar seu desempenho.</p>
+                <button class="restart-btn" onclick="restartSimulado()"><i class="fas fa-redo"></i> Refazer
+                    Simulado</button>
+            </div>
+        </div>
+    </main>
+   <script>
+    // Variáveis globais
+    let currentQuestion = 1;
+    let score = 0;
+    const totalQuestions = 40;
+    let questionsAnswered = 0;
+    let userAnswers = {};
+    
+    // Objeto com as respostas corretas
+    const correctAnswers = {
+      1: 'q1d', 2: 'q2a', 3: 'q3a', 4: 'q4c', 5: 'q5b',
+      6: 'q6b', 7: 'q7b', 8: 'q8d', 9: 'q9b', 10: 'q10d',
+      11: 'q11d', 12: 'q12a', 13: 'q13a', 14: 'q14d', 15: 'q15d',
+      16: 'q16e', 17: 'q17d', 18: 'q18e', 19: 'q19a', 20: 'q20b',
+      21: 'q21b', 22: 'q22c', 23: 'q23d', 24: 'q24c', 25: 'q25a',
+      26: 'q26d', 27: 'q27a', 28: 'q28a', 29: 'q29c', 30: 'q30a',
+      31: 'q31b', 32: 'q32c', 33: 'q33a', 34: 'q34b', 35: 'q35d',
+      36: 'q36c', 37: 'q37e', 38: 'q38b', 39: 'q39c', 40: 'q40a'
+    };
+    
+    // Objeto com explicações das respostas
+    const explanations = {
+      1: "A embarcação que vem a favor da corrente tem preferência e deve se posicionar no meio do rio, enquanto a outra deve manter-se à margem de boreste.",
+      2: "Embarcação com capacidade de manobra restrita é aquela que, pela natureza do trabalho que realiza, tem sua capacidade de manobrar limitada.",
+      3: "O balizamento dobrado é usado para indicar perigos isolados que ainda não foram registrados nas cartas náuticas oficiais.",
+      4: "O balizamento de perigo isolado possui listas horizontais pretas e encarnadas (vermelhas).",
+      5: "O sinal 'X' no balizamento indica que o navegante deve trocar de margem.",
+      6: "O balizamento de canal preferencial a bombordo emite luz encarnada (vermelha).",
+      7: "O balizamento terá cor verde com uma faixa horizontal encarnada, indicando que o canal principal está à direita (boreste) do sentido de navegação.",
+      8: "A temperatura da água não afeta diretamente as condições de manobra da embarcação.",
+      9: "A boia de aringue é utilizada para marcar a posição da âncora no fundo, facilitando sua localização e recuperação.",
+      10: "A abordagem em ângulo de 45° permite melhor controle da embarcação durante a atracação, com o leme para o lado oposto ao cais ajudando a aproximar a popa.",
+      11: "Baldes d'água podem ser usados como último recurso para apagar incêndios, desde que a parte elétrica esteja desligada e o tipo de incêndio permita o uso de água.",
+      12: "As combustões são classificadas em completa, incompleta, espontânea e explosão, conforme sua velocidade e características.",
+      13: "O extintor de água deve ser direcionado para a base das chamas, onde está o combustível, para ser mais eficaz no combate ao fogo.",
+      14: "Éter e benzina são exemplos de combustíveis voláteis, que evaporam facilmente a temperatura ambiente.",
+      15: "O aquecimento da vítima de hemorragia ajuda a prevenir o estado de choque, que pode ser causado pela perda significativa de sangue.",
+      16: "Quando não for possível aplicar o método boca a boca, pode-se ventilar os pulmões da vítima através do nariz (boca-nariz).",
+      17: "A falta de funcionamento dos intestinos em náufragos ocorre principalmente devido à escassez de alimentação.",
+      18: "Embarcações de alto-mar devem ser conduzidas por Capitão-Amador quando navegando em sua área de atuação.",
+      19: "O Termo de Responsabilidade é o documento onde o proprietário assume a responsabilidade pelas condições de operação da embarcação.",
+      20: "Embarcações de interior podem ser conduzidas por qualquer Arrais-Amador, independentemente da categoria específica.",
+      21: "A navegação em hidrovias interiores é classificada como navegação interior segundo a RLESTA.",
+      22: "O ordenamento do uso das praias compete aos municípios, conforme a legislação brasileira.",
+      23: "A aproximação deve ser feita perpendicular à linha base, com velocidade não superior a 3 nós, garantindo a segurança dos banhistas.",
+      24: "A reincidência em conduzir embarcação sob efeito de álcool ou drogas resulta no cancelamento do Certificado de Habilitação.",
+      25: "Essas embarcações podem trafegar a partir de 200 metros da linha base, conforme estabelecido na NORMAM-03.",
+      26: "A madeira é um exemplo de combustível que não contém comburente em sua estrutura molecular.",
+      27: "Combustíveis com comburente em sua estrutura molecular (como certos produtos químicos) só podem ser extintos por resfriamento.",
+      28: "Em caso de incêndio, a embarcação deve ser manobrada para posicionar as pessoas a barlavento (direção de onde vem o vento), evitando que a fumaça e chamas as atinjam.",
+      29: "O termo correto para a quantidade máxima de pessoas autorizadas a bordo, incluindo tripulação, é 'lotação'.",
+      30: "Água salgada não deve ser usada em incêndios classe C (elétricos) porque pode danificar os circuitos elétricos e piorar a situação, além do risco de choque elétrico.",
+      31: "Em previsão de mau tempo, deve-se aumentar o comprimento da amarra na água para melhorar a retenção da âncora e absorver melhor as forças do vento e ondas.",
+      32: "Em caso de parada cardíaca, deve-se iniciar imediatamente a ressuscitação cardiopulmonar (RCP) com respiração boca a boca e massagem cardíaca.",
+      33: "Deve-se trafegar e fundear em locais com menor tráfego e concentração de embarcações, conforme estabelecido na NORMAM-03 para garantir a segurança.",
+      34: "O comandante da embarcação é o responsável por manter a disciplina a bordo enquanto a embarcação está em movimento.",
+      35: "Pode-se improvisar uma tala com qualquer pedaço de material rígido (como madeira) e tiras de pano para imobilizar a fratura.",
+      36: "Dispositivos pirotécnicos e fumígenos são obrigatórios para embarcações de médio e grande porte em qualquer área de navegação.",
+      37: "As peças macias usadas para proteger o costado da embarcação contra o cais são chamadas de defensas.",
+      38: "A espuma química é o agente extintor mais efetivo para incêndios classe B (líquidos inflamáveis) e também pode ser usada em incêndios classe A (materiais sólidos).",
+      39: "A navegação em águas marítimas desabrigadas é classificada como navegação de mar aberto segundo a RLESTA.",
+      40: "A insolação ocorre por exposição prolongada ao sol e calor intenso, podendo causar desidratação e elevação da temperatura corporal."
+    };
+
+    // Função para verificar a resposta
+    function checkAnswer(questionNumber, correctAnswerId) {
+      const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
+      const feedback = document.getElementById(`feedback${questionNumber}`);
+      
+      if (!selectedOption) {
+        alert("Por favor, selecione uma resposta antes de continuar.");
+        return;
+      }
+      
+      // Se já respondeu esta questão, não conta novamente
+      if (!userAnswers[questionNumber]) {
+        questionsAnswered++;
+        userAnswers[questionNumber] = selectedOption.id;
+      }
+      
+      const selectedLetter = selectedOption.id.replace(`q${questionNumber}`, '').toUpperCase();
+      const correctLetter = correctAnswerId.replace(`q${questionNumber}`, '').toUpperCase();
+      
+      if (selectedOption.id === correctAnswerId) {
+        feedback.className = "feedback correct";
+        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
+        feedback.querySelector('.feedback-text').innerHTML = `Alternativa <strong>${selectedLetter}</strong> `;
+        
+        // Só incrementa o score se não tinha respondido antes ou se tinha errado
+        if (!userAnswers[questionNumber] || userAnswers[questionNumber] !== correctAnswerId) {
+          score++;
+          userAnswers[questionNumber] = correctAnswerId;
+        }
+      } else {
+        feedback.className = "feedback incorrect";
+        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
+        feedback.querySelector('.feedback-text').innerHTML = `Alternativa correta: <strong>${correctLetter}</strong><br>`;
+        
+        // Se tinha acertado antes e agora errou, diminui o score
+        if (userAnswers[questionNumber] === correctAnswerId) {
+          score--;
+          userAnswers[questionNumber] = selectedOption.id;
+        }
+      }
+      
+      feedback.style.display = "block";
+      updateProgress();
+      
+      // Atualiza o botão para "Próxima Questão" ou "Ver Resultados"
+      const nextBtn = document.querySelector(`#question${questionNumber} .next-btn`);
+      if (questionNumber === totalQuestions) {
+        nextBtn.textContent = "Ver Resultados";
+        nextBtn.onclick = function() { showResults(true); };
+      } else {
+        nextBtn.textContent = "Próxima Questão";
+        nextBtn.onclick = function() { nextQuestion(); };
+      }
+    }
+
+    // Função para avançar para a próxima questão
+    function nextQuestion() {
+      document.getElementById(`question${currentQuestion}`).style.display = 'none';
+      document.getElementById(`question${currentQuestion}`).classList.remove('active');
+      currentQuestion++;
+      
+      if (currentQuestion <= totalQuestions) {
+        document.getElementById(`question${currentQuestion}`).style.display = 'block';
+        document.getElementById(`question${currentQuestion}`).classList.add('active');
+        updateProgress();
+        
+        // Configura o botão da próxima questão
+        const nextBtn = document.querySelector(`#question${currentQuestion} .next-btn`);
+        nextBtn.textContent = "Confirmar Resposta";
+        nextBtn.onclick = function() { checkAnswer(currentQuestion, correctAnswers[currentQuestion]); };
+      }
+    }
+    
+    // Função para atualizar a barra de progresso
+    function updateProgress() {
+      const progress = (questionsAnswered / totalQuestions) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+    }
+    
+    // Função para mostrar os resultados
+    function showResults(final = false) {
+      document.querySelectorAll('.question-card').forEach(card => {
+        card.style.display = 'none';
+      });
+      
+      const resultsContainer = document.getElementById('resultsContainer');
+      resultsContainer.style.display = 'block';
+      
+      const percentage = Math.round((score / totalQuestions) * 100);
+      document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
+      
+      const resultMessage = document.getElementById('resultMessage');
+      resultMessage.innerHTML = `Você completou ${questionsAnswered} de ${totalQuestions} questões e acertou ${score}.<br>`;
+      
+      if (questionsAnswered === 0) {
+        resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
+      } else if (percentage >= 80) {
+        resultMessage.innerHTML += "Ótimo desempenho! Você está bem preparado para o exame de Arrais Amador.";
+      } else if (percentage >= 70) {
+        resultMessage.innerHTML += "Bom desempenho! Recomendamos revisar alguns tópicos antes do exame.";
+      } else if (percentage >= 50) {
+        resultMessage.innerHTML += "Desempenho regular. Sugerimos estudar mais antes de fazer o exame.";
+      } else {
+        resultMessage.innerHTML += "Recomendamos estudar mais antes de tentar o exame oficial.";
+      }
+    }
+    
+    // Função para forçar mostrar os resultados
+    function forceShowResults() {
+      showResults(false);
+    }
+
+    // Função para reiniciar o simulado
+    function restartSimulado() {
+      currentQuestion = 1;
+      score = 0;
+      questionsAnswered = 0;
+      userAnswers = {};
+      
+      document.getElementById('resultsContainer').style.display = 'none';
+      
+      document.querySelectorAll('.question-card').forEach((card, index) => {
+        card.style.display = index === 0 ? 'block' : 'none';
+        card.classList.remove('active');
+        card.querySelectorAll('input').forEach(input => {
+          input.checked = false;
+        });
+        const feedback = card.querySelector('.feedback');
+        if (feedback) feedback.style.display = 'none';
+        const nextBtn = card.querySelector('.next-btn');
+        if (nextBtn) {
+          nextBtn.textContent = 'Confirmar Resposta';
+          nextBtn.onclick = function() { checkAnswer(currentQuestion, correctAnswers[currentQuestion]); };
+        }
+      });
+
+      document.getElementById('question1').classList.add('active');
+      document.getElementById('progressBar').style.width = '0%';
+    }
+    
+    // Adiciona botões de encerrar em cada questão
+    function addEndButtons() {
+      const questionCards = document.querySelectorAll('.question-card');
+      questionCards.forEach(card => {
+        const endButton = document.createElement('button');
+        endButton.className = 'end-btn';
+        endButton.innerHTML = '<i class="fas fa-flag-checkered"></i> Encerrar Simulado';
+        endButton.onclick = function() { forceShowResults(); };
+        
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'button-container';
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.gap = '1rem';
+        buttonContainer.style.marginTop = '1.5rem';
+        buttonContainer.style.flexWrap = 'wrap';
+        
+        const nextBtn = card.querySelector('.next-btn');
+        card.insertBefore(buttonContainer, nextBtn.nextSibling);
+        buttonContainer.appendChild(nextBtn.cloneNode(true));
+        buttonContainer.appendChild(endButton);
+        
+        card.removeChild(nextBtn);
+      });
+    }
+    
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.question-card:not(#question1)').forEach(card => {
+        card.style.display = 'none';
+      });
+      document.getElementById('question1').classList.add('active');
+      addEndButtons();
+      updateProgress();
+    });
+</script>
+</body>
+
+</html>
