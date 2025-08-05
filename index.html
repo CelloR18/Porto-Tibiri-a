@@ -625,80 +625,162 @@
   </button>
   <script>
   document.addEventListener('DOMContentLoaded', function() {
-  const simuladoCards = document.querySelectorAll('.simulado-card');
-  const submitButton = document.querySelector('.btn-primary');
-  const selectedFeedback = document.querySelector('.selected-feedback');
-  const btnText = document.querySelector('.btn-text');
-  
-  // Função para atualizar o estado do botão
-  function updateButtonState() {
-    const selectedCard = document.querySelector('.simulado-card.selected');
-    if (selectedCard) {
-      submitButton.disabled = false;
-      submitButton.classList.remove('btn-disabled');
-      const simuladoName = selectedCard.querySelector('h3').textContent;
-      selectedFeedback.textContent = `Simulado selecionado: ${simuladoName}`;
-      btnText.textContent = `Iniciar ${simuladoName}`;
-    } else {
-      submitButton.disabled = true;
-      submitButton.classList.add('btn-disabled');
-      selectedFeedback.textContent = 'Nenhum simulado selecionado';
-      btnText.textContent = 'Selecione um simulado para começar';
-    }
-  }
-
-  // Ativa a seleção ao clicar em qualquer parte do card
-  simuladoCards.forEach(card => {
-    card.addEventListener('click', function() {
-      // Remove a seleção de todos os cards
-      simuladoCards.forEach(c => c.classList.remove('selected'));
+      const simuladoCards = document.querySelectorAll('.simulado-card');
+      const submitButton = document.querySelector('.btn-primary');
+      const selectedFeedback = document.querySelector('.selected-feedback');
+      const btnText = document.querySelector('.btn-text');
       
-      // Adiciona seleção ao card clicado
-      this.classList.add('selected');
-      
-      // Marca o radio button correspondente
-      const radio = this.querySelector('input[type="radio"]');
-      radio.checked = true;
-      
-      // Atualiza o estado do botão
-      updateButtonState();
-    });
-  });
-
-  // Verifica se já há um selecionado por padrão
-  const defaultSelected = document.querySelector('.simulado-card.selected');
-  if (defaultSelected) {
-    defaultSelected.querySelector('input[type="radio"]').checked = true;
-    updateButtonState();
-  }
-
-  // Dentro do event listener do formulário, atualize para:
-document.getElementById('simuladoRedirectForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const selectedSimulado = document.querySelector('input[name="simuladoType"]:checked').value;
-  
-  // Adiciona feedback visual durante o carregamento
-  submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando simulado...';
-  
-  // Simula um tempo de carregamento (remova isso na implementação real)
-  setTimeout(() => {
-    if(selectedSimulado === 'simulado1') {
-      window.location.href = 'simulado.html';
-    } else if(selectedSimulado === 'simulado2') {
-      window.location.href = 'simulado2.html';
-    } else if(selectedSimulado === 'simulado3') {
-      window.location.href = 'simulado3.html';
-     } else if(selectedSimulado === 'simulado4') {
-      window.location.href = 'simulado4.html';
-      
-       // Adicione a página para o novo simulado
-    }
-    else if(selectedSimulado === 'simulado5') {
-        window.location.href = 'simulado5.html';
+      // Função para atualizar o estado do botão
+      function updateButtonState() {
+        const selectedCard = document.querySelector('.simulado-card.selected');
+        if (selectedCard) {
+          submitButton.disabled = false;
+          submitButton.classList.remove('btn-disabled');
+          const simuladoName = selectedCard.querySelector('h3').textContent;
+          selectedFeedback.textContent = `Simulado selecionado: ${simuladoName}`;
+          btnText.textContent = `Iniciar ${simuladoName}`;
+        } else {
+          submitButton.disabled = true;
+          submitButton.classList.add('btn-disabled');
+          selectedFeedback.textContent = 'Nenhum simulado selecionado';
+          btnText.textContent = 'Selecione um simulado para começar';
+        }
       }
-  }, 1000);
-});
-});
+
+      // Ativa a seleção ao clicar em qualquer parte do card
+      simuladoCards.forEach(card => {
+        card.addEventListener('click', function() {
+          // Remove a seleção de todos os cards
+          simuladoCards.forEach(c => c.classList.remove('selected'));
+          
+          // Adiciona seleção ao card clicado
+          this.classList.add('selected');
+          
+          // Marca o radio button correspondente
+          const radio = this.querySelector('input[type="radio"]');
+          radio.checked = true;
+          
+          // Atualiza o estado do botão
+          updateButtonState();
+        });
+      });
+
+      // Verifica se já há um selecionado por padrão
+      const defaultSelected = document.querySelector('.simulado-card.selected');
+      if (defaultSelected) {
+        defaultSelected.querySelector('input[type="radio"]').checked = true;
+        updateButtonState();
+      }
+
+      // Modal de senha
+      const passwordModal = document.getElementById('passwordModal');
+      const passwordInput = document.getElementById('passwordInput');
+      const passwordError = document.getElementById('passwordError');
+      const confirmPasswordBtn = document.getElementById('confirmPassword');
+      const closeModal = document.querySelector('.close-modal');
+      const correctPassword = "login@2730";
+
+      // Mostrar modal quando clicar em iniciar simulado
+      document.getElementById('simuladoRedirectForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        passwordModal.style.display = "block";
+      });
+
+      // Fechar modal
+      closeModal.addEventListener('click', function() {
+        passwordModal.style.display = "none";
+        passwordInput.value = "";
+        passwordError.textContent = "";
+      });
+
+      // Fechar modal ao clicar fora
+      window.addEventListener('click', function(event) {
+        if (event.target === passwordModal) {
+          passwordModal.style.display = "none";
+          passwordInput.value = "";
+          passwordError.textContent = "";
+        }
+      });
+
+      // Verificar senha
+      confirmPasswordBtn.addEventListener('click', function() {
+        if (passwordInput.value === correctPassword) {
+          const selectedSimulado = document.querySelector('input[name="simuladoType"]:checked').value;
+          passwordModal.style.display = "none";
+          passwordInput.value = "";
+          passwordError.textContent = "";
+          
+          // Adiciona feedback visual durante o carregamento
+          const submitButton = document.querySelector('.btn-primary');
+          submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparando simulado...';
+          
+          // Redireciona após um pequeno delay
+          setTimeout(() => {
+            if(selectedSimulado === 'simulado1') {
+              window.location.href = 'simulado.html';
+            } else if(selectedSimulado === 'simulado2') {
+              window.location.href = 'simulado2.html';
+            } else if(selectedSimulado === 'simulado3') {
+              window.location.href = 'simulado3.html';
+            } else if(selectedSimulado === 'simulado4') {
+              window.location.href = 'simulado4.html';
+            } else if(selectedSimulado === 'simulado5') {
+              window.location.href = 'simulado5.html';
+            }
+          }, 1000);
+        } else {
+          passwordError.textContent = "Senha incorreta. Tente novamente.";
+          passwordInput.value = "";
+        }
+      });
+
+      // Permitir pressionar Enter para confirmar
+      passwordInput.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') {
+          confirmPasswordBtn.click();
+        }
+      });
+
+      // Gallery Lightbox Functionality
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      const lightbox = document.querySelector('.lightbox');
+      const lightboxImg = document.getElementById('lightbox-image');
+      const lightboxCaption = document.querySelector('.lightbox-caption');
+      const closeLightbox = document.querySelector('.close-lightbox');
+      
+      galleryItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const imgSrc = this.querySelector('img').src;
+          const imgAlt = this.querySelector('img').alt;
+          
+          lightboxImg.src = imgSrc;
+          lightboxCaption.textContent = imgAlt;
+          lightbox.style.display = 'block';
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      
+      closeLightbox.addEventListener('click', function() {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      });
+      
+      lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+          lightbox.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      });
+      
+      // Close with ESC key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && lightbox.style.display === 'block') {
+          lightbox.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      });
+    });
+
 </script>
   <script>
     // Gallery Lightbox Functionality
@@ -741,6 +823,17 @@ document.getElementById('simuladoRedirectForm').addEventListener('submit', funct
         }
       });
     });
+    
   </script>
+  <!-- Modal de Senha -->
+<div id="passwordModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>Digite a senha para acessar o simulado</h3>
+    <input type="password" id="passwordInput" placeholder="Digite a senha" class="form-input">
+    <p id="passwordError" class="error-message"></p>
+    <button id="confirmPassword" class="btn btn-primary">Confirmar</button>
+  </div>
+</div>
 </body>
 </html>
