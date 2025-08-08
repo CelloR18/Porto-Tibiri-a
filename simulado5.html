@@ -2314,14 +2314,17 @@
             </div>
 
             <!-- Resultados -->
-            <div class="results-container" id="results">
-                <h2 class="results-title">Simulado Concluído!</h2>
-                <div class="score" id="finalScore">0/40</div>
-                <p class="result-message" id="resultMessage">Parabéns por completar o simulado! Revise as questões para
-                    melhorar seu desempenho.</p>
-                <button class="restart-btn" onclick="restartSimulado()"><i class="fas fa-redo"></i> Refazer
-                    Simulado</button>
-            </div>
+            <div id="resultsContainer" style="display:none; padding: 2rem; text-align: center;">
+  <h2 style="margin-bottom: 1rem;">Resultados do Simulado</h2>
+  
+  <p id="finalScore" style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">0/40</p>
+  
+  <div id="resultMessage" style="margin-bottom: 1.5rem; font-size: 1rem; line-height: 1.5;"></div>
+  
+  <button onclick="restartSimulado()" style="padding: 0.8rem 1.5rem; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    Refazer Simulado
+  </button>
+</div>
         </div>
     </main>
    <script>
@@ -2334,14 +2337,14 @@
     
     // Objeto com as respostas corretas
     const correctAnswers = {
-      1: 'q1d', 2: 'q2a', 3: 'q3a', 4: 'q4c', 5: 'q5b',
-      6: 'q6b', 7: 'q7b', 8: 'q8d', 9: 'q9b', 10: 'q10d',
-      11: 'q11d', 12: 'q12a', 13: 'q13a', 14: 'q14d', 15: 'q15d',
-      16: 'q16e', 17: 'q17d', 18: 'q18e', 19: 'q19a', 20: 'q20b',
-      21: 'q21b', 22: 'q22c', 23: 'q23d', 24: 'q24c', 25: 'q25a',
-      26: 'q26d', 27: 'q27a', 28: 'q28a', 29: 'q29c', 30: 'q30a',
-      31: 'q31b', 32: 'q32c', 33: 'q33a', 34: 'q34b', 35: 'q35d',
-      36: 'q36c', 37: 'q37e', 38: 'q38b', 39: 'q39c', 40: 'q40a'
+      1: 'q1d', 2: 'q2a', 3: 'q3b', 4: 'q4c', 5: 'q5b',
+      6: 'q6e', 7: 'q7d', 8: 'q8d', 9: 'q9a', 10: 'q10e',
+      11: 'q11b', 12: 'q12a', 13: 'q13c', 14: 'q14e', 15: 'q15a',
+      16: 'q16c', 17: 'q17b', 18: 'q18a', 19: 'q19e', 20: 'q20e',
+      21: 'q21e', 22: 'q22d', 23: 'q23e', 24: 'q24d', 25: 'q25b',
+      26: 'q26a', 27: 'q27a', 28: 'q28b', 29: 'q29a', 30: 'q30e',
+      31: 'q31a', 32: 'q32c', 33: 'q33a', 34: 'q34c', 35: 'q35a',
+      36: 'q36d', 37: 'q37c', 38: 'q38d', 39: 'q39a', 40: 'q40e'
     };
     
     // Objeto com explicações das respostas
@@ -2466,39 +2469,74 @@
       const progress = (questionsAnswered / totalQuestions) * 100;
       document.getElementById('progressBar').style.width = `${progress}%`;
     }
-    
-    // Função para mostrar os resultados
     function showResults(final = false) {
-      document.querySelectorAll('.question-card').forEach(card => {
-        card.style.display = 'none';
-      });
-      
-      const resultsContainer = document.getElementById('resultsContainer');
-      resultsContainer.style.display = 'block';
-      
-      const percentage = Math.round((score / totalQuestions) * 100);
-      document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
-      
-      const resultMessage = document.getElementById('resultMessage');
-      resultMessage.innerHTML = `Você completou ${questionsAnswered} de ${totalQuestions} questões e acertou ${score}.<br>`;
-      
-      if (questionsAnswered === 0) {
-        resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
-      } else if (percentage >= 80) {
-        resultMessage.innerHTML += "Ótimo desempenho! Você está bem preparado para o exame de Arrais Amador.";
-      } else if (percentage >= 70) {
-        resultMessage.innerHTML += "Bom desempenho! Recomendamos revisar alguns tópicos antes do exame.";
-      } else if (percentage >= 50) {
-        resultMessage.innerHTML += "Desempenho regular. Sugerimos estudar mais antes de fazer o exame.";
-      } else {
-        resultMessage.innerHTML += "Recomendamos estudar mais antes de tentar o exame oficial.";
-      }
-    }
+  document.querySelectorAll('.question-card').forEach(card => {
+    card.style.display = 'none';
+  });
+
+  const resultsContainer = document.getElementById('resultsContainer');
+  resultsContainer.style.display = 'block';
+
+  // Mostra só até onde o usuário respondeu
+  const questionsConsidered = questionsAnswered > 0 ? questionsAnswered : 1; // evita divisão por zero
+  const percentage = Math.round((score / questionsConsidered) * 100);
+
+  document.getElementById('finalScore').textContent = `${score}/${questionsConsidered}`;
+
+  const resultMessage = document.getElementById('resultMessage');
+  resultMessage.innerHTML = `Você completou ${questionsAnswered} de ${totalQuestions} questões e acertou ${score}.<br>`;
+
+  if (questionsAnswered === 0) {
+    resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
+  } else if (percentage >= 80) {
+    resultMessage.innerHTML += "Ótimo desempenho! Você está bem preparado para o exame de Arrais Amador.";
+  } else if (percentage >= 70) {
+    resultMessage.innerHTML += "Bom desempenho! Recomendamos revisar alguns tópicos antes do exame.";
+  } else if (percentage >= 50) {
+    resultMessage.innerHTML += "Desempenho regular. Sugerimos estudar mais antes de fazer o exame.";
+  } else {
+    resultMessage.innerHTML += "Recomendamos estudar mais antes de tentar o exame oficial.";
+  }
+}
     
-    // Função para forçar mostrar os resultados
-    function forceShowResults() {
-      showResults(false);
+   function forceShowResults() {
+  for (let i = 1; i <= totalQuestions; i++) {
+    const alreadyAnswered = userAnswers[i] !== undefined;
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const feedback = document.getElementById(`feedback${i}`);
+
+    const correctId = correctAnswers[i];
+    const correctLetter = correctId.replace(`q${i}`, '').toUpperCase();
+    const selectedId = selected ? selected.id : null;
+    const selectedLetter = selectedId ? selectedId.replace(`q${i}`, '').toUpperCase() : '-';
+
+    // Se ainda não respondeu essa questão
+    if (!alreadyAnswered) {
+      userAnswers[i] = selectedId;
+      if (selectedId === correctId) {
+        score++;
+      }
+      questionsAnswered++;
     }
+
+    // Mostra feedback visual
+    if (feedback && selectedId !== null) {
+      if (selectedId === correctId) {
+        feedback.className = "feedback correct";
+        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
+        feedback.querySelector('.feedback-text').innerHTML = `Alternativa <strong>${selectedLetter}</strong>`;
+      } else {
+        feedback.className = "feedback incorrect";
+        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
+        feedback.querySelector('.feedback-text').innerHTML = `Alternativa correta: <strong>${correctLetter}</strong>`;
+      }
+      feedback.style.display = "block";
+    }
+  }
+
+  showResults(true);
+}
+
 
     // Função para reiniciar o simulado
     function restartSimulado() {
