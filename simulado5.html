@@ -1238,7 +1238,7 @@
             <div class="question-card" id="question19">
                 <div class="question-header">
                     <div class="question-number">19</div>
-                    <div class="question-text">As poças fixadas aos cais e trapiches que servem para fixarmos as espias
+                    <div class="question-text">As peças fixadas aos cais e trapiches que servem para fixarmos as espias
                         das embarcações atracadas chamam-se:</div>
                 </div>
                 <ul class="options-list">
@@ -1934,7 +1934,7 @@
             <div class="question-card" id="question33">
                 <div class="question-header">
                     <div class="question-number">33</div>
-                    <div class="question-text">O procedimento para se pegar uma bóia, a fim de amarramos uma embarcação
+                    <div class="question-text">O procedimento para se pegar uma bóia, a fim de amarrarmos uma embarcação
                         a ela, deve ser:</div>
                 </div>
                 <ul class="options-list">
@@ -2469,7 +2469,7 @@
       const progress = (questionsAnswered / totalQuestions) * 100;
       document.getElementById('progressBar').style.width = `${progress}%`;
     }
-    function showResults(final = false) {
+   function showResults(final = false) {
   document.querySelectorAll('.question-card').forEach(card => {
     card.style.display = 'none';
   });
@@ -2477,16 +2477,19 @@
   const resultsContainer = document.getElementById('resultsContainer');
   resultsContainer.style.display = 'block';
 
-  // Mostra só até onde o usuário respondeu
-  const questionsConsidered = questionsAnswered > 0 ? questionsAnswered : 1; // evita divisão por zero
-  const percentage = Math.round((score / questionsConsidered) * 100);
-
-  document.getElementById('finalScore').textContent = `${score}/${questionsConsidered}`;
+  // Calcular questões realmente respondidas
+  const answeredCount = Object.keys(userAnswers).length;
+  
+  // Mostrar o score em relação ao total de questões
+  document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
 
   const resultMessage = document.getElementById('resultMessage');
-  resultMessage.innerHTML = `Você completou ${questionsAnswered} de ${totalQuestions} questões e acertou ${score}.<br>`;
+  const percentage = Math.round((score / totalQuestions) * 100);
+  
+  resultMessage.innerHTML = `Você respondeu ${answeredCount} de ${totalQuestions} questões e acertou ${score}.<br>`;
+  resultMessage.innerHTML += `Sua pontuação: ${score}/${totalQuestions} (${percentage}%)<br><br>`;
 
-  if (questionsAnswered === 0) {
+  if (answeredCount === 0) {
     resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
   } else if (percentage >= 80) {
     resultMessage.innerHTML += "Ótimo desempenho! Você está bem preparado para o exame de Arrais Amador.";
@@ -2498,6 +2501,7 @@
     resultMessage.innerHTML += "Recomendamos estudar mais antes de tentar o exame oficial.";
   }
 }
+
     
    function forceShowResults() {
   for (let i = 1; i <= totalQuestions; i++) {
