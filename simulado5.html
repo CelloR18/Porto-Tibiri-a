@@ -2328,283 +2328,226 @@
         </div>
     </main>
    <script>
-    // Variáveis globais
-    let currentQuestion = 1;
-    let score = 0;
-    const totalQuestions = 40;
-    let questionsAnswered = 0;
-    let userAnswers = {};
-    
-    // Objeto com as respostas corretas
-    const correctAnswers = {
-      1: 'q1d', 2: 'q2a', 3: 'q3b', 4: 'q4c', 5: 'q5b',
-      6: 'q6e', 7: 'q7d', 8: 'q8d', 9: 'q9a', 10: 'q10e',
-      11: 'q11b', 12: 'q12a', 13: 'q13c', 14: 'q14e', 15: 'q15a',
-      16: 'q16c', 17: 'q17b', 18: 'q18a', 19: 'q19e', 20: 'q20e',
-      21: 'q21e', 22: 'q22d', 23: 'q23e', 24: 'q24d', 25: 'q25b',
-      26: 'q26a', 27: 'q27a', 28: 'q28b', 29: 'q29a', 30: 'q30e',
-      31: 'q31a', 32: 'q32c', 33: 'q33a', 34: 'q34c', 35: 'q35a',
-      36: 'q36d', 37: 'q37c', 38: 'q38d', 39: 'q39a', 40: 'q40e'
-    };
-    
-    // Objeto com explicações das respostas
-    const explanations = {
-      1: "A embarcação que vem a favor da corrente tem preferência e deve se posicionar no meio do rio, enquanto a outra deve manter-se à margem de boreste.",
-      2: "Embarcação com capacidade de manobra restrita é aquela que, pela natureza do trabalho que realiza, tem sua capacidade de manobrar limitada.",
-      3: "O balizamento dobrado é usado para indicar perigos isolados que ainda não foram registrados nas cartas náuticas oficiais.",
-      4: "O balizamento de perigo isolado possui listas horizontais pretas e encarnadas (vermelhas).",
-      5: "O sinal 'X' no balizamento indica que o navegante deve trocar de margem.",
-      6: "O balizamento de canal preferencial a bombordo emite luz encarnada (vermelha).",
-      7: "O balizamento terá cor verde com uma faixa horizontal encarnada, indicando que o canal principal está à direita (boreste) do sentido de navegação.",
-      8: "A temperatura da água não afeta diretamente as condições de manobra da embarcação.",
-      9: "A boia de aringue é utilizada para marcar a posição da âncora no fundo, facilitando sua localização e recuperação.",
-      10: "A abordagem em ângulo de 45° permite melhor controle da embarcação durante a atracação, com o leme para o lado oposto ao cais ajudando a aproximar a popa.",
-      11: "Baldes d'água podem ser usados como último recurso para apagar incêndios, desde que a parte elétrica esteja desligada e o tipo de incêndio permita o uso de água.",
-      12: "As combustões são classificadas em completa, incompleta, espontânea e explosão, conforme sua velocidade e características.",
-      13: "O extintor de água deve ser direcionado para a base das chamas, onde está o combustível, para ser mais eficaz no combate ao fogo.",
-      14: "Éter e benzina são exemplos de combustíveis voláteis, que evaporam facilmente a temperatura ambiente.",
-      15: "O aquecimento da vítima de hemorragia ajuda a prevenir o estado de choque, que pode ser causado pela perda significativa de sangue.",
-      16: "Quando não for possível aplicar o método boca a boca, pode-se ventilar os pulmões da vítima através do nariz (boca-nariz).",
-      17: "A falta de funcionamento dos intestinos em náufragos ocorre principalmente devido à escassez de alimentação.",
-      18: "Embarcações de alto-mar devem ser conduzidas por Capitão-Amador quando navegando em sua área de atuação.",
-      19: "O Termo de Responsabilidade é o documento onde o proprietário assume a responsabilidade pelas condições de operação da embarcação.",
-      20: "Embarcações de interior podem ser conduzidas por qualquer Arrais-Amador, independentemente da categoria específica.",
-      21: "A navegação em hidrovias interiores é classificada como navegação interior segundo a RLESTA.",
-      22: "O ordenamento do uso das praias compete aos municípios, conforme a legislação brasileira.",
-      23: "A aproximação deve ser feita perpendicular à linha base, com velocidade não superior a 3 nós, garantindo a segurança dos banhistas.",
-      24: "A reincidência em conduzir embarcação sob efeito de álcool ou drogas resulta no cancelamento do Certificado de Habilitação.",
-      25: "Essas embarcações podem trafegar a partir de 200 metros da linha base, conforme estabelecido na NORMAM-03.",
-      26: "A madeira é um exemplo de combustível que não contém comburente em sua estrutura molecular.",
-      27: "Combustíveis com comburente em sua estrutura molecular (como certos produtos químicos) só podem ser extintos por resfriamento.",
-      28: "Em caso de incêndio, a embarcação deve ser manobrada para posicionar as pessoas a barlavento (direção de onde vem o vento), evitando que a fumaça e chamas as atinjam.",
-      29: "O termo correto para a quantidade máxima de pessoas autorizadas a bordo, incluindo tripulação, é 'lotação'.",
-      30: "Água salgada não deve ser usada em incêndios classe C (elétricos) porque pode danificar os circuitos elétricos e piorar a situação, além do risco de choque elétrico.",
-      31: "Em previsão de mau tempo, deve-se aumentar o comprimento da amarra na água para melhorar a retenção da âncora e absorver melhor as forças do vento e ondas.",
-      32: "Em caso de parada cardíaca, deve-se iniciar imediatamente a ressuscitação cardiopulmonar (RCP) com respiração boca a boca e massagem cardíaca.",
-      33: "Deve-se trafegar e fundear em locais com menor tráfego e concentração de embarcações, conforme estabelecido na NORMAM-03 para garantir a segurança.",
-      34: "O comandante da embarcação é o responsável por manter a disciplina a bordo enquanto a embarcação está em movimento.",
-      35: "Pode-se improvisar uma tala com qualquer pedaço de material rígido (como madeira) e tiras de pano para imobilizar a fratura.",
-      36: "Dispositivos pirotécnicos e fumígenos são obrigatórios para embarcações de médio e grande porte em qualquer área de navegação.",
-      37: "As peças macias usadas para proteger o costado da embarcação contra o cais são chamadas de defensas.",
-      38: "A espuma química é o agente extintor mais efetivo para incêndios classe B (líquidos inflamáveis) e também pode ser usada em incêndios classe A (materiais sólidos).",
-      39: "A navegação em águas marítimas desabrigadas é classificada como navegação de mar aberto segundo a RLESTA.",
-      40: "A insolação ocorre por exposição prolongada ao sol e calor intenso, podendo causar desidratação e elevação da temperatura corporal."
-    };
+  // Variáveis globais
+  let currentQuestion = 1;
+  let score = 0;
+  const totalQuestions = 40;
+  let questionsAnswered = 0;
+  let userAnswers = {};
+  let userCorrect = {}; // <- NOVO (controla acertos reais)
 
-    // Função para verificar a resposta
-    function checkAnswer(questionNumber, correctAnswerId) {
-      const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
-      const feedback = document.getElementById(`feedback${questionNumber}`);
-      
-      if (!selectedOption) {
-        alert("Por favor, selecione uma resposta antes de continuar.");
-        return;
-      }
-      
-      // Se já respondeu esta questão, não conta novamente
-      if (!userAnswers[questionNumber]) {
-        questionsAnswered++;
-        userAnswers[questionNumber] = selectedOption.id;
-      }
-      
-      const selectedLetter = selectedOption.id.replace(`q${questionNumber}`, '').toUpperCase();
-      const correctLetter = correctAnswerId.replace(`q${questionNumber}`, '').toUpperCase();
-      
-      if (selectedOption.id === correctAnswerId) {
-        feedback.className = "feedback correct";
-        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
-        feedback.querySelector('.feedback-text').innerHTML = `Alternativa <strong>${selectedLetter}</strong> `;
-        
-        // Só incrementa o score se não tinha respondido antes ou se tinha errado
-        if (!userAnswers[questionNumber] || userAnswers[questionNumber] !== correctAnswerId) {
-          score++;
-          userAnswers[questionNumber] = correctAnswerId;
-        }
-      } else {
-        feedback.className = "feedback incorrect";
-        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
-        feedback.querySelector('.feedback-text').innerHTML = `Alternativa correta: <strong>${correctLetter}</strong><br>`;
-        
-        // Se tinha acertado antes e agora errou, diminui o score
-        if (userAnswers[questionNumber] === correctAnswerId) {
-          score--;
-          userAnswers[questionNumber] = selectedOption.id;
-        }
-      }
-      
-      feedback.style.display = "block";
-      updateProgress();
-      
-      // Atualiza o botão para "Próxima Questão" ou "Ver Resultados"
-      const nextBtn = document.querySelector(`#question${questionNumber} .next-btn`);
-      if (questionNumber === totalQuestions) {
-        nextBtn.textContent = "Ver Resultados";
-        nextBtn.onclick = function() { showResults(true); };
-      } else {
-        nextBtn.textContent = "Próxima Questão";
-        nextBtn.onclick = function() { nextQuestion(); };
-      }
+  // Objeto com as respostas corretas
+  const correctAnswers = {
+    1: 'q1d', 2: 'q2a', 3: 'q3b', 4: 'q4c', 5: 'q5b',
+    6: 'q6e', 7: 'q7d', 8: 'q8d', 9: 'q9a', 10: 'q10e',
+    11: 'q11b', 12: 'q12a', 13: 'q13c', 14: 'q14e', 15: 'q15a',
+    16: 'q16c', 17: 'q17b', 18: 'q18a', 19: 'q19e', 20: 'q20e',
+    21: 'q21e', 22: 'q22d', 23: 'q23e', 24: 'q24d', 25: 'q25b',
+    26: 'q26a', 27: 'q27a', 28: 'q28b', 29: 'q29a', 30: 'q30e',
+    31: 'q31a', 32: 'q32c', 33: 'q33a', 34: 'q34c', 35: 'q35a',
+    36: 'q36d', 37: 'q37c', 38: 'q38d', 39: 'q39a', 40: 'q40e'
+  };
+
+  // Verifica resposta da questão
+  function checkAnswer(questionNumber, correctAnswerId) {
+    const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
+    const feedback = document.getElementById(`feedback${questionNumber}`);
+
+    if (!selectedOption) {
+      alert("Por favor, selecione uma resposta antes de continuar.");
+      return;
     }
 
-    // Função para avançar para a próxima questão
-    function nextQuestion() {
-      document.getElementById(`question${currentQuestion}`).style.display = 'none';
-      document.getElementById(`question${currentQuestion}`).classList.remove('active');
-      currentQuestion++;
-      
-      if (currentQuestion <= totalQuestions) {
-        document.getElementById(`question${currentQuestion}`).style.display = 'block';
-        document.getElementById(`question${currentQuestion}`).classList.add('active');
-        updateProgress();
-        
-        // Configura o botão da próxima questão
-        const nextBtn = document.querySelector(`#question${currentQuestion} .next-btn`);
-        nextBtn.textContent = "Confirmar Resposta";
-        nextBtn.onclick = function() { checkAnswer(currentQuestion, correctAnswers[currentQuestion]); };
-      }
-    }
-    
-    // Função para atualizar a barra de progresso
-    function updateProgress() {
-      const progress = (questionsAnswered / totalQuestions) * 100;
-      document.getElementById('progressBar').style.width = `${progress}%`;
-    }
-   function showResults(final = false) {
-  document.querySelectorAll('.question-card').forEach(card => {
-    card.style.display = 'none';
-  });
-
-  const resultsContainer = document.getElementById('resultsContainer');
-  resultsContainer.style.display = 'block';
-
-  // Calcular questões realmente respondidas
-  const answeredCount = Object.keys(userAnswers).length;
-  
-  // Mostrar o score em relação ao total de questões
-  document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
-
-  const resultMessage = document.getElementById('resultMessage');
-  const percentage = Math.round((score / totalQuestions) * 100);
-  
-  resultMessage.innerHTML = `Você respondeu ${answeredCount} de ${totalQuestions} questões e acertou ${score}.<br>`;
-  resultMessage.innerHTML += `Sua pontuação: ${score}/${totalQuestions} (${percentage}%)<br><br>`;
-
-  if (answeredCount === 0) {
-    resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
-  } else if (percentage >= 80) {
-    resultMessage.innerHTML += "Ótimo desempenho! Você está bem preparado para o exame de Arrais Amador.";
-  } else if (percentage >= 70) {
-    resultMessage.innerHTML += "Bom desempenho! Recomendamos revisar alguns tópicos antes do exame.";
-  } else if (percentage >= 50) {
-    resultMessage.innerHTML += "Desempenho regular. Sugerimos estudar mais antes de fazer o exame.";
-  } else {
-    resultMessage.innerHTML += "Recomendamos estudar mais antes de tentar o exame oficial.";
-  }
-}
-
-    
-   function forceShowResults() {
-  for (let i = 1; i <= totalQuestions; i++) {
-    const alreadyAnswered = userAnswers[i] !== undefined;
-    const selected = document.querySelector(`input[name="q${i}"]:checked`);
-    const feedback = document.getElementById(`feedback${i}`);
-
-    const correctId = correctAnswers[i];
-    const correctLetter = correctId.replace(`q${i}`, '').toUpperCase();
-    const selectedId = selected ? selected.id : null;
-    const selectedLetter = selectedId ? selectedId.replace(`q${i}`, '').toUpperCase() : '-';
-
-    // Se ainda não respondeu essa questão
-    if (!alreadyAnswered) {
-      userAnswers[i] = selectedId;
-      if (selectedId === correctId) {
-        score++;
-      }
+    // Salva a resposta marcada
+    if (!userAnswers[questionNumber]) {
+      userAnswers[questionNumber] = selectedOption.id;
       questionsAnswered++;
     }
 
-    // Mostra feedback visual
-    if (feedback && selectedId !== null) {
-      if (selectedId === correctId) {
-        feedback.className = "feedback correct";
-        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
-        feedback.querySelector('.feedback-text').innerHTML = `Alternativa <strong>${selectedLetter}</strong>`;
-      } else {
-        feedback.className = "feedback incorrect";
-        feedback.querySelector('.feedback-title').innerHTML = '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
-        feedback.querySelector('.feedback-text').innerHTML = `Alternativa correta: <strong>${correctLetter}</strong>`;
-      }
-      feedback.style.display = "block";
+    const selectedId = selectedOption.id;
+    const correct = selectedId === correctAnswerId;
+
+    // Só contabiliza acerto uma vez
+    if (userCorrect[questionNumber] === undefined) {
+      userCorrect[questionNumber] = correct;
+      if (correct) score++;
+    }
+
+    const selectedLetter = selectedId.replace(`q${questionNumber}`, '').toUpperCase();
+    const correctLetter = correctAnswerId.replace(`q${questionNumber}`, '').toUpperCase();
+
+    // Feedback visual
+    if (correct) {
+      feedback.className = "feedback correct";
+      feedback.querySelector('.feedback-title').innerHTML =
+        '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
+      feedback.querySelector('.feedback-text').innerHTML =
+        `Alternativa <strong>${selectedLetter}</strong>`;
+    } else {
+      feedback.className = "feedback incorrect";
+      feedback.querySelector('.feedback-title').innerHTML =
+        '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
+      feedback.querySelector('.feedback-text').innerHTML =
+        `Alternativa correta: <strong>${correctLetter}</strong>`;
+    }
+
+    feedback.style.display = "block";
+    updateProgress();
+
+    const nextBtn = document.querySelector(`#question${questionNumber} .next-btn`);
+    if (questionNumber === totalQuestions) {
+      nextBtn.textContent = "Ver Resultados";
+      nextBtn.onclick = function () { showResults(true); };
+    } else {
+      nextBtn.textContent = "Próxima Questão";
+      nextBtn.onclick = function () { nextQuestion(); };
     }
   }
 
-  showResults(true);
-}
+  // Próxima questão
+  function nextQuestion() {
+    document.getElementById(`question${currentQuestion}`).style.display = 'none';
+    document.getElementById(`question${currentQuestion}`).classList.remove('active');
+    currentQuestion++;
 
-
-    // Função para reiniciar o simulado
-    function restartSimulado() {
-      currentQuestion = 1;
-      score = 0;
-      questionsAnswered = 0;
-      userAnswers = {};
-      
-      document.getElementById('resultsContainer').style.display = 'none';
-      
-      document.querySelectorAll('.question-card').forEach((card, index) => {
-        card.style.display = index === 0 ? 'block' : 'none';
-        card.classList.remove('active');
-        card.querySelectorAll('input').forEach(input => {
-          input.checked = false;
-        });
-        const feedback = card.querySelector('.feedback');
-        if (feedback) feedback.style.display = 'none';
-        const nextBtn = card.querySelector('.next-btn');
-        if (nextBtn) {
-          nextBtn.textContent = 'Confirmar Resposta';
-          nextBtn.onclick = function() { checkAnswer(currentQuestion, correctAnswers[currentQuestion]); };
-        }
-      });
-
-      document.getElementById('question1').classList.add('active');
-      document.getElementById('progressBar').style.width = '0%';
-    }
-    
-    // Adiciona botões de encerrar em cada questão
-    function addEndButtons() {
-      const questionCards = document.querySelectorAll('.question-card');
-      questionCards.forEach(card => {
-        const endButton = document.createElement('button');
-        endButton.className = 'end-btn';
-        endButton.innerHTML = '<i class="fas fa-flag-checkered"></i> Encerrar Simulado';
-        endButton.onclick = function() { forceShowResults(); };
-        
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'button-container';
-        buttonContainer.style.display = 'flex';
-        buttonContainer.style.gap = '1rem';
-        buttonContainer.style.marginTop = '1.5rem';
-        buttonContainer.style.flexWrap = 'wrap';
-        
-        const nextBtn = card.querySelector('.next-btn');
-        card.insertBefore(buttonContainer, nextBtn.nextSibling);
-        buttonContainer.appendChild(nextBtn.cloneNode(true));
-        buttonContainer.appendChild(endButton);
-        
-        card.removeChild(nextBtn);
-      });
-    }
-    
-    // Inicialização
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.question-card:not(#question1)').forEach(card => {
-        card.style.display = 'none';
-      });
-      document.getElementById('question1').classList.add('active');
-      addEndButtons();
+    if (currentQuestion <= totalQuestions) {
+      document.getElementById(`question${currentQuestion}`).style.display = 'block';
+      document.getElementById(`question${currentQuestion}`).classList.add('active');
       updateProgress();
+
+      const nextBtn = document.querySelector(`#question${currentQuestion} .next-btn`);
+      nextBtn.textContent = "Confirmar Resposta";
+      nextBtn.onclick = function () {
+        checkAnswer(currentQuestion, correctAnswers[currentQuestion]);
+      };
+    }
+  }
+
+  // Barra de progresso
+  function updateProgress() {
+    const progress = (questionsAnswered / totalQuestions) * 100;
+    document.getElementById('progressBar').style.width = `${progress}%`;
+  }
+
+  // Exibe resultados
+  function showResults(final = false) {
+    document.querySelectorAll('.question-card').forEach(card => {
+      card.style.display = 'none';
     });
+
+    const resultsContainer = document.getElementById('resultsContainer');
+    resultsContainer.style.display = 'block';
+
+    const answeredCount = Object.keys(userAnswers).length;
+    const percentage = Math.round((score / totalQuestions) * 100);
+
+    document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
+
+    const resultMessage = document.getElementById('resultMessage');
+    resultMessage.innerHTML =
+      `Você respondeu ${answeredCount} de ${totalQuestions} questões e acertou ${score}.<br>`;
+    resultMessage.innerHTML += `Sua pontuação: ${score}/${totalQuestions} (${percentage}%)<br><br>`;
+
+    if (answeredCount === 0) {
+      resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
+    } else if (percentage >= 80) {
+      resultMessage.innerHTML += "Ótimo desempenho! Você está bem preparado para o exame de Arrais Amador.";
+    } else if (percentage >= 70) {
+      resultMessage.innerHTML += "Bom desempenho! Recomendamos revisar alguns tópicos antes do exame.";
+    } else if (percentage >= 50) {
+      resultMessage.innerHTML += "Desempenho regular. Sugerimos estudar mais antes de fazer o exame.";
+    } else {
+      resultMessage.innerHTML += "Recomendamos estudar mais antes de tentar o exame oficial.";
+    }
+  }
+
+  // Acionamento do botão "Encerrar Simulado"
+  function forceShowResults() {
+    for (let i = 1; i <= totalQuestions; i++) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      const selectedId = selected ? selected.id : null;
+
+      // Se nunca respondeu antes
+      if (userCorrect[i] === undefined) {
+        userAnswers[i] = selectedId;
+        const correct = selectedId === correctAnswers[i];
+        userCorrect[i] = correct;
+
+        if (correct) score++;
+        questionsAnswered++;
+      }
+    }
+
+    showResults(true);
+  }
+
+  // Reiniciar simulado
+  function restartSimulado() {
+    currentQuestion = 1;
+    score = 0;
+    questionsAnswered = 0;
+    userAnswers = {};
+    userCorrect = {};
+
+    document.getElementById('resultsContainer').style.display = 'none';
+
+    document.querySelectorAll('.question-card').forEach((card, index) => {
+      card.style.display = index === 0 ? 'block' : 'none';
+      card.classList.remove('active');
+      card.querySelectorAll('input').forEach(i => i.checked = false);
+
+      const feedback = card.querySelector('.feedback');
+      if (feedback) feedback.style.display = 'none';
+
+      const nextBtn = card.querySelector('.next-btn');
+      if (nextBtn) {
+        nextBtn.textContent = 'Confirmar Resposta';
+        nextBtn.onclick = function () {
+          checkAnswer(currentQuestion, correctAnswers[currentQuestion]);
+        };
+      }
+    });
+
+    document.getElementById('question1').classList.add('active');
+    document.getElementById('progressBar').style.width = '0%';
+  }
+
+  // Adiciona botões de encerrar
+  function addEndButtons() {
+    const questionCards = document.querySelectorAll('.question-card');
+    questionCards.forEach(card => {
+      const endButton = document.createElement('button');
+      endButton.className = 'end-btn';
+      endButton.innerHTML = '<i class="fas fa-flag-checkered"></i> Encerrar Simulado';
+      endButton.onclick = function () { forceShowResults(); };
+
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'button-container';
+      buttonContainer.style.display = 'flex';
+      buttonContainer.style.gap = '1rem';
+      buttonContainer.style.marginTop = '1.5rem';
+      buttonContainer.style.flexWrap = 'wrap';
+
+      const nextBtn = card.querySelector('.next-btn');
+      card.insertBefore(buttonContainer, nextBtn.nextSibling);
+      buttonContainer.appendChild(nextBtn.cloneNode(true));
+      buttonContainer.appendChild(endButton);
+
+      card.removeChild(nextBtn);
+    });
+  }
+
+  // Inicialização
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.question-card:not(#question1)').forEach(card => {
+      card.style.display = 'none';
+    });
+    document.getElementById('question1').classList.add('active');
+    addEndButtons();
+    updateProgress();
+  });
 </script>
+
 </body>
 
 </html>
