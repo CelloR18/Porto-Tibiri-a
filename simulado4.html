@@ -326,7 +326,14 @@
         padding: 0.8rem 1.5rem;
         font-size: 0.9rem;
       }
-    };
+    }
+
+    .button-container {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
 </style>
    
 </head>
@@ -389,7 +396,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: As regras do RIPEAM se aplicam a todas as embarcações em mar aberto e em todas as águas a este ligadas, navegáveis por navios de alto mar, e para embarcações em águas interiores.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(1, 'q1d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(1, 'q1d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
       
       <!-- Questão 2 -->
@@ -434,7 +444,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: Dois apitos longos seguidos de dois curtos significam "Tenciono ultrapassá-lo por seu bombordo".</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(2, 'q2d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(2, 'q2e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 3 -->
@@ -479,7 +492,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>C</strong> está correta: As bóias do balizamento podem ser cegas (sem luz) ou luminosas (com luz).</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(3, 'q3c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(3, 'q3c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 4 -->
@@ -524,7 +540,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>E</strong> está correta: O sinal "H" no balizamento significa "Navegar no meio do canal".</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(4, 'q4e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(4, 'q4e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 5 -->
@@ -569,7 +588,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>E</strong> está correta: O balizamento de interior de porto serve como orientação para uma navegação segura.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(5, 'q5e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(5, 'q5e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 6 -->
@@ -614,7 +636,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: O balizamento lateral indica os lados de bombordo e boreste de uma rota a ser seguida.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(6, 'q6d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(6, 'q6d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 7 -->
@@ -659,7 +684,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>E</strong> está correta: O balizamento terá cor verde com uma faixa horizontal encarnada, indicando que o canal principal está à direita (boreste) do sentido de navegação.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(7, 'q7e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(7, 'q7e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 8 -->
@@ -704,7 +732,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: Risco de abalroamento ocorre quando a marcação (direção) da outra embarcação permanece constante enquanto a distância diminui.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(8, 'q8a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(8, 'q8a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 9 -->
@@ -749,7 +780,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>C</strong> está correta: A âncora Danforth deve ser evitada em fundeadouros de areia dura, pois tem menor eficácia nesse tipo de fundo.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(9, 'q9c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(9, 'q9c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 10 -->
@@ -794,7 +828,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: Extintores portáteis são os equipamentos de combate a incêndios mais comumente encontrados em embarcações de esporte e recreio.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(10, 'q10a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(10, 'q10a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 11 -->
@@ -839,7 +876,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: Incêndios classe C são aqueles que ocorrem em equipamentos elétricos energizados.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(11, 'q11d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(11, 'q11d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 12 -->
@@ -884,7 +924,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: Incêndios em equipamentos elétricos energizados são classificados como classe "C".</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(12, 'q12a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(12, 'q12a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 13 -->
@@ -929,7 +972,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: O oxigênio é o principal comburente na natureza, essencial para a combustão.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(13, 'q13a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(13, 'q13a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 14 -->
@@ -974,7 +1020,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: Para usar o extintor de CO2, deve-se retirar o pino de segurança, segurar o difusor (para evitar congelamento) e direcionar o jato para a base do fogo.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(14, 'q14d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(14, 'q14d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 15 -->
@@ -1019,7 +1068,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>B</strong> está correta: A movimentação regular ajuda a manter a circulação sanguínea, prevenindo problemas como hipotermia e trombose.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(15, 'q15b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(15, 'q15b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 16 -->
@@ -1064,7 +1116,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>B</strong> está correta: Embarcações de alto-mar devem ser conduzidas por Capitão-Amador quando navegando em sua área de atuação.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(16, 'q16b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(16, 'q16b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 17 -->
@@ -1109,7 +1164,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: Aquele com habilitação certificada para operar embarcações de esporte e recreio em caráter não-profissional é denominado Amador.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(17, 'q17a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(17, 'q17a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 18 -->
@@ -1154,7 +1212,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>C</strong> está correta: A autoridade marítima sustará os documentos até a quitação do débito decorrente de infração.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(18, 'q18c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(18, 'q18c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 19 -->
@@ -1199,7 +1260,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: A linha de arrebentação das ondas ou início do espelho d'água é chamada de linha base.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(19, 'q19a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(19, 'q19a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 20 -->
@@ -1244,7 +1308,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: O infrator tem 15 dias úteis para apresentar sua defesa após o auto de infração.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(20, 'q20d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(20, 'q20d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 21 -->
@@ -1289,7 +1356,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: A reincidência em conduzir embarcação sob efeito de álcool ou drogas resulta no cancelamento do Certificado de Habilitação.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(21, 'q21a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(21, 'q21a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 22 -->
@@ -1334,7 +1404,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: Os efeitos da temperatura ambiente sobre os náufragos estão intimamente ligados à velocidade do vento (fator wind chill).</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(22, 'q22a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(22, 'q22a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 23 -->
@@ -1379,7 +1452,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>C</strong> está correta: As âncoras flutuantes das balsas servem para reduzir a velocidade de deriva, mantendo a balsa mais estável.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(23, 'q23c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(23, 'q23c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 24 -->
@@ -1424,7 +1500,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: A reação química com desprendimento de luz e calor na presença de combustível, comburente e temperatura de ignição é chamada de combustão.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(24, 'q24a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(24, 'q24a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 25 -->
@@ -1469,7 +1548,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>C</strong> está correta: A temperatura necessária para iniciar a combustão é chamada de temperatura de ignição.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(25, 'q25c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(25, 'q25c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 26 -->
@@ -1514,7 +1596,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>C</strong> está correta: A principal razão para não usar água em incêndios elétricos é o risco de choque elétrico, pois a água conduz eletricidade.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(26, 'q26c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(26, 'q26c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 27 -->
@@ -1559,7 +1644,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>B</strong> está correta: A quantidade de coletes salva-vidas deve corresponder à quantidade de pessoas legalmente autorizadas a embarcar.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(27, 'q27b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(27, 'q27b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 28 -->
@@ -1604,7 +1692,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: Elevar o membro com hemorragia acima do nível do coração ajuda a reduzir o fluxo sanguíneo para a área.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(28, 'q28a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(28, 'q28a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 29 -->
@@ -1649,7 +1740,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: Ao retirar peso de bordo, a borda livre aumenta (parte da embarcação acima da água) e o calado diminui (parte submersa).</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(29, 'q29d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(29, 'q29d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 30 -->
@@ -1694,7 +1788,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: O croque é uma haste com gancho usada para auxiliar nas manobras de atracação e pegar bóias.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(30, 'q30d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(30, 'q30d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 31 -->
@@ -1739,7 +1836,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>E</strong> está correta: Incêndios classe D (metais combustíveis) são melhor combatidos com extintores de pó químico especial.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(31, 'q31e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(31, 'q31e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 32 -->
@@ -1784,7 +1884,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: Manter a disciplina a bordo é responsabilidade do Comandante da embarcação.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(32, 'q32d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(32, 'q32d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 33 -->
@@ -1829,7 +1932,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: O uso de coletes salva-vidas é obrigatório apenas para passageiros e tripulantes de motos aquáticas durante a navegação.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(33, 'q33a')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(33, 'q33e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 34 -->
@@ -1874,7 +1980,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>C</strong> está correta: O representante da Autoridade Marítima nos estados é chamado de Capitão dos Portos.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(34, 'q34c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(34, 'q34c')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 35 -->
@@ -1919,7 +2028,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>B</strong> está correta: O sol é o principal criador e influenciador dos fenômenos meteorológicos na Terra.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(35, 'q35b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(35, 'q35b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 36 -->
@@ -1964,7 +2076,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>B</strong> está correta: Espias (cordas) e pneus desgastados podem ser usados como defensas improvisadas em atracações.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(36, 'q36b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(36, 'q36b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 37 -->
@@ -2005,13 +2120,17 @@
             </label>
           </li>
         </ul>
-        <div class="feedback" id="feedback38">
+        <div class="feedback" id="feedback37">
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
-          <p class="feedback-text">A alternativa <strong>E</strong> está correta: Nomes que possam causar constrangimento não são autorizados para embarcações registradas.</p>
+          <p class="feedback-text">A alternativa <strong>C</strong> está correta: A carteira de Motonauta pode ser obtida por menores de 18 anos.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(37, 'q37e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(37, 'q37e')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
-                  <!-- Questão 38 -->
+
+      <!-- Questão 38 -->
       <div class="question-card" id="question38">
         <div class="question-header">
           <div class="question-number">38</div>
@@ -2053,7 +2172,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>B</strong> está correta: Nomes que possam causar constrangimento não são autorizados para embarcações registradas.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(38, 'q38b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(38, 'q38b')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 39 -->
@@ -2098,7 +2220,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>D</strong> está correta: Pessoas mareadas devem ficar no convés tomando ar fresco, pois isso ajuda a aliviar os sintomas.</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(39, 'q39d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(39, 'q39d')">Confirmar Resposta <i class="fas fa-arrow-right"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Questão 40 -->
@@ -2143,7 +2268,10 @@
           <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
           <p class="feedback-text">A alternativa <strong>A</strong> está correta: A sequência correta para indicar ultrapassagem por bombordo é dois apitos longos seguidos de dois curtos ( — — • • ).</p>
         </div>
-        <button class="next-btn" onclick="checkAnswer(40, 'q40a')">Finalizar Simulado <i class="fas fa-check"></i></button>
+        <div class="button-container">
+          <button class="next-btn" onclick="checkAnswer(40, 'q40b')">Finalizar Simulado <i class="fas fa-check"></i></button>
+          <button class="end-btn" onclick="forceShowResults()"><i class="fas fa-flag-checkered"></i> Encerrar Simulado</button>
+        </div>
       </div>
 
       <!-- Resultados -->
@@ -2162,41 +2290,6 @@
   const totalQuestions = 40;
   let questionsAnswered = 0;
 
-  const correctAnswers = {
-    1: 'q1d', 2: 'q2a', 3: 'q3a', 4: 'q4c', 5: 'q5b',
-    6: 'q6b', 7: 'q7b', 8: 'q8d', 9: 'q9b', 10: 'q10d',
-    11: 'q11d', 12: 'q12a', 13: 'q13a', 14: 'q14d', 15: 'q15d',
-    16: 'q16e', 17: 'q17d', 18: 'q18e', 19: 'q19a', 20: 'q20b',
-    21: 'q21b', 22: 'q22c', 23: 'q23d', 24: 'q24c', 25: 'q25a',
-    26: 'q26d', 27: 'q27a', 28: 'q28a', 29: 'q29c', 30: 'q30a',
-    31: 'q31b', 32: 'q32c', 33: 'q33a', 34: 'q34b', 35: 'q35d',
-    36: 'q36c', 37: 'q37e', 38: 'q38b', 39: 'q39c', 40: 'q40a'
-  };
-
-  function addEndButtons() {
-    const questionCards = document.querySelectorAll('.question-card');
-    questionCards.forEach(card => {
-      const endButton = document.createElement('button');
-      endButton.className = 'end-btn';
-      endButton.innerHTML = '<i class="fas fa-flag-checkered"></i> Encerrar Simulado';
-      endButton.onclick = function () { forceShowResults(); };
-
-      const buttonContainer = document.createElement('div');
-      buttonContainer.className = 'button-container';
-      buttonContainer.style.display = 'flex';
-      buttonContainer.style.gap = '1rem';
-      buttonContainer.style.marginTop = '1.5rem';
-      buttonContainer.style.flexWrap = 'wrap';
-
-      const nextBtn = card.querySelector('.next-btn');
-      card.insertBefore(buttonContainer, nextBtn.nextSibling);
-      buttonContainer.appendChild(nextBtn.cloneNode(true));
-      buttonContainer.appendChild(endButton);
-
-      card.removeChild(nextBtn);
-    });
-  }
-
   function checkAnswer(questionNumber, correctAnswerId) {
     const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
     const feedback = document.getElementById(`feedback${questionNumber}`);
@@ -2212,20 +2305,22 @@
 
     if (selectedOption.id === correctAnswerId) {
       feedback.className = "feedback correct";
-      feedback.innerHTML = `<span class="feedback-simple correct"><i class="fas fa-check-circle"></i> Resposta Correta</span>`;
+      feedback.innerHTML = `<div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div><p class="feedback-text">A alternativa <strong>${correctLetter}</strong> está correta.</p>`;
       score++;
     } else {
       feedback.className = "feedback incorrect";
-      feedback.innerHTML = `<span class="feedback-simple incorrect"><i class="fas fa-times-circle"></i> Resposta Incorreta. A alternativa correta era <strong>${correctLetter}</strong>.</span>`;
+      feedback.innerHTML = `<div class="feedback-title"><i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span></div><p class="feedback-text">A alternativa correta era <strong>${correctLetter}</strong>.</p>`;
     }
 
     feedback.style.display = "block";
     updateProgress();
 
+    // Atualizar o botão para "Próxima Questão"
+    const btn = document.querySelector(`#question${questionNumber} .next-btn`);
     if (questionNumber === totalQuestions) {
-      showResults(true);
+      btn.textContent = "Finalizar Simulado";
+      btn.onclick = function () { showResults(true); };
     } else {
-      const btn = document.querySelector(`#question${questionNumber} .next-btn`);
       btn.textContent = "Próxima Questão";
       btn.onclick = function () { nextQuestion(); };
     }
@@ -2233,12 +2328,10 @@
 
   function nextQuestion() {
     document.getElementById(`question${currentQuestion}`).style.display = 'none';
-    document.getElementById(`question${currentQuestion}`).classList.remove('active');
     currentQuestion++;
 
     if (currentQuestion <= totalQuestions) {
       document.getElementById(`question${currentQuestion}`).style.display = 'block';
-      document.getElementById(`question${currentQuestion}`).classList.add('active');
       updateProgress();
     } else {
       showResults(true);
@@ -2255,10 +2348,13 @@
       card.style.display = 'none';
     });
 
-    document.getElementById('resultsContainer').style.display = 'block';
-    const percentage = Math.round((score / (final ? totalQuestions : questionsAnswered)) * 100);
+    const resultsContainer = document.getElementById('results');
+    resultsContainer.style.display = 'block';
+    
+    const total = final ? totalQuestions : questionsAnswered;
+    const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
 
-    document.getElementById('finalScore').textContent = `${score}/${final ? totalQuestions : questionsAnswered}`;
+    document.getElementById('finalScore').textContent = `${score}/${total}`;
     const resultMessage = document.getElementById('resultMessage');
 
     if (questionsAnswered === 0) {
@@ -2283,36 +2379,52 @@
     score = 0;
     questionsAnswered = 0;
 
-    document.getElementById('resultsContainer').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
 
     document.querySelectorAll('.question-card').forEach((card, index) => {
       card.style.display = index === 0 ? 'block' : 'none';
-      card.classList.remove('active');
       card.querySelectorAll('input').forEach(input => input.checked = false);
       const feedback = card.querySelector('.feedback');
       if (feedback) feedback.style.display = 'none';
       const nextBtn = card.querySelector('.next-btn');
       if (nextBtn) {
-        nextBtn.textContent = 'Confirmar Resposta';
-        nextBtn.onclick = function () { checkAnswer(currentQuestion, correctAnswers[currentQuestion]); };
+        nextBtn.textContent = index === totalQuestions - 1 ? 'Finalizar Simulado' : 'Confirmar Resposta';
+        nextBtn.onclick = function () { 
+          if (index === totalQuestions - 1) {
+            checkAnswer(index + 1, getCorrectAnswer(index + 1));
+          } else {
+            checkAnswer(index + 1, getCorrectAnswer(index + 1));
+          }
+        };
       }
     });
 
-    document.getElementById('question1').classList.add('active');
     document.getElementById('progressBar').style.width = '0%';
-    document.getElementById('question1').style.display = 'block';
+  }
+
+  function getCorrectAnswer(questionNumber) {
+    // Esta função retorna a resposta correta para cada questão
+    // Você pode implementar um objeto com todas as respostas corretas se necessário
+    const correctAnswers = {
+      1: 'q1d', 2: 'q2e', 3: 'q3c', 4: 'q4e', 5: 'q5e',
+      6: 'q6d', 7: 'q7e', 8: 'q8a', 9: 'q9c', 10: 'q10a',
+      11: 'q11d', 12: 'q12a', 13: 'q13a', 14: 'q14d', 15: 'q15b',
+      16: 'q16b', 17: 'q17a', 18: 'q18c', 19: 'q19a', 20: 'q20d',
+      21: 'q21a', 22: 'q22a', 23: 'q23c', 24: 'q24a', 25: 'q25c',
+      26: 'q26c', 27: 'q27b', 28: 'q28a', 29: 'q29d', 30: 'q30d',
+      31: 'q31e', 32: 'q32d', 33: 'q33e', 34: 'q34c', 35: 'q35b',
+      36: 'q36b', 37: 'q37e', 38: 'q38b', 39: 'q39d', 40: 'q40b'
+    };
+    return correctAnswers[questionNumber];
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.question-card:not(#question1)').forEach(card => {
       card.style.display = 'none';
     });
-    document.getElementById('question1').classList.add('active');
-    addEndButtons();
     updateProgress();
   });
 </script>
-
 
 </body>
 </html>
