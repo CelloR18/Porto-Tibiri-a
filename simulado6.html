@@ -1,0 +1,2441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado Arrais Amador | Porto Tibiriçá</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos Premium para o Simulado */
+        .simulado-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .simulado-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .simulado-title {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .simulado-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .progress-container {
+            background-color: rgba(0, 51, 102, 0.1);
+            border-radius: 50px;
+            height: 10px;
+            margin-bottom: 2.5rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.5s ease;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+            border: 1px solid rgba(0, 51, 102, 0.1);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 51, 102, 0.15);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-number {
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .options-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .option-item {
+            margin-bottom: 0.8rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 51, 102, 0.03);
+            border: 1px solid rgba(0, 51, 102, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            gap: 1rem;
+        }
+
+        .option-label:hover {
+            background: rgba(0, 51, 102, 0.05);
+            border-color: var(--primary-color);
+        }
+
+        .option-input {
+            margin: 0;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .option-letter {
+            font-weight: 700;
+            color: var(--primary-color);
+            width: 20px;
+            flex-shrink: 0;
+        }
+
+        .feedback {
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .correct {
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .incorrect {
+            background: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid #dc3545;
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .feedback-title i {
+            margin-right: 0.5rem;
+        }
+
+        .feedback-text {
+            line-height: 1.6;
+        }
+
+        .feedback-text strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.2);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 51, 102, 0.3);
+        }
+
+        .next-btn i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .next-btn:hover i {
+            transform: translateX(3px);
+        }
+
+        .end-btn {
+            background: linear-gradient(135deg, #dc3545, #a71d2a);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.2);
+            margin-left: 1rem;
+        }
+
+        .end-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+        }
+
+        .end-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .score {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 1.5rem 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .result-message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .restart-btn {
+            background: var(--secondary-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.4);
+        }
+
+        .restart-btn i {
+            margin-right: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dark Mode */
+        body.dark-mode .question-card,
+        body.dark-mode .results-container {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+
+        body.dark-mode .question-text {
+            color: #eee;
+        }
+
+        body.dark-mode .option-label {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #444;
+            color: #eee;
+        }
+
+        body.dark-mode .option-input:checked+.option-label {
+            background: rgba(0, 51, 102, 0.3);
+        }
+
+        body.dark-mode .progress-container {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .end-btn {
+            background: linear-gradient(135deg, #a71d2a, #6d131c);
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .simulado-container {
+                padding: 1rem;
+            }
+
+            .question-card {
+                padding: 1.5rem;
+            }
+
+            .simulado-title {
+                font-size: 1.8rem;
+            }
+
+            .next-btn,
+            .end-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        ;
+    </style>
+
+</head>
+
+<body>
+    <header class="hero" style="min-height: auto; padding: 5rem 0 4rem;">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 style="font-size: 2.5rem;">Simulado Arrais Amador - 06</h1>
+                <p class="hero-subtitle">40 questões sobre navegação e segurança</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container simulado-container">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <!-- Questão 1 -->
+            <div class="question-card active" id="question1">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <div class="question-text">Toda embarcação deve ser inscrita no (a):</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1a" class="option-input">
+                        <label for="q1a" class="option-label">
+                            <span class="option-letter">A)</span> Capitania dos Portos ou órgãos subordinados
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1b" class="option-input">
+                        <label for="q1b" class="option-label">
+                            <span class="option-letter">B)</span> Diretoria de Portos e Costas (DCP)
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1c" class="option-input">
+                        <label for="q1c" class="option-label">
+                            <span class="option-letter">C)</span> Prefeitura Naval
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1d" class="option-input">
+                        <label for="q1d" class="option-label">
+                            <span class="option-letter">D)</span> Tribunal Marítimo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q1" id="q1e" class="option-input">
+                        <label for="q1e" class="option-label">
+                            <span class="option-letter">E)</span> Prefeitura da Cidade
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback1">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Toda embarcação deve ser inscrita na Capitania dos Portos ou órgãos subordinados.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(1, 'q1a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 2 -->
+            <div class="question-card" id="question2">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <div class="question-text">O Comandante, no exército de suas funções e para a garantia da segurança das pessoas, da embarcação e da carga transportada, pode:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2a" class="option-input">
+                        <label for="q2a" class="option-label">
+                            <span class="option-letter">A)</span> Abandonar o barco
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2b" class="option-input">
+                        <label for="q2b" class="option-label">
+                            <span class="option-letter">B)</span> Dispensar o prático
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2c" class="option-input">
+                        <label for="q2c" class="option-label">
+                            <span class="option-letter">C)</span> Encalhar a embarcação
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2d" class="option-input">
+                        <label for="q2d" class="option-label">
+                            <span class="option-letter">D)</span> Ordenar o desembarque de qualquer pessoa
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q2" id="q2e" class="option-input">
+                        <label for="q2e" class="option-label">
+                            <span class="option-letter">E)</span> Multar qualquer tripulante ou passageiro
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback2">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: O Comandante pode ordenar o desembarque de qualquer pessoa para garantir a segurança.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(2, 'q2d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 3 -->
+            <div class="question-card" id="question3">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <div class="question-text">Extintores utilizados em incêndios classe 'D' são identificados por meio de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3a" class="option-input">
+                        <label for="q3a" class="option-label">
+                            <span class="option-letter">A)</span> Um círculo azul
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3b" class="option-input">
+                        <label for="q3b" class="option-label">
+                            <span class="option-letter">B)</span> Um quadrado vermelho
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3c" class="option-input">
+                        <label for="q3c" class="option-label">
+                            <span class="option-letter">C)</span> Um triângulo verde
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3d" class="option-input">
+                        <label for="q3d" class="option-label">
+                            <span class="option-letter">D)</span> Uma estrela amarela
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q3" id="q3e" class="option-input">
+                        <label for="q3e" class="option-label">
+                            <span class="option-letter">E)</span> Um triângulo azul
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback3">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: Extintores para incêndios classe D são identificados por uma estrela amarela.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(3, 'q3d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 4 -->
+            <div class="question-card" id="question4">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <div class="question-text">A ligação da âncora (ferro) ao barco para que se possa fundear, quando é constituído de elo de correntes, chama-se</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4a" class="option-input">
+                        <label for="q4a" class="option-label">
+                            <span class="option-letter">A)</span> Través
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4b" class="option-input">
+                        <label for="q4b" class="option-label">
+                            <span class="option-letter">B)</span> Escotilha
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4c" class="option-input">
+                        <label for="q4c" class="option-label">
+                            <span class="option-letter">C)</span> Espia
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4d" class="option-input">
+                        <label for="q4d" class="option-label">
+                            <span class="option-letter">D)</span> Lançante
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q4" id="q4e" class="option-input">
+                        <label for="q4e" class="option-label">
+                            <span class="option-letter">E)</span> Amarra
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback4">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: A ligação da âncora ao barco por meio de correntes chama-se amarra.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(4, 'q4e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 5 -->
+            <div class="question-card" id="question5">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <div class="question-text">De acordo com o Regulamento Internacional Para Evitar Abalroamento no Mar (RIPEAM), as marcas em forma de balões, cones etc utilizadas pelos barcos para sinalizar durante o dia diversas condições são da cor:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5a" class="option-input">
+                        <label for="q5a" class="option-label">
+                            <span class="option-letter">A)</span> Verde
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5b" class="option-input">
+                        <label for="q5b" class="option-label">
+                            <span class="option-letter">B)</span> Amarela
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5c" class="option-input">
+                        <label for="q5c" class="option-label">
+                            <span class="option-letter">C)</span> Vermelha
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5d" class="option-input">
+                        <label for="q5d" class="option-label">
+                            <span class="option-letter">D)</span> Branca
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q5" id="q5e" class="option-input">
+                        <label for="q5e" class="option-label">
+                            <span class="option-letter">E)</span> Preta
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback5">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: As marcas em forma de balões, cones etc são da cor preta conforme o RIPEAM.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(5, 'q5e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 6 -->
+            <div class="question-card" id="question6">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <div class="question-text">De acordo com o Regulamento Internacional Para Evitar Abalroamento o Mar (RIPEAM), um apito curto deverá ter uma duração de tempo aproximada de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6a" class="option-input">
+                        <label for="q6a" class="option-label">
+                            <span class="option-letter">A)</span> Dois Segundos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6b" class="option-input">
+                        <label for="q6b" class="option-label">
+                            <span class="option-letter">B)</span> Quatro e seis segundos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6c" class="option-input">
+                        <label for="q6c" class="option-label">
+                            <span class="option-letter">C)</span> Três segundo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6d" class="option-input">
+                        <label for="q6d" class="option-label">
+                            <span class="option-letter">D)</span> Meio segundo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q6" id="q6e" class="option-input">
+                        <label for="q6e" class="option-label">
+                            <span class="option-letter">E)</span> Um segundo
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback6">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Um apito curto tem duração aproximada de um segundo conforme o RIPEAM.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(6, 'q6e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 7 -->
+            <div class="question-card" id="question7">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <div class="question-text">De acordo com o Regulamento Internacional Para Evitar Abalroamento no Mar (RIPEAM), uma embarcação a vela, mas navegando a motor tem:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7a" class="option-input">
+                        <label for="q7a" class="option-label">
+                            <span class="option-letter">A)</span> Não tem preferência em nenhuma situação em relação a outros barcos a motor
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7b" class="option-input">
+                        <label for="q7b" class="option-label">
+                            <span class="option-letter">B)</span> Preferência sobre todas as embarcações miúdas, independente da situação
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7c" class="option-input">
+                        <label for="q7c" class="option-label">
+                            <span class="option-letter">C)</span> Preferência somente sobre os barcos motorizados com comprimento inferior a ela
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7d" class="option-input">
+                        <label for="q7d" class="option-label">
+                            <span class="option-letter">D)</span> Preferência sobre os demais barcos motorizados
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q7" id="q7e" class="option-input">
+                        <label for="q7e" class="option-label">
+                            <span class="option-letter">E)</span> Os mesmo direitos e deveres de um barco a motor
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback7">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Uma embarcação a vela navegando a motor tem os mesmos direitos e deveres de um barco a motor.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(7, 'q7e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 8 -->
+            <div class="question-card" id="question8">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <div class="question-text">Quando praticando navegação interior, em águas abrigadas, uma unidade de facho manual de luz vermelha será obrigatória somente para:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8a" class="option-input">
+                        <label for="q8a" class="option-label">
+                            <span class="option-letter">A)</span> Embarcações miúdas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8b" class="option-input">
+                        <label for="q8b" class="option-label">
+                            <span class="option-letter">B)</span> Embarcações de órgãos públicos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8c" class="option-input">
+                        <label for="q8c" class="option-label">
+                            <span class="option-letter">C)</span> Embarcações de pesca artesanal
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8d" class="option-input">
+                        <label for="q8d" class="option-label">
+                            <span class="option-letter">D)</span> Embarcações a vela
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q8" id="q8e" class="option-input">
+                        <label for="q8e" class="option-label">
+                            <span class="option-letter">E)</span> Embarcações de grande porte
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback8">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: O facho manual de luz vermelha é obrigatório somente para embarcações de grande porte.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(8, 'q8e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 9 -->
+            <div class="question-card" id="question9">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <div class="question-text">Que tipo de extintor é o mais indicado para o combate a um incêndio em equipamentos energizados?</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9a" class="option-input">
+                        <label for="q9a" class="option-label">
+                            <span class="option-letter">A)</span> Pó químico
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9b" class="option-input">
+                        <label for="q9b" class="option-label">
+                            <span class="option-letter">B)</span> Espuma mecânica
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9c" class="option-input">
+                        <label for="q9c" class="option-label">
+                            <span class="option-letter">C)</span> Espuma química
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9d" class="option-input">
+                        <label for="q9d" class="option-label">
+                            <span class="option-letter">D)</span> Água
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q9" id="q9e" class="option-input">
+                        <label for="q9e" class="option-label">
+                            <span class="option-letter">E)</span> Gás carbônico
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback9">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Extintores de gás carbônico são os mais indicados para incêndios em equipamentos energizados.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(9, 'q9e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 10 -->
+            <div class="question-card" id="question10">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <div class="question-text">Uma embarcação de esporte e recreio só poderá ser alugada para:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10a" class="option-input">
+                        <label for="q10a" class="option-label">
+                            <span class="option-letter">A)</span> Transporte de passageiros
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10b" class="option-input">
+                        <label for="q10b" class="option-label">
+                            <span class="option-letter">B)</span> Atividade de pesca, profissional ou amadora
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10c" class="option-input">
+                        <label for="q10c" class="option-label">
+                            <span class="option-letter">C)</span> Transporte de cargas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10d" class="option-input">
+                        <label for="q10d" class="option-label">
+                            <span class="option-letter">D)</span> Atividades de pesquisa
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q10" id="q10e" class="option-input">
+                        <label for="q10e" class="option-label">
+                            <span class="option-letter">E)</span> Atividades de recreação
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback10">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Embarcações de esporte e recreio só podem ser alugadas para atividades de recreação.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(10, 'q10e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 11 -->
+            <div class="question-card" id="question11">
+                <div class="question-header">
+                    <div class="question-number">11</div>
+                    <div class="question-text">A quantidade aproximada de sangue no organismo é de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11a" class="option-input">
+                        <label for="q11a" class="option-label">
+                            <span class="option-letter">A)</span> 4 litros
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11b" class="option-input">
+                        <label for="q11b" class="option-label">
+                            <span class="option-letter">B)</span> 9 litros
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11c" class="option-input">
+                        <label for="q11c" class="option-label">
+                            <span class="option-letter">C)</span> 2 litros
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11d" class="option-input">
+                        <label for="q11d" class="option-label">
+                            <span class="option-letter">D)</span> 6 litros
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q11" id="q11e" class="option-input">
+                        <label for="q11e" class="option-label">
+                            <span class="option-letter">E)</span> 3 litros
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback11">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: A quantidade aproximada de sangue no organismo humano é de 4 litros.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(11, 'q11a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 12 -->
+            <div class="question-card" id="question12">
+                <div class="question-header">
+                    <div class="question-number">12</div>
+                    <div class="question-text">São equipamentos de salvatagem, exigidos em embarcação de esporte e recreio exceto:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12a" class="option-input">
+                        <label for="q12a" class="option-label">
+                            <span class="option-letter">A)</span> Colete salva-vidas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12b" class="option-input">
+                        <label for="q12b" class="option-label">
+                            <span class="option-letter">B)</span> Pirotécnico
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12c" class="option-input">
+                        <label for="q12c" class="option-label">
+                            <span class="option-letter">C)</span> Baleeira
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12d" class="option-input">
+                        <label for="q12d" class="option-label">
+                            <span class="option-letter">D)</span> Balsa salva-vidas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q12" id="q12e" class="option-input">
+                        <label for="q12e" class="option-label">
+                            <span class="option-letter">E)</span> Boia circular
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback12">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>C</strong> está correta: Baleeira não é um equipamento de salvatagem exigido em embarcações de esporte e recreio.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(12, 'q12c')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 13 -->
+            <div class="question-card" id="question13">
+                <div class="question-header">
+                    <div class="question-number">13</div>
+                    <div class="question-text">Não se deve utilizar o colete salva-vidas, nas situações abaixo, exceto:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13a" class="option-input">
+                        <label for="q13a" class="option-label">
+                            <span class="option-letter">A)</span> Como brinquedo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13b" class="option-input">
+                        <label for="q13b" class="option-label">
+                            <span class="option-letter">B)</span> Como apoio
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13c" class="option-input">
+                        <label for="q13c" class="option-label">
+                            <span class="option-letter">C)</span> Para fazer demonstrações
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13d" class="option-input">
+                        <label for="q13d" class="option-label">
+                            <span class="option-letter">D)</span> Como encosto
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q13" id="q13e" class="option-input">
+                        <label for="q13e" class="option-label">
+                            <span class="option-letter">E)</span> Como travesseiro
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback13">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>C</strong> está correta: Pode-se utilizar o colete salva-vidas para fazer demonstrações de uso correto.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(13, 'q13c')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 14 -->
+            <div class="question-card" id="question14">
+                <div class="question-header">
+                    <div class="question-number">14</div>
+                    <div class="question-text">A melhor maneira de saltar na água, utilizando colete salva-vidas, é com:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14a" class="option-input">
+                        <label for="q14a" class="option-label">
+                            <span class="option-letter">A)</span> Os pés juntos e a perna dobrada
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14b" class="option-input">
+                        <label for="q14b" class="option-label">
+                            <span class="option-letter">B)</span> A mão direita no nariz e os pés separados
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14c" class="option-input">
+                        <label for="q14c" class="option-label">
+                            <span class="option-letter">C)</span> As pernas abertas, a mão direita no nariz e a mão esquerda no ombro
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14d" class="option-input">
+                        <label for="q14d" class="option-label">
+                            <span class="option-letter">D)</span> As pernas esticadas e os pés juntos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q14" id="q14e" class="option-input">
+                        <label for="q14e" class="option-label">
+                            <span class="option-letter">E)</span> De cabeça, protegendo o rosto
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback14">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: A melhor maneira de saltar na água com colete é com as pernas esticadas e os pés juntos.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(14, 'q14d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 15 -->
+            <div class="question-card" id="question15">
+                <div class="question-header">
+                    <div class="question-number">15</div>
+                    <div class="question-text">Toda embarcação der ser inscrita no (a):</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15a" class="option-input">
+                        <label for="q15a" class="option-label">
+                            <span class="option-letter">A)</span> Prefeitura Naval
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15b" class="option-input">
+                        <label for="q15b" class="option-label">
+                            <span class="option-letter">B)</span> Diretoria de Portos e Costas (DPC)
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15c" class="option-input">
+                        <label for="q15c" class="option-label">
+                            <span class="option-letter">C)</span> Prefeitura da cidade
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15d" class="option-input">
+                        <label for="q15d" class="option-label">
+                            <span class="option-letter">D)</span> Tribunal Marítimo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q15" id="q15e" class="option-input">
+                        <label for="q15e" class="option-label">
+                            <span class="option-letter">E)</span> Capitania dos Portos ou órgãos subordinados
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback15">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Toda embarcação deve ser inscrita na Capitania dos Portos ou órgãos subordinados.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(15, 'q15e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 16 -->
+            <div class="question-card" id="question16">
+                <div class="question-header">
+                    <div class="question-number">16</div>
+                    <div class="question-text">O Comandante, no exército de suas funções e para a garantia da segurança das pessoas, da embarcação e da carga transportada, pode:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16a" class="option-input">
+                        <label for="q16a" class="option-label">
+                            <span class="option-letter">A)</span> Abandonar o barco
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16b" class="option-input">
+                        <label for="q16b" class="option-label">
+                            <span class="option-letter">B)</span> Ordenar o desembarque de qualquer pessoa
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16c" class="option-input">
+                        <label for="q16c" class="option-label">
+                            <span class="option-letter">C)</span> Dispensar o prático
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16d" class="option-input">
+                        <label for="q16d" class="option-label">
+                            <span class="option-letter">D)</span> Encalhar o arco
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q16" id="q16e" class="option-input">
+                        <label for="q16e" class="option-label">
+                            <span class="option-letter">E)</span> Multar qualquer tripulante ou passageiro
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback16">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: O Comandante pode ordenar o desembarque de qualquer pessoa para garantir a segurança.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(16, 'q16b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 17 -->
+            <div class="question-card" id="question17">
+                <div class="question-header">
+                    <div class="question-number">17</div>
+                    <div class="question-text">A quantidade aproximada de sangue no organismo é de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17a" class="option-input">
+                        <label for="q17a" class="option-label">
+                            <span class="option-letter">A)</span> 4 litros
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17b" class="option-input">
+                        <label for="q17b" class="option-label">
+                            <span class="option-letter">B)</span> 9 litros
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17c" class="option-input">
+                        <label for="q17c" class="option-label">
+                            <span class="option-letter">C)</span> 2 litros
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17d" class="option-input">
+                        <label for="q17d" class="option-label">
+                            <span class="option-letter">D)</span> 6 litros
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q17" id="q17e" class="option-input">
+                        <label for="q17e" class="option-label">
+                            <span class="option-letter">E)</span> 3 litros
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback17">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: A quantidade aproximada de sangue no organismo humano é de 4 litros.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(17, 'q17a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 18 -->
+            <div class="question-card" id="question18">
+                <div class="question-header">
+                    <div class="question-number">18</div>
+                    <div class="question-text">Na situação de ''rode a roda'' ou seja _________________ as embarcações deverão manobrar da seguinte forma.</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18a" class="option-input">
+                        <label for="q18a" class="option-label">
+                            <span class="option-letter">A)</span> Rumos cruzados, as duas guinam para os bordos opostos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18b" class="option-input">
+                        <label for="q18b" class="option-label">
+                            <span class="option-letter">B)</span> Ultrapassagem, e que alcança deverá manobrar
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18c" class="option-input">
+                        <label for="q18c" class="option-label">
+                            <span class="option-letter">C)</span> Rumos cruzados, as duas guinam para boreste
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18d" class="option-input">
+                        <label for="q18d" class="option-label">
+                            <span class="option-letter">D)</span> Proa com proa, as duas guinam, cada uma para o seu boreste
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q18" id="q18e" class="option-input">
+                        <label for="q18e" class="option-label">
+                            <span class="option-letter">E)</span> Proa com proa, as duas guinam para os bordos opostos
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback18">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Na situação "rode a roda" (proa com proa), ambas devem guinar para os bordos opostos.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(18, 'q18e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 19 -->
+            <div class="question-card" id="question19">
+                <div class="question-header">
+                    <div class="question-number">19</div>
+                    <div class="question-text">São sinais de perigo, exceto:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19a" class="option-input">
+                        <label for="q19a" class="option-label">
+                            <span class="option-letter">A)</span> Um sinal explosivo soado em intervalos de cerca de um minuto
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19b" class="option-input">
+                        <label for="q19b" class="option-label">
+                            <span class="option-letter">B)</span> Foguetes lançando estrelas encarnadas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19c" class="option-input">
+                        <label for="q19c" class="option-label">
+                            <span class="option-letter">C)</span> Um balão preto içado no mastro principal ou onde melhor possa ser visto
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19d" class="option-input">
+                        <label for="q19d" class="option-label">
+                            <span class="option-letter">D)</span> Um sinal de fumaça de cor alaranjada
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q19" id="q19e" class="option-input">
+                        <label for="q19e" class="option-label">
+                            <span class="option-letter">E)</span> Um toque contínuo de qualquer aparelho de sinalização de cerração
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback19">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: Um sinal de fumaça de cor alaranjada não é um sinal de perigo reconhecido internacionalmente.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(19, 'q19d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 20 -->
+            <div class="question-card" id="question20">
+                <div class="question-header">
+                    <div class="question-number">20</div>
+                    <div class="question-text">Uma embarcação com comprimento igual ou superior a 100 metros, fundeada, em visibilidade restrita, deverá soar:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20a" class="option-input">
+                        <label for="q20a" class="option-label">
+                            <span class="option-letter">A)</span> Um apito longo e gongo a ré
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20b" class="option-input">
+                        <label for="q20b" class="option-label">
+                            <span class="option-letter">B)</span> O sino a vante e o gongo a ré
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20c" class="option-input">
+                        <label for="q20c" class="option-label">
+                            <span class="option-letter">C)</span> Dois apitos curtos a cada 2 minutos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20d" class="option-input">
+                        <label for="q20d" class="option-label">
+                            <span class="option-letter">D)</span> Um apito longo e o sino a vante
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q20" id="q20e" class="option-input">
+                        <label for="q20e" class="option-label">
+                            <span class="option-letter">E)</span> O sino a ré
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback20">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: Embarcações fundeadas com mais de 100m devem soar o sino a vante e gongo a ré.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(20, 'q20b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 21 -->
+            <div class="question-card" id="question21">
+                <div class="question-header">
+                    <div class="question-number">21</div>
+                    <div class="question-text">As regras do RIPEAM se aplicam a:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21a" class="option-input">
+                        <label for="q21a" class="option-label">
+                            <span class="option-letter">A)</span> Todas as embarcações em mar aberto e em todas as águas a este ligadas, navegáveis por navios de alto mar, e para embarcações em águas interiores
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21b" class="option-input">
+                        <label for="q21b" class="option-label">
+                            <span class="option-letter">B)</span> Apenas as embarcações de alto mar
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21c" class="option-input">
+                        <label for="q21c" class="option-label">
+                            <span class="option-letter">C)</span> Apenas para as embarcações miúdas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21d" class="option-input">
+                        <label for="q21d" class="option-label">
+                            <span class="option-letter">D)</span> Apenas para as embarcações de esporte e recreio
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q21" id="q21e" class="option-input">
+                        <label for="q21e" class="option-label">
+                            <span class="option-letter">E)</span> Todas as embarcações em mar aberto e em todas as águas a este ligadas, apenas navegáveis por embarcações em águas e recreio
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback21">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: O RIPEAM aplica-se a todas as embarcações em mar aberto e águas conectadas navegáveis por navios de alto mar.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(21, 'q21a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 22 -->
+            <div class="question-card" id="question22">
+                <div class="question-header">
+                    <div class="question-number">22</div>
+                    <div class="question-text">De acordo com RIPEAM, as luzes de navegação obrigatórias para uma embarcação de mais de 50 metros de comprimento são:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22a" class="option-input">
+                        <label for="q22a" class="option-label">
+                            <span class="option-letter">A)</span> Uma luz branca e vante, uma luz branca a ré, uma luz de alçado branca, luzes verde e encarnada (vermelha), combinadas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22b" class="option-input">
+                        <label for="q22b" class="option-label">
+                            <span class="option-letter">B)</span> Uma luz branca no mastro vante, uma luz branca no mastro ré, mais alta que a da vante, uma luz de alcançando a ré, branca, luzes, verde a boreste e encarnada (vermelha) a bombordo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22c" class="option-input">
+                        <label for="q22c" class="option-label">
+                            <span class="option-letter">C)</span> Uma luz branca a vante, uma luz de alcançado branca, luzes verde e encarnada (vermelha), combinadas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22d" class="option-input">
+                        <label for="q22d" class="option-label">
+                            <span class="option-letter">D)</span> Uma luz branca a ré, luzes, verde a boreste e encarnada (vermelha) a bombordo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q22" id="q22e" class="option-input">
+                        <label for="q22e" class="option-label">
+                            <span class="option-letter">E)</span> Uma luz branca a vante, uma luz branca a ré, luzes, encarnada (vermelha) a boreste e verde a bombordo
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback22">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: Embarcações acima de 50m devem exibir luz branca no mastro vante, luz branca mais alta no mastro ré, luz de alcance a ré, e luzes verde a boreste e vermelha a bombordo.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(22, 'q22b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 23 -->
+            <div class="question-card" id="question23">
+                <div class="question-header">
+                    <div class="question-number">23</div>
+                    <div class="question-text">No balizamento de uma hidrovia um sinal "H" significa:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23a" class="option-input">
+                        <label for="q23a" class="option-label">
+                            <span class="option-letter">A)</span> Seguir margem
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23b" class="option-input">
+                        <label for="q23b" class="option-label">
+                            <span class="option-letter">B)</span> Trocar de margem
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23c" class="option-input">
+                        <label for="q23c" class="option-label">
+                            <span class="option-letter">C)</span> Navegar no meio do canal
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23d" class="option-input">
+                        <label for="q23d" class="option-label">
+                            <span class="option-letter">D)</span> Bifurcação de canal
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q23" id="q23e" class="option-input">
+                        <label for="q23e" class="option-label">
+                            <span class="option-letter">E)</span> Sair do meio do canal
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback23">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: O sinal "H" no balizamento indica bifurcação de canal.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(23, 'q23d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 24 -->
+            <div class="question-card" id="question24">
+                <div class="question-header">
+                    <div class="question-number">24</div>
+                    <div class="question-text">Embarcação menor que 50 metros de comprimento exibindo luz branca onde melhor possa ser vista está:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24a" class="option-input">
+                        <label for="q24a" class="option-label">
+                            <span class="option-letter">A)</span> Fundeada
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24b" class="option-input">
+                        <label for="q24b" class="option-label">
+                            <span class="option-letter">B)</span> Navegando
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24c" class="option-input">
+                        <label for="q24c" class="option-label">
+                            <span class="option-letter">C)</span> Com carga perigosa
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24d" class="option-input">
+                        <label for="q24d" class="option-label">
+                            <span class="option-letter">D)</span> Sem governo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q24" id="q24e" class="option-input">
+                        <label for="q24e" class="option-label">
+                            <span class="option-letter">E)</span> Manobra restrita
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback24">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Embarcações fundeadas menores que 50m exibem uma luz branca onde melhor possa ser vista.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(24, 'q24a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 25 -->
+            <div class="question-card" id="question25">
+                <div class="question-header">
+                    <div class="question-number">25</div>
+                    <div class="question-text">O apito longo tem a duração de:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25a" class="option-input">
+                        <label for="q25a" class="option-label">
+                            <span class="option-letter">A)</span> 2 segundos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25b" class="option-input">
+                        <label for="q25b" class="option-label">
+                            <span class="option-letter">B)</span> 1 minuto
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25c" class="option-input">
+                        <label for="q25c" class="option-label">
+                            <span class="option-letter">C)</span> 1 segundo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25d" class="option-input">
+                        <label for="q25d" class="option-label">
+                            <span class="option-letter">D)</span> 4 a 6 segundos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q25" id="q25e" class="option-input">
+                        <label for="q25e" class="option-label">
+                            <span class="option-letter">E)</span> 3 segundos
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback25">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: Um apito longo tem duração de 4 a 6 segundos.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(25, 'q25d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 26 -->
+            <div class="question-card" id="question26">
+                <div class="question-header">
+                    <div class="question-number">26</div>
+                    <div class="question-text">Uma embarcação com comprimento igual ou superior a 100 metros, fundeada, em visibilidade restrita, deverá soar:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26a" class="option-input">
+                        <label for="q26a" class="option-label">
+                            <span class="option-letter">A)</span> Um apito longo e o sino a vante
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26b" class="option-input">
+                        <label for="q26b" class="option-label">
+                            <span class="option-letter">B)</span> O sino a ré
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26c" class="option-input">
+                        <label for="q26c" class="option-label">
+                            <span class="option-letter">C)</span> Um apito longo e o gongo a ré
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26d" class="option-input">
+                        <label for="q26d" class="option-label">
+                            <span class="option-letter">D)</span> Dois apitos curtos a cada 2 minutos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q26" id="q26e" class="option-input">
+                        <label for="q26e" class="option-label">
+                            <span class="option-letter">E)</span> O sino a vante e o gongo a ré
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback26">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Embarcações fundeadas com mais de 100m devem soar o sino a vante e gongo a ré.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(26, 'q26e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 27 -->
+            <div class="question-card" id="question27">
+                <div class="question-header">
+                    <div class="question-number">27</div>
+                    <div class="question-text">Uma embarcação exibindo três esferas dispostas em linga vertical, estará:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27a" class="option-input">
+                        <label for="q27a" class="option-label">
+                            <span class="option-letter">A)</span> Sem governo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27b" class="option-input">
+                        <label for="q27b" class="option-label">
+                            <span class="option-letter">B)</span> Encalhada
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27c" class="option-input">
+                        <label for="q27c" class="option-label">
+                            <span class="option-letter">C)</span> Atracada
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27d" class="option-input">
+                        <label for="q27d" class="option-label">
+                            <span class="option-letter">D)</span> Com capacidade de manobra restrita
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q27" id="q27e" class="option-input">
+                        <label for="q27e" class="option-label">
+                            <span class="option-letter">E)</span> Fundeada
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback27">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: Três esferas dispostas verticalmente indicam embarcação encalhada.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(27, 'q27b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 28 -->
+            <div class="question-card" id="question28">
+                <div class="question-header">
+                    <div class="question-number">28</div>
+                    <div class="question-text">O que vem a ser velocidade de segurança e o que devemos fazer quando cruzamos com outras embarcações atacadas ou fundeadas ou mesmo localidades às margens dos rios e canais?</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28a" class="option-input">
+                        <label for="q28a" class="option-label">
+                            <span class="option-letter">A)</span> É a velocidade ideal de cruzeiro da embarcação para condições que exija maiores cuidados na navegação, como baixa visibilidade. Devemos diminuir a velocidade
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28b" class="option-input">
+                        <label for="q28b" class="option-label">
+                            <span class="option-letter">B)</span> É a velocidade mínima para se parar a embarcação com segurança. Devemos diminuir a velocidade
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28c" class="option-input">
+                        <label for="q28c" class="option-label">
+                            <span class="option-letter">C)</span> É a velocidade que possibilita uma ação apropriada e eficaz de evitar um abalroamento e de parar a embarcação e uma distância segura. Devemos diminuir a velocidade
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28d" class="option-input">
+                        <label for="q28d" class="option-label">
+                            <span class="option-letter">D)</span> É a velocidade máxima permitida em uma determinada região de tráfego. Devemos aumentar a velocidade para passar mais rapidamente por esses locais
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q28" id="q28e" class="option-input">
+                        <label for="q28e" class="option-label">
+                            <span class="option-letter">E)</span> É a velocidade máxima permitida em uma determinada região de tráfego. Devemos manter a velocidade para evitar variações da corrente de esteira da embarcação
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback28">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>C</strong> está correta: Velocidade de segurança é aquela que permite evitar abalroamento e parar em distância segura. Deve-se diminuir a velocidade nessas situações.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(28, 'q28c')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 29 -->
+            <div class="question-card" id="question29">
+                <div class="question-header">
+                    <div class="question-number">29</div>
+                    <div class="question-text">O balizamento de interior de porto obedecerá a regras definidas e deverá ser utilizado, pelo navegante, como:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29a" class="option-input">
+                        <label for="q29a" class="option-label">
+                            <span class="option-letter">A)</span> Uma separação de locais e zonas de tráfego dos canais
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29b" class="option-input">
+                        <label for="q29b" class="option-label">
+                            <span class="option-letter">B)</span> Orientação para uma navegação segura
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29c" class="option-input">
+                        <label for="q29c" class="option-label">
+                            <span class="option-letter">C)</span> Apenas um auxílio nas manobras de socorro de embarcações, em águas restritas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29d" class="option-input">
+                        <label for="q29d" class="option-label">
+                            <span class="option-letter">D)</span> Uma rota a ser seguida, obrigatoriamente, por qualquer embarcação
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q29" id="q29e" class="option-input">
+                        <label for="q29e" class="option-label">
+                            <span class="option-letter">E)</span> Uma possibilidade de uso, caso concorde
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback29">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: O balizamento de interior de porto deve ser utilizado como orientação para navegação segura.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(29, 'q29b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 30 -->
+            <div class="question-card" id="question30">
+                <div class="question-header">
+                    <div class="question-number">30</div>
+                    <div class="question-text">As situações abaixo são as que eu utilizo as luzes de navegação, exceto:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30a" class="option-input">
+                        <label for="q30a" class="option-label">
+                            <span class="option-letter">A)</span> Em visibilidade restrita
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30b" class="option-input">
+                        <label for="q30b" class="option-label">
+                            <span class="option-letter">B)</span> Quando for necessário
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30c" class="option-input">
+                        <label for="q30c" class="option-label">
+                            <span class="option-letter">C)</span> À noite
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30d" class="option-input">
+                        <label for="q30d" class="option-label">
+                            <span class="option-letter">D)</span> À noite com a embarcação a matroca
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q30" id="q30e" class="option-input">
+                        <label for="q30e" class="option-label">
+                            <span class="option-letter">E)</span> Com a embarcação atracada no cais
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback30">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: As luzes de navegação não são utilizadas quando a embarcação está atracada no cais.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(30, 'q30e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 31 -->
+            <div class="question-card" id="question31">
+                <div class="question-header">
+                    <div class="question-number">31</div>
+                    <div class="question-text">À noite, foi avistada uma luz verde piscando e, pela carta náutica, verificou-se a aproximação da entrada de um porto. Qual seria o formato provável deste sinal:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31a" class="option-input">
+                        <label for="q31a" class="option-label">
+                            <span class="option-letter">A)</span> Esférico
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31b" class="option-input">
+                        <label for="q31b" class="option-label">
+                            <span class="option-letter">B)</span> Piramidal
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31c" class="option-input">
+                        <label for="q31c" class="option-label">
+                            <span class="option-letter">C)</span> Cúbico
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31d" class="option-input">
+                        <label for="q31d" class="option-label">
+                            <span class="option-letter">D)</span> Cilíndrico
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q31" id="q31e" class="option-input">
+                        <label for="q31e" class="option-label">
+                            <span class="option-letter">E)</span> Cônico
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback31">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Luz verde piscando na entrada de porto geralmente está associada a sinalização cônica.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(31, 'q31e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 32 -->
+            <div class="question-card" id="question32">
+                <div class="question-header">
+                    <div class="question-number">32</div>
+                    <div class="question-text">As marcas de tope do sinal cardinal leste são:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32a" class="option-input">
+                        <label for="q32a" class="option-label">
+                            <span class="option-letter">A)</span> Dois cones pretos, um sobre o outro, com vértices para baixo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32b" class="option-input">
+                        <label for="q32b" class="option-label">
+                            <span class="option-letter">B)</span> Dois cones pretos, um sobre o outro base a base
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32c" class="option-input">
+                        <label for="q32c" class="option-label">
+                            <span class="option-letter">C)</span> Dois cones pretos, lado a lado, com vértices para cima
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32d" class="option-input">
+                        <label for="q32d" class="option-label">
+                            <span class="option-letter">D)</span> Dois cones pretos, um sobre o outro, com os vértices para cima
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q32" id="q32e" class="option-input">
+                        <label for="q32e" class="option-label">
+                            <span class="option-letter">E)</span> Dois cones pretos, um sobre o outro ponta a ponta
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback32">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: O sinal cardinal leste é representado por dois cones pretos, um sobre o outro, base a base.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(32, 'q32b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 33 -->
+            <div class="question-card" id="question33">
+                <div class="question-header">
+                    <div class="question-number">33</div>
+                    <div class="question-text">A marca de tope do sinal de águas seguras é:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33a" class="option-input">
+                        <label for="q33a" class="option-label">
+                            <span class="option-letter">A)</span> Uma esfera branca
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33b" class="option-input">
+                        <label for="q33b" class="option-label">
+                            <span class="option-letter">B)</span> Um triângulo encarnado
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33c" class="option-input">
+                        <label for="q33c" class="option-label">
+                            <span class="option-letter">C)</span> Em triângulo verde
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33d" class="option-input">
+                        <label for="q33d" class="option-label">
+                            <span class="option-letter">D)</span> Um triângulo preto
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q33" id="q33e" class="option-input">
+                        <label for="q33e" class="option-label">
+                            <span class="option-letter">E)</span> Uma esfera encarnada
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback33">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: O sinal de águas seguras tem como marca de tope uma esfera branca.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(33, 'q33a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 34 -->
+            <div class="question-card" id="question34">
+                <div class="question-header">
+                    <div class="question-number">34</div>
+                    <div class="question-text">Com relação ao leme, podemos dizer que é uma:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34a" class="option-input">
+                        <label for="q34a" class="option-label">
+                            <span class="option-letter">A)</span> Estrutura geralmente de ferro, que possui alhetas, impulsionam a embarcação sempre para o norte
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34b" class="option-input">
+                        <label for="q34b" class="option-label">
+                            <span class="option-letter">B)</span> Estrutura metálica ou de madeira, que tem por finalidade dar direção a embarcação e freia-la
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34c" class="option-input">
+                        <label for="q34c" class="option-label">
+                            <span class="option-letter">C)</span> Estrutura localizada na proa da embarcação, que serve pata guina-la com a ação dos motores
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34d" class="option-input">
+                        <label for="q34d" class="option-label">
+                            <span class="option-letter">D)</span> Estrutura metálica ou de madeira, que tem por finalidade dar direção a embarcação e mantê-la no rumo determinado
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q34" id="q34e" class="option-input">
+                        <label for="q34e" class="option-label">
+                            <span class="option-letter">E)</span> Estrutura metálica ou de madeira, que possui cana do leme e serve para impulsionar a embarcação, numa determinada velocidade
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback34">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>D</strong> está correta: O leme é uma estrutura metálica ou de madeira que tem por finalidade dar direção à embarcação e mantê-la no rumo determinado.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(34, 'q34d')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 35 -->
+            <div class="question-card" id="question35">
+                <div class="question-header">
+                    <div class="question-number">35</div>
+                    <div class="question-text">Para desatracar a embarcação devemos, como regra geral:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35a" class="option-input">
+                        <label for="q35a" class="option-label">
+                            <span class="option-letter">A)</span> Largar os cabos de ré, procurando utilizar os cabos de vante para abrir a popa com máquina adiante toda a força
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35b" class="option-input">
+                        <label for="q35b" class="option-label">
+                            <span class="option-letter">B)</span> Largar os cabos de vante e abrir a proa dando máquina atrás
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35c" class="option-input">
+                        <label for="q35c" class="option-label">
+                            <span class="option-letter">C)</span> Largar todos os cabos e dar máquina adiante toda força, para sair rapidamente do cais
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35d" class="option-input">
+                        <label for="q35d" class="option-label">
+                            <span class="option-letter">D)</span> Largar os cabos de vante e abrir a proa dando máquina adiante
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q35" id="q35e" class="option-input">
+                        <label for="q35e" class="option-label">
+                            <span class="option-letter">E)</span> Largar os cabos de ré, procurando manobrar para abrir a popa, aproveitar o efeito do leme para afastar a popa e então largar os cabos de vante
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback35">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Para desatracar, deve-se largar os cabos de ré, manobrar para abrir a popa, aproveitar o efeito do leme e então largar os cabos de vante.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(35, 'q35e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 36 -->
+            <div class="question-card" id="question36">
+                <div class="question-header">
+                    <div class="question-number">36</div>
+                    <div class="question-text">Embarcações de comprimento inferior a 12 metros quando navegamos à noite deverão acender as luzes e:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36a" class="option-input">
+                        <label for="q36a" class="option-label">
+                            <span class="option-letter">A)</span> Uma luz amarela na proa
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36b" class="option-input">
+                        <label for="q36b" class="option-label">
+                            <span class="option-letter">B)</span> Uma luz setorizada
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36c" class="option-input">
+                        <label for="q36c" class="option-label">
+                            <span class="option-letter">C)</span> Uma luz circular branca
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36d" class="option-input">
+                        <label for="q36d" class="option-label">
+                            <span class="option-letter">D)</span> Uma luz circular encarnada na popa
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q36" id="q36e" class="option-input">
+                        <label for="q36e" class="option-label">
+                            <span class="option-letter">E)</span> Uma luz amarela na popa
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback36">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>C</strong> está correta: Embarcações menores que 12m devem exibir uma luz circular branca além das luzes de navegação.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(36, 'q36c')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 37 -->
+            <div class="question-card" id="question37">
+                <div class="question-header">
+                    <div class="question-number">37</div>
+                    <div class="question-text">Embarcações de esporte e recreio de comprimento inferior a 12 metros exibem normalmente:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37a" class="option-input">
+                        <label for="q37a" class="option-label">
+                            <span class="option-letter">A)</span> Apenas as luzes de bordo (verde e encarnada)
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37b" class="option-input">
+                        <label for="q37b" class="option-label">
+                            <span class="option-letter">B)</span> Apenas uma luz circular branca
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37c" class="option-input">
+                        <label for="q37c" class="option-label">
+                            <span class="option-letter">C)</span> Luzes de bordo e uma luz amarela na proa
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37d" class="option-input">
+                        <label for="q37d" class="option-label">
+                            <span class="option-letter">D)</span> Luzes de bordo (verde e encarnada) e uma luz branca no bico de proa
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q37" id="q37e" class="option-input">
+                        <label for="q37e" class="option-label">
+                            <span class="option-letter">E)</span> Luzes de bordo (verde e encarnada) combinadas e uma luz circular branca
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback37">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Embarcações de esporte e recreio menores que 12m exibem luzes de bordo combinadas e uma luz circular branca.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(37, 'q37e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 38 -->
+            <div class="question-card" id="question38">
+                <div class="question-header">
+                    <div class="question-number">38</div>
+                    <div class="question-text">Uma embarcação, à noite, exibindo duas luzes circulares encarnadas, dispostas em linha vertical, onde melhor possam ser vistas, será uma embarcação:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38a" class="option-input">
+                        <label for="q38a" class="option-label">
+                            <span class="option-letter">A)</span> Sem governo
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38b" class="option-input">
+                        <label for="q38b" class="option-label">
+                            <span class="option-letter">B)</span> No canal
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38c" class="option-input">
+                        <label for="q38c" class="option-label">
+                            <span class="option-letter">C)</span> Com manobras restritas
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38d" class="option-input">
+                        <label for="q38d" class="option-label">
+                            <span class="option-letter">D)</span> Fundeada
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q38" id="q38e" class="option-input">
+                        <label for="q38e" class="option-label">
+                            <span class="option-letter">E)</span> Com mergulhadores na área
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback38">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>E</strong> está correta: Duas luzes vermelhas verticais indicam embarcação com mergulhadores na área.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(38, 'q38e')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 39 -->
+            <div class="question-card" id="question39">
+                <div class="question-header">
+                    <div class="question-number">39</div>
+                    <div class="question-text">Uma embarcação com comprimento igual ou superior a 100 metros, fundeada, em visibilidade restrita, deverá soa</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39a" class="option-input">
+                        <label for="q39a" class="option-label">
+                            <span class="option-letter">A)</span> O sino vante e o gongo a ré
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39b" class="option-input">
+                        <label for="q39b" class="option-label">
+                            <span class="option-letter">B)</span> Um apito longo e o gongo a ré
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39c" class="option-input">
+                        <label for="q39c" class="option-label">
+                            <span class="option-letter">C)</span> O sino a ré
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39d" class="option-input">
+                        <label for="q39d" class="option-label">
+                            <span class="option-letter">D)</span> Dois apitos curtos a cada 2 minutos
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q39" id="q39e" class="option-input">
+                        <label for="q39e" class="option-label">
+                            <span class="option-letter">E)</span> Um apito longo e o sino a vante
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback39">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>A</strong> está correta: Embarcações fundeadas com mais de 100m devem soar o sino a vante e gongo a ré.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(39, 'q39a')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Questão 40 -->
+            <div class="question-card" id="question40">
+                <div class="question-header">
+                    <div class="question-number">40</div>
+                    <div class="question-text">A boia de bombordo emite luz, à noite, de cor:</div>
+                </div>
+                <ul class="options-list">
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40a" class="option-input">
+                        <label for="q40a" class="option-label">
+                            <span class="option-letter">A)</span> Amarela
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40b" class="option-input">
+                        <label for="q40b" class="option-label">
+                            <span class="option-letter">B)</span> Encarnada
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40c" class="option-input">
+                        <label for="q40c" class="option-label">
+                            <span class="option-letter">C)</span> Branca
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40d" class="option-input">
+                        <label for="q40d" class="option-label">
+                            <span class="option-letter">D)</span> Verde
+                        </label>
+                    </li>
+                    <li class="option-item">
+                        <input type="radio" name="q40" id="q40e" class="option-input">
+                        <label for="q40e" class="option-label">
+                            <span class="option-letter">E)</span> Azul
+                        </label>
+                    </li>
+                </ul>
+                <div class="feedback" id="feedback40">
+                    <div class="feedback-title"><i class="fas fa-check-circle"></i> <span>Resposta Correta</span></div>
+                    <p class="feedback-text">A alternativa <strong>B</strong> está correta: A boia de bombordo emite luz vermelha (encarnada) à noite.</p>
+                </div>
+                <button class="next-btn" onclick="checkAnswer(40, 'q40b')">Confirmar Resposta <i
+                        class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Resultados -->
+            <div id="resultsContainer" style="display:none; padding: 2rem; text-align: center;">
+                <h2 style="margin-bottom: 1rem;">Resultados do Simulado</h2>
+                
+                <p id="finalScore" style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">0/40</p>
+                
+                <div id="resultMessage" style="margin-bottom: 1.5rem; font-size: 1rem; line-height: 1.5;"></div>
+                
+                <button onclick="restartSimulado()" style="padding: 0.8rem 1.5rem; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    Refazer Simulado
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Variáveis globais
+        let currentQuestion = 1;
+        let score = 0;
+        const totalQuestions = 40;
+        let questionsAnswered = 0;
+        let userAnswers = {};
+        let userCorrect = {};
+
+        // Objeto com as respostas corretas para o Simulado 06
+        const correctAnswers = {
+            1: 'q1a', 2: 'q2d', 3: 'q3d', 4: 'q4e', 5: 'q5e',
+            6: 'q6e', 7: 'q7e', 8: 'q8e', 9: 'q9e', 10: 'q10e',
+            11: 'q11a', 12: 'q12c', 13: 'q13c', 14: 'q14d', 15: 'q15e',
+            16: 'q16b', 17: 'q17a', 18: 'q18e', 19: 'q19d', 20: 'q20b',
+            21: 'q21a', 22: 'q22b', 23: 'q23d', 24: 'q24a', 25: 'q25d',
+            26: 'q26e', 27: 'q27b', 28: 'q28c', 29: 'q29b', 30: 'q30e',
+            31: 'q31e', 32: 'q32b', 33: 'q33a', 34: 'q34d', 35: 'q35e',
+            36: 'q36c', 37: 'q37e', 38: 'q38e', 39: 'q39a', 40: 'q40b'
+        };
+
+        // Verifica resposta da questão
+        function checkAnswer(questionNumber, correctAnswerId) {
+            const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
+            const feedback = document.getElementById(`feedback${questionNumber}`);
+
+            if (!selectedOption) {
+                alert("Por favor, selecione uma resposta antes de continuar.");
+                return;
+            }
+
+            // Salva a resposta marcada
+            if (!userAnswers[questionNumber]) {
+                userAnswers[questionNumber] = selectedOption.id;
+                questionsAnswered++;
+            }
+
+            const selectedId = selectedOption.id;
+            const correct = selectedId === correctAnswerId;
+
+            // Só contabiliza acerto uma vez
+            if (userCorrect[questionNumber] === undefined) {
+                userCorrect[questionNumber] = correct;
+                if (correct) score++;
+            }
+
+            const selectedLetter = selectedId.replace(`q${questionNumber}`, '').toUpperCase();
+            const correctLetter = correctAnswerId.replace(`q${questionNumber}`, '').toUpperCase();
+
+            // Feedback visual
+            if (correct) {
+                feedback.className = "feedback correct";
+                feedback.querySelector('.feedback-title').innerHTML =
+                    '<i class="fas fa-check-circle"></i> <span>Resposta Correta</span>';
+                feedback.querySelector('.feedback-text').innerHTML =
+                    `Alternativa <strong>${selectedLetter}</strong>`;
+            } else {
+                feedback.className = "feedback incorrect";
+                feedback.querySelector('.feedback-title').innerHTML =
+                    '<i class="fas fa-times-circle"></i> <span>Resposta Incorreta</span>';
+                feedback.querySelector('.feedback-text').innerHTML =
+                    `Alternativa correta: <strong>${correctLetter}</strong>`;
+            }
+
+            feedback.style.display = "block";
+            updateProgress();
+
+            const nextBtn = document.querySelector(`#question${questionNumber} .next-btn`);
+            if (questionNumber === totalQuestions) {
+                nextBtn.textContent = "Ver Resultados";
+                nextBtn.onclick = function () { showResults(true); };
+            } else {
+                nextBtn.textContent = "Próxima Questão";
+                nextBtn.onclick = function () { nextQuestion(); };
+            }
+        }
+
+        // Próxima questão
+        function nextQuestion() {
+            document.getElementById(`question${currentQuestion}`).style.display = 'none';
+            document.getElementById(`question${currentQuestion}`).classList.remove('active');
+            currentQuestion++;
+
+            if (currentQuestion <= totalQuestions) {
+                document.getElementById(`question${currentQuestion}`).style.display = 'block';
+                document.getElementById(`question${currentQuestion}`).classList.add('active');
+                updateProgress();
+
+                const nextBtn = document.querySelector(`#question${currentQuestion} .next-btn`);
+                nextBtn.textContent = "Confirmar Resposta";
+                nextBtn.onclick = function () {
+                    checkAnswer(currentQuestion, correctAnswers[currentQuestion]);
+                };
+            }
+        }
+
+        // Barra de progresso
+        function updateProgress() {
+            const progress = (questionsAnswered / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        // Exibe resultados
+        function showResults(final = false) {
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.style.display = 'none';
+            });
+
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.style.display = 'block';
+
+            const answeredCount = Object.keys(userAnswers).length;
+            const percentage = Math.round((score / totalQuestions) * 100);
+
+            document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
+
+            const resultMessage = document.getElementById('resultMessage');
+            resultMessage.innerHTML =
+                `Você respondeu ${answeredCount} de ${totalQuestions} questões e acertou ${score}.<br>`;
+            resultMessage.innerHTML += `Sua pontuação: ${score}/${totalQuestions} (${percentage}%)<br><br>`;
+
+            if (answeredCount === 0) {
+                resultMessage.innerHTML += "Você não respondeu nenhuma questão.";
+            } else if (percentage >= 80) {
+                resultMessage.innerHTML += "Ótimo desempenho! Você está bem preparado para o exame de Arrais Amador.";
+            } else if (percentage >= 70) {
+                resultMessage.innerHTML += "Bom desempenho! Recomendamos revisar alguns tópicos antes do exame.";
+            } else if (percentage >= 50) {
+                resultMessage.innerHTML += "Desempenho regular. Sugerimos estudar mais antes de fazer o exame.";
+            } else {
+                resultMessage.innerHTML += "Recomendamos estudar mais antes de tentar o exame oficial.";
+            }
+        }
+
+        // Acionamento do botão "Encerrar Simulado"
+        function forceShowResults() {
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                const selectedId = selected ? selected.id : null;
+
+                // Se nunca respondeu antes
+                if (userCorrect[i] === undefined) {
+                    userAnswers[i] = selectedId;
+                    const correct = selectedId === correctAnswers[i];
+                    userCorrect[i] = correct;
+
+                    if (correct) score++;
+                    questionsAnswered++;
+                }
+            }
+
+            showResults(true);
+        }
+
+        // Reiniciar simulado
+        function restartSimulado() {
+            currentQuestion = 1;
+            score = 0;
+            questionsAnswered = 0;
+            userAnswers = {};
+            userCorrect = {};
+
+            document.getElementById('resultsContainer').style.display = 'none';
+
+            document.querySelectorAll('.question-card').forEach((card, index) => {
+                card.style.display = index === 0 ? 'block' : 'none';
+                card.classList.remove('active');
+                card.querySelectorAll('input').forEach(i => i.checked = false);
+
+                const feedback = card.querySelector('.feedback');
+                if (feedback) feedback.style.display = 'none';
+
+                const nextBtn = card.querySelector('.next-btn');
+                if (nextBtn) {
+                    nextBtn.textContent = 'Confirmar Resposta';
+                    nextBtn.onclick = function () {
+                        checkAnswer(currentQuestion, correctAnswers[currentQuestion]);
+                    };
+                }
+            });
+
+            document.getElementById('question1').classList.add('active');
+            document.getElementById('progressBar').style.width = '0%';
+        }
+
+        // Adiciona botões de encerrar
+        function addEndButtons() {
+            const questionCards = document.querySelectorAll('.question-card');
+            questionCards.forEach(card => {
+                const endButton = document.createElement('button');
+                endButton.className = 'end-btn';
+                endButton.innerHTML = '<i class="fas fa-flag-checkered"></i> Encerrar Simulado';
+                endButton.onclick = function () { forceShowResults(); };
+
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container';
+                buttonContainer.style.display = 'flex';
+                buttonContainer.style.gap = '1rem';
+                buttonContainer.style.marginTop = '1.5rem';
+                buttonContainer.style.flexWrap = 'wrap';
+
+                const nextBtn = card.querySelector('.next-btn');
+                card.insertBefore(buttonContainer, nextBtn.nextSibling);
+                buttonContainer.appendChild(nextBtn.cloneNode(true));
+                buttonContainer.appendChild(endButton);
+
+                card.removeChild(nextBtn);
+            });
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.question-card:not(#question1)').forEach(card => {
+                card.style.display = 'none';
+            });
+            document.getElementById('question1').classList.add('active');
+            addEndButtons();
+            updateProgress();
+        });
+    </script>
+
+</body>
+
+</html>

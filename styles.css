@@ -2442,3 +2442,52 @@ body.dark-mode .close-modal {
 body.dark-mode .close-modal:hover {
   color: var(--secondary-color);
 }
+.aviso-em-breve {
+  text-align: center;
+  padding: 48px 24px;
+  background: linear-gradient(135deg, #0a3d62, #1e90ff);
+  color: #ffffff;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.aviso-em-breve h2 {
+  font-size: clamp(22px, 4vw, 28px);
+  margin-bottom: 12px;
+}
+
+.aviso-em-breve p {
+  font-size: clamp(14px, 3.5vw, 16px);
+  max-width: 520px;
+  margin: 0 auto;
+  opacity: 0.95;
+}
+
+.badge-em-breve {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 18px;
+  background-color: #ffd32a;
+  color: #1f1f1f;
+  font-weight: 600;
+  border-radius: 20px;
+  font-size: 14px;
+  animation: pulse 2s infinite;
+}
+
+/* Animação */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 211, 42, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 18px rgba(255, 211, 42, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 211, 42, 0);
+  }
+}
